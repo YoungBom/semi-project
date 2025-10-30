@@ -89,7 +89,6 @@
       </div>
     </div>
   </div>
-
   <div class="footer-bottom">
     <p>© 2025 BurgerHub. All rights reserved.</p>
   </div>

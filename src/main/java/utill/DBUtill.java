@@ -8,7 +8,7 @@ public class DBUtill {
 	private static final String USER = "root";
 	private static final String PASSWORD = "1234";
 	
-	public static Connection getConntion() {
+	public static Connection getConnection() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			return DriverManager.getConnection(URL, USER, PASSWORD);
