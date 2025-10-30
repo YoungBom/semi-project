@@ -1,0 +1,165 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fffaf0;
+    color: #333;
+}
+
+/* 헤더 */
+.navbar {
+    background: linear-gradient(90deg, #ff9900, #ffcc33);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: white !important;
+}
+
+/* 메인 배너 */
+.hero {
+    background: url('https://images.unsplash.com/photo-1606755962773-d3248f0ec02d?auto=format&fit=crop&w=1500&q=80') center/cover;
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+    background-blend-mode: darken;
+    background-color: rgba(0,0,0,0.4);
+}
+.hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+}
+.hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* 버거 콘텐츠 등록 양식 */
+.burger-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: #fff;
+}
+.burger-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+.burger-card img {
+    height: 200px;
+    object-fit: cover;
+}
+.card-body {
+    padding: 15px 18px;
+}
+.card-title {
+    font-weight: 700;
+    color: #333;
+}
+.card-text {
+    color: #666;
+    font-size: 0.9rem;
+}
+.badge-brand {
+    background-color: #ffcc33;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.price {
+    color: #ff6600;
+    font-weight: 700;
+}
+
+
+/* 풋터 */
+.footer {
+   background-color: #333;
+   color: #bbb;
+   text-align: center;
+   padding: 20px;
+   margin-top: 50px;
+   font-size: 0.9rem;
+  font-family: 'Arial', sans-serif;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: center; /* 전체 중앙 정렬 */
+  align-items: flex-start;
+  gap: 100px; /* 세 섹션 간의 간격 */
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center; /* 섹션 안의 텍스트 기본 중앙 정렬 */
+}
+
+.footer-logo,
+.footer-contact,
+.footer-social {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-logo h2 {
+  color: #ffcc00;
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+
+.footer-logo p {
+  color: #ccc;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.footer-contact h3,
+.footer-social h3 {
+  color: #ffcc00;
+  margin-bottom: 15px;
+  font-size: 18px;
+  border-bottom: 1px solid #555;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+/* 연락처 가운데 정렬 */
+.footer-contact p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.social-item {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 가운데 정렬 */
+  margin-bottom: 10px;
+  gap: 8px;
+}
+
+.social-item img {
+  width: 22px;
+  height: 22px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.social-item img:hover {
+  transform: scale(1.1);
+  filter: brightness(0.9) invert(0.9);
+}
+
+.social-item span {
+  font-size: 14px;
+  color: #ddd;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 40px;
+  border-top: 1px solid #444;
+  padding-top: 15px;
+  font-size: 13px;
+  color: #aaa;
+}
