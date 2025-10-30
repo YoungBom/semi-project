@@ -1,4 +1,4 @@
--- Active: 1758675368804@@127.0.0.1@3306@semi_project
+-- Active: 1761795899147@@127.0.0.1@3306@semi_project
 CREATE DATABASE semi_project;
 
 USE semi_project;
@@ -30,7 +30,7 @@ CREATE TABLE burger (
 );
 
 -- 3️⃣ 버거 상세(product_details)
-CREATE TABLE product_details (
+CREATE TABLE burger_details (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	burger_id INT NOT NULL UNIQUE,   -- burger와 1:1 관계
 	calories INT,
@@ -64,4 +64,4 @@ CREATE TABLE review_image (
 	FOREIGN KEY (review_id) REFERENCES review(id) ON DELETE CASCADE
 );
 
-DESC review;
+DROP TABLE product_details;

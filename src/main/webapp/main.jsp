@@ -116,9 +116,9 @@ body {
 <!-- ✅ DB 연결 -->
 <sql:setDataSource var="db" 
     driver="com.mysql.cj.jdbc.Driver"
-    url="jdbc:mysql://127.0.0.1:3306/burgerhub_simple"
+    url="jdbc:mysql://127.0.0.1:3306/semi_project"
     user="root"
-    password="mysql1234" />
+    password="1234" />
 
 <%-- <sql:query var="burgers" dataSource="${db}">
     SELECT * FROM burger ORDER BY brand, name;
@@ -151,6 +151,5 @@ body {
 <footer class="footer">
   <p>© 2025 BurgerHub. All rights reserved.</p>
 </footer>
-
 </body>
 </html>
