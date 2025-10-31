@@ -27,7 +27,7 @@
       <label>이름(*)
         <input type="text" name="name" required maxlength="255" />
       </label>
-      <label>성별(선택)
+      <label>성별(*)
         <select name="gender" required>
           <option value="">선택</option>
           <option value="남">남</option>
@@ -37,10 +37,10 @@
     </div>
 
     <div class="row">
-      <label>생년월일(선택)
+      <label>생년월일(*)
         <input type="date" name="birth" required />
       </label>
-      <label>휴대폰(선택)
+      <label>휴대폰(*)
         <input type="text" name="phone" maxlength="20" placeholder="010-oooo-oooo" />
       </label>
     </div>
