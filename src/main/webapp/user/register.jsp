@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>회원가입</title>
-  <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/register.css">
+  <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/user.css">
 </head>
 <body>
   <h1>회원가입</h1>
@@ -58,7 +58,9 @@
   </form>
 
   <p style="margin-top:12px;">
-    이미 계정이 있나요? <a href="<%= request.getContextPath() %>/login">로그인</a>
+    이미 계정이 있나요? <a href="<%= request.getContextPath() %>/user/login.jsp">로그인</a>
   </p>
+  
 </body>
+
 </html>
