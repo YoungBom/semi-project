@@ -2,32 +2,99 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: #fffaf0;
     color: #333;
+    padding-top: 70px;
+    box-sizing: border-box;
 }
 
 /* 헤더 */
 .navbar {
-    background: linear-gradient(90deg, #ff9900, #ffcc33);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-.navbar-brand {
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: white !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
 }
 
+/* 내부 정렬용 컨테이너 */
+.navar .container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 로고 */
+.logo {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ff6600;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+
+/* 메뉴 */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 40px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: #ff6600;
+}
+
+/* 로그인 */
+.user-actions a {
+  text-decoration: none;
+  font-weight: 500;
+  color: #333;
+  border: 1px solid #ff6600;
+  border-radius: 6px;
+  padding: 6px 14px;
+}
+
+.user-actions a:hover {
+  background-color: #ff6600;
+  color: #fff;
+}
 /* 메인 배너 */
 .hero {
-    background: url('https://images.unsplash.com/photo-1606755962773-d3248f0ec02d?auto=format&fit=crop&w=1500&q=80') center/cover;
+    background: url('../../image/banner.png') center/cover;
     color: white;
     text-align: center;
     padding: 100px 20px;
     background-blend-mode: darken;
     background-color: rgba(0,0,0,0.4);
 }
+
 .hero h1 {
     font-size: 3rem;
     font-weight: 700;
 }
+
 .hero p {
     font-size: 1.2rem;
     opacity: 0.9;

@@ -132,7 +132,7 @@ VALUES
 (29, '치즈와퍼', 7000, '/img/cheese_whopper.jpg', '버거킹', '비프'),
 (30, '트리플버거', 8900, '/img/triple_burger.jpg', '맥도날드', '비프');
 
-INSERT INTO _details (burger_id, calories, carbohydrates, protein, fat, sodium, sugar, allergy_info)
+INSERT INTO burger_details (burger_id, calories, carbohydrates, protein, fat, sodium, sugar, allergy_info)
 VALUES
 (1, 520, 42, 28, 25, 800, 8, '밀, 우유, 대두'),
 (2, 560, 48, 32, 27, 850, 9, '밀, 계란, 대두'),

@@ -13,18 +13,12 @@
 <!-- ✅ Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <!-- main.css -->
-<link href="./resources/css/main.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
 </head>
 <body>
 <!-- ✅ 네비게이션 바 (헤더) -->
-<nav class="navbar navbar-expand-lg">
-  <div class="container">
-    <a class="navbar-brand" href="#">🍔 BurgerHub</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  </div>
-</nav>
+<%@ include file="/include/header.jsp" %>
+
 <!-- ✅ Hero Section -->
 <section class="hero">
   <h1>국내 모든 버거 브랜드 한눈에!</h1>
@@ -62,37 +56,9 @@
     </c:forEach>
   </div>
 </div>
+
 <!-- ✅ Footer -->
-<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-logo">
-      <h2>BurgerHub</h2>
-      <p>Delicious burgers made with love 🍔</p>
-    </div>
-
-    <div class="footer-contact">
-      <h3>Contact Us</h3>
-      <p>📞 010-1234-5678</p>
-      <p>✉️ contact@burgerhub.com</p>
-      <p>🏠 서울특별시 강남구 버거로 123</p>
-    </div>
-
-    <div class="footer-social">
-      <h3>Follow Us</h3>
-      <div class="social-item">
-        <a href="#"><img src="image/instagram.png" alt="Instagram"></a>
-        <span>@burgerhub_official</span>
-      </div>
-      <div class="social-item">
-        <a href="#"><img src="image/kakaotalk.png" alt="KakaoTalk"></a>
-        <span>카카오톡 ID: burgerhub</span>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2025 BurgerHub. All rights reserved.</p>
-  </div>
-</footer>
+<%@ include file="/include/footer.jsp" %>
 
 
 </body>
