@@ -25,7 +25,7 @@ public class BurgerDAO {
 		
 		try {
 			conn = DBUtil.getConnection();
-			pstmt1 = conn.prepareStatement(sql1, Statement.RETURN_GENERATED_KEYS);
+			pstmt1 = conn.prepareStatement(sql1 , Statement.RETURN_GENERATED_KEYS);
 			pstmt1.setString(1, burger.getName());	
 			pstmt1.setInt(2, burger.getPrice());	
 			pstmt1.setString(3, burger.getImagePath());	
