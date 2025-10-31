@@ -11,7 +11,18 @@ public class BurgerDTO {
 
     public BurgerDTO() {}
 
-    public int getId() { return id; }
+    
+    public BurgerDTO(String name, int price, String imagePath, String brand, String pattyType) {
+		super();
+		this.name = name;
+		this.price = price;
+		this.imagePath = imagePath;
+		this.brand = brand;
+		this.pattyType = pattyType;
+	}
+
+
+	public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
     public int getUserId() { return userId; }
