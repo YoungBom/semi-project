@@ -31,6 +31,51 @@ body {
   align-items: center;
 }
 
+/* 검색창 래퍼 */
+.search-form {
+  display: flex;
+  align-items: center;
+  margin-left: 30px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 25px; /* 둥근 전체 모양 */
+  overflow: hidden; /* 경계선 안 넘도록 */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-form:focus-within {
+  border-color: #ff6600;
+  box-shadow: 0 0 5px rgba(255, 102, 0, 0.4);
+}
+
+/* 입력창 */
+.search-input {
+  flex: 1;
+  padding: 8px 14px;
+  border: none;
+  outline: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  background-color: transparent;
+}
+
+/* 버튼 (입력창과 이어지게) */
+.search-btn {
+  border: none;
+  background-color: transparent; /* ✅ 흰색 바탕과 통일 */
+  color: #ff6600; /* 아이콘만 포인트 컬러 */
+  font-size: 1.2rem;
+  padding: 0 12px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.search-btn:hover {
+  color: #e65500;
+}
+
+
+
 /* 로고 */
 .logo {
   font-size: 1.6rem;
