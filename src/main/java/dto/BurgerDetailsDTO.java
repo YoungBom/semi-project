@@ -13,7 +13,19 @@ public class BurgerDetailsDTO {
 
     public BurgerDetailsDTO() {}
 
-    public int getId() { return id; }
+    public BurgerDetailsDTO(int calories, int carbohydrates, int protein, int fat, int sodium, int sugar,
+			String allergyInfo) {
+		super();
+		this.calories = calories;
+		this.carbohydrates = carbohydrates;
+		this.protein = protein;
+		this.fat = fat;
+		this.sodium = sodium;
+		this.sugar = sugar;
+		this.allergyInfo = allergyInfo;
+	}
+
+	public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
     public int getBurgerId() { return burgerId; }
