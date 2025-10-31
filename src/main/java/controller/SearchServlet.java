@@ -14,7 +14,7 @@ import dto.BurgerDTO;
 /**
  * Servlet implementation class SearchServlet
  */
-@WebServlet("/SearchServlet")
+@WebServlet("/search")
 public class SearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private BurgerSearchDAO burgerDAO = new BurgerSearchDAO();
@@ -47,7 +47,7 @@ public class SearchServlet extends HttpServlet {
 		if (keyword == null || keyword.trim().isEmpty()) {
 			burgers = burgerDAO.getAllburger();
 		} else {
-			burgers = null;
+			burgers = burgerDAO.searchBurgers(keyword.trim());
 		}
 		
 		request.setAttribute("burgers", burgers);
