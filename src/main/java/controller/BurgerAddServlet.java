@@ -34,7 +34,6 @@ public class BurgerAddServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 
 		try {
-			// 🧩 1️⃣ 기본 파라미터 수집
 			String name = req.getParameter("name");
 			String brand = req.getParameter("brand");
 			int price = Integer.parseInt(req.getParameter("price"));
