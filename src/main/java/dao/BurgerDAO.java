@@ -15,7 +15,7 @@ public class BurgerDAO {
 	public int insertBurger(BurgerDTO burger, BurgerDetailsDTO burgerDetails) {
 		String sql1 = "INSERT INTO burger (name, price, image_path, brand, patty_type)"
 				+ "	VALUES (?, ?, ?, ?, ?)";
-		String sql2 = "INSERT INTO burger (burger_id, calories, carbohydrates, protein, fat, sodium, sugar, allergy_info)"
+		String sql2 = "INSERT INTO burger_details (burger_id, calories, carbohydrates, protein, fat, sodium, sugar, allergy_info)"
 				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		Connection conn = null;
