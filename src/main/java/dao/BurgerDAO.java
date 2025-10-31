@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 import dto.BurgerDTO;
 import dto.BurgerDetailsDTO;
@@ -14,7 +15,7 @@ public class BurgerDAO {
 	public int insertBurger(BurgerDTO burger, BurgerDetailsDTO burgerDetails) {
 		String sql1 = "INSERT INTO burger (name, price, image_path, brand, patty_type)"
 				+ "	VALUES (?, ?, ?, ?, ?)";
-		String sql2 = "INSERT INTO burger (burger_id, calories, carbohydrates, protein, fat, sodium, sugar, allergy_info)"
+		String sql2 = "INSERT INTO burger_details (burger_id, calories, carbohydrates, protein, fat, sodium, sugar, allergy_info)"
 				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		Connection conn = null;
@@ -24,7 +25,7 @@ public class BurgerDAO {
 		
 		try {
 			conn = DBUtil.getConnection();
-			pstmt1 = conn.prepareStatement(sql1);
+			pstmt1 = conn.prepareStatement(sql1, Statement.RETURN_GENERATED_KEYS);
 			pstmt1.setString(1, burger.getName());	
 			pstmt1.setInt(2, burger.getPrice());	
 			pstmt1.setString(3, burger.getImagePath());	
