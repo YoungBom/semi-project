@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import util.DBUtil;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -27,7 +28,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import utill.DBUtill;
+import util.*;
 
 @WebServlet("/ReviewController")
 @MultipartConfig(
@@ -67,7 +68,7 @@ public class ReviewController extends HttpServlet {
 		String sql = "";
 		String sq2 = "";
 		try(
-			Connection conn = DBUtill.getConnection();
+			Connection conn = DBUtil.getConnection();
 				) 
 		{
 			// 추후 상세페이지에서 버거 id 정보 전달받아 동적 바인딩하기
