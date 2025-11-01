@@ -20,7 +20,7 @@
 	  <div class="card shadow-sm">
 	    <div class="card-body">
 	      <h3 class="card-title mb-4 text-center">리뷰 남기기</h3>
-	      <form action="${pageContext.request.contextPath}/ReviewController" method="post" class="comment-form" enctype="multipart/form-data">
+	      <form action="${pageContext.request.contextPath}/ReviewAddProcess" method="post" class="comment-form" enctype="multipart/form-data">
 	        
 	        <div class="mb-3">
 	          <label for="name" class="form-label">닉네임</label>
