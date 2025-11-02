@@ -45,7 +45,8 @@
     <c:forEach var="b" items="${burgers.rows}">
       <div class="col-md-3 col-sm-6 mb-4">
         <div class="card burger-card">
-          <img src="${pageContext.request.contextPath}/image/1.png" class="card-img-top" alt="${b.name}">
+          <img src="data:image/png;base64,${b.image_path}" class="card-img-top" alt="${b.name}">
+          <pre>${b.image_path}</pre>
           <div class="card-body">
             <span class="badge badge-brand">${b.brand}</span>
             <h5 class="card-title">${b.name}</h5>
