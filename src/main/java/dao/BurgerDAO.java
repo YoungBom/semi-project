@@ -18,14 +18,10 @@ public class BurgerDAO {
 		String sql2 = "INSERT INTO burger_details (burger_id, calories, carbohydrates, protein, fat, sodium, sugar, allergy_info)"
 				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		
-		Connection conn = null;
-		PreparedStatement pstmt1 = null;
-		PreparedStatement pstmt2 = null;
-		ResultSet rs = null;
-		
-		try {
-			conn = DBUtil.getConnection();
-			pstmt1 = conn.prepareStatement(sql1 , Statement.RETURN_GENERATED_KEYS);
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt1 = conn.prepareStatement(sql1 , Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement pstmt2 =conn.prepareStatement(sql2)) {
+			
 			pstmt1.setString(1, burger.getName());	
 			pstmt1.setInt(2, burger.getPrice());	
 			pstmt1.setString(3, burger.getImagePath());	
@@ -33,11 +29,10 @@ public class BurgerDAO {
 			pstmt1.setString(5, burger.getPattyType());
 			pstmt1.executeUpdate();
 			
-			rs = pstmt1.getGeneratedKeys();
+			ResultSet rs = pstmt1.getGeneratedKeys();
 			int burgerId = 0;
 			if (rs.next()) burgerId = rs.getInt(1);
 			
-			pstmt2 = conn.prepareStatement(sql2);
 			pstmt2.setInt(1, burgerId);
 			pstmt2.setInt(2, burgerDetails.getCalories());
 			pstmt2.setInt(3, burgerDetails.getCarbohydrates());
@@ -52,16 +47,57 @@ public class BurgerDAO {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("dao 예외발생");
+			System.out.println("insertBuger 예외발생");
 			return 0;
-		} finally {
-			DBUtil.close(rs, pstmt1, pstmt2, conn);
 		}
-		
 	}
 	
 	// 버거 수정
-	
+		// 단일 버거 불러오기
+	public BurgerDTO getBurgerById(int id) {
+		String sql = """ 
+				SELECT b.id, b.name, b.price, b.image_path, b.brand, b.patty_type,
+					d.calories, d.carbohydrates, d.protein, d.fat, d.sodium, d.sugar, d.allergy_info
+				FROM burger b
+				JOIN burger_details d ON b.id = d.burger_id
+				WHERE b.id = ?
+				""";
+		
+		BurgerDTO burger = null;
+		
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			
+			pstmt.setInt(1, id);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					burger = new BurgerDTO();
+					burger.setId(rs.getInt("id"));
+					burger.setName(rs.getString("name"));
+					burger.setPrice(rs.getInt("price"));
+					burger.setImagePath(rs.getString("image_path"));
+					burger.setBrand(rs.getString("brand"));
+					burger.setPattyType(rs.getString("patty_type"));
+					
+					BurgerDetailsDTO details = new BurgerDetailsDTO();
+					details.setCalories(rs.getInt("calories"));
+					details.setCarbohydrates(rs.getInt("carbohydrates"));
+					details.setProtein(rs.getInt("protein"));
+					details.setFat(rs.getInt("fat"));
+					details.setSodium(rs.getInt("sodium"));
+					details.setSugar(rs.getInt("sugar"));
+					details.setAllergyInfo(rs.getString("allergy_info"));
+					burger.setDetails(details);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("getBurgerById 예외 발생");
+		}
+		return burger;
+	}
+		// 버거 업데이트
 	
 	// 버거 삭제
 }

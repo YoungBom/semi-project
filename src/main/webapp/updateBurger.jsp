@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>부거 등록</title>
+<title>부거 수정</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
 	body { background-color: #fffaf0; font-family: 'Poppins', sans-serif; }
@@ -12,13 +12,23 @@
 	h2 { text-align: center; font-weight: 700; color: #ff6600; margin-bottom: 25px; }
 </style>
 </head>
+
+<!-- 테스트 코드 -->
+<%@ page import="dto.BurgerDTO" %>
+<%
+    BurgerDTO burger = new BurgerDTO();
+    burger.setId(45); // ✅ 테스트용 ID만 설정
+    request.setAttribute("burger", burger);
+%>
+<!-- 테스트 코드 -->
+
 <body>
 	<div class="container py-5">
-		<h2>버거 등록</h2>
-		<form action="${pageContext.request.contextPath}/burger/add" method="post" enctype="multipart/form-data">
+		<h2>버거 수정</h2>
+		<form action="${pageContext.request.contextPath}/burger/update" method="post" enctype="multipart/form-data">
 			<div class="mb-3">
 				<label class="form-label">제품명</label>
-				<input type="text" name="name" class="form-control">
+				<input type="text" name="name" class="form-control" value="${burger.name}">
 			</div>
 			<div class="mb-3">
 				<label class="form-label">브랜드</label>
