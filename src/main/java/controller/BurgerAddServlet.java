@@ -47,7 +47,8 @@ public class BurgerAddServlet extends HttpServlet {
 			int fat = Integer.parseInt(req.getParameter("fat"));
 			int sodium = Integer.parseInt(req.getParameter("sodium"));
 			int sugar = Integer.parseInt(req.getParameter("sugar"));
-			String allergyInfo = req.getParameter("allergyInfo");
+			String[] allergyArray = req.getParameterValues("allergyInfo");
+			String allergyInfo = String.join(", ", allergyArray);
 			
 			
 			Part filePart = req.getPart("imagePath");

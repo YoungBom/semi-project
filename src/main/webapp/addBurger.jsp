@@ -13,7 +13,7 @@
 </style>
 </head>
 <body>
-	<div class="container">
+	<div class="container py-5">
 		<h2>버거 등록</h2>
 		<form action="${pageContext.request.contextPath}/burger/add" method="post" enctype="multipart/form-data">
 			<div class="mb-3">
@@ -26,7 +26,7 @@
 			</div>
 			<div class="mb-3">
 				<label class="form-label">가격</label>
-				<input type="text" name="price" class="form-control">
+				<input type="number" name="price" class="form-control">
 			</div>
 			<div class="mb-3">
 				<label class="form-label">패티</label>
@@ -61,18 +61,55 @@
 				<div>
 					<input type="number" name="sugar" class="form-control" placeholder="당류">
 				</div>
-				<div>
-					<input type="text" name="allergyInfo" class="form-control" placeholder="알러지">
+			<h5 class="mt-4 mb-2">알레르기 유발 정보</h5>	
+			<div class="mb-3">
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" name="allergyInfo"	value="우유">
+					<label class="form-check-label">우유</label>
 				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" name="allergyInfo"	value="대두">
+					<label class="form-check-label">대두</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" name="allergyInfo"	value="밀">
+					<label class="form-check-label">밀</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" name="allergyInfo"	value="토마토">
+					<label class="form-check-label">토마토</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" name="allergyInfo"	value="난류">
+					<label class="form-check-label">난류</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" name="allergyInfo"	value="닭고기">
+					<label class="form-check-label">닭고기</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" name="allergyInfo"	value="돼지고기">
+					<label class="form-check-label">돼지고기</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" name="allergyInfo"	value="쇠고기">
+					<label class="form-check-label">쇠고기</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" name="allergyInfo"	value="새우">
+					<label class="form-check-label">새우</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" name="allergyInfo"	value="굴">
+					<label class="form-check-label">굴</label>
+				</div>
+				
+			</div>	
+
+
+				
 			</div>
-			<button type="submit">등록</button>
-			
-			
-			
-			
-			
-			
-			
+			<button type="submit" class="btn btn-success">등록</button>
 		</form>
 	</div>
 </body>
