@@ -9,7 +9,7 @@
 <body>
 	<nav class="navbar">
   		<div class="container">
-    	<a class="logo" href="#">🍔 BurgerHub</a>
+    	<a class="logo" href="main.jsp">🍔 BurgerHub</a>
     	<ul class="nav-links">
 	      <li><a href="menu.jsp">메뉴</a></li>
 	      <li><a href="#">이벤트</a></li>
