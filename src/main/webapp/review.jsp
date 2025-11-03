@@ -33,7 +33,7 @@
 	        </div>
 	        
 	        <div class="mb-3">          
-	          <input type="file" class="form-control" id="image" name="image" required>
+	          <input type="file" class="form-control" id="image" name="images" multiple="multiple" required>
 	        </div>
 	        
 	        <div class="mb-3">          

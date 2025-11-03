@@ -8,41 +8,28 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import dto.BurgerDTO;
-import dto.ReviewDTO;
 import dto.ReviewImageDTO;
-import dto.UserDTO;
 import util.DBUtil;
 
-public class ReviewDao {
+public class ReviewImageDAO {
 	
-	List<ReviewDTO> rvList = new ArrayList<ReviewDTO>();
+	List<ReviewImageDTO> riList = new ArrayList<ReviewImageDTO>();
 	
-	ReviewDTO review = new ReviewDTO();
-	ReviewImageDTO reviewImage = new ReviewImageDTO();
 	
-	public int addReview(ReviewDTO rv) {
+	public void addReviewImage (ReviewImageDTO ri) {
 		Connection conn = DBUtil.getConnection();
 		PreparedStatement pstmt = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 		int rs2 = 0;
-		int reviewId = 0;
 		
 		try {
-			String sql = "INSERT INTO review(burger_id, user_id, rating, content) VALUES (?,?,?,?)";
-			pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-			pstmt.setInt(1, rv.getBurgerId());
-			pstmt.setInt(2, rv.getBurgerId());
-			pstmt.setDouble(3, rv.getRating());
-			pstmt.setString(4, rv.getContent());
-			pstmt.executeUpdate();	
-			
-			rs = pstmt.getGeneratedKeys();
-			if (rs.next()) {
-				reviewId = rs.getInt(1);
-			}
-			
+			String sql = "INSERT INTO review_image(review_id, image_path) VALUES (?,?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, ri.getReviewId());
+			pstmt.setString(2, ri.getImagePath());
+			pstmt.executeUpdate();
+		
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -51,8 +38,7 @@ public class ReviewDao {
 			try { if(stmt != null) stmt.close();} catch (SQLException e) {e.printStackTrace(); }
 			try { if(rs != null) rs.close();} catch (SQLException e) {e.printStackTrace(); }
 		}
-		rvList.add(rv);
-		
-		return reviewId;
+		riList.add(ri);
 	}
+
 }
