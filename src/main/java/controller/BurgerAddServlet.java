@@ -83,7 +83,7 @@ public class BurgerAddServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("❌ 예외 발생");
+			System.out.println("예외 발생");
 
 			out.println("<script>");
 			out.println("alert('예외 발생: " + e.getMessage().replace("'", "\\'") + "');");
