@@ -98,6 +98,39 @@ public class BurgerDAO {
 		return burger;
 	}
 		// 버거 업데이트
-	
+	public int updateBurger(BurgerDTO burger, BurgerDetailsDTO burgerDetails) {
+	    String sql1 = "UPDATE burger SET name=?, price=?, image_path=?, brand=?, patty_type=? WHERE id=?";
+	    String sql2 = "UPDATE burger_details SET calories=?, carbohydrates=?, protein=?, fat=?, sodium=?, sugar=?, allergy_info=? WHERE burger_id=?";
+		
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt1 = conn.prepareStatement(sql1);
+			PreparedStatement pstmt2 =conn.prepareStatement(sql2)) {
+			
+			pstmt1.setString(1, burger.getName());	
+			pstmt1.setInt(2, burger.getPrice());	
+			pstmt1.setString(3, burger.getImagePath());	
+			pstmt1.setString(4, burger.getBrand());	
+			pstmt1.setString(5, burger.getPattyType());
+			pstmt1.setInt(6, burger.getId());
+			pstmt1.executeUpdate();
+			
+	        pstmt2.setInt(1, burgerDetails.getCalories());
+	        pstmt2.setInt(2, burgerDetails.getCarbohydrates());
+	        pstmt2.setInt(3, burgerDetails.getProtein());
+	        pstmt2.setInt(4, burgerDetails.getFat());
+	        pstmt2.setInt(5, burgerDetails.getSodium());
+	        pstmt2.setInt(6, burgerDetails.getSugar());
+	        pstmt2.setString(7, burgerDetails.getAllergyInfo());
+	        pstmt2.setInt(8, burger.getId());
+	        pstmt2.executeUpdate();
+			
+			return 1;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("updateBuger 예외발생");
+			return 0;
+		}
+	}
 	// 버거 삭제
 }

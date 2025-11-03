@@ -47,17 +47,16 @@ public class BurgerAddServlet extends HttpServlet {
 			int sugar = Integer.parseInt(req.getParameter("sugar"));
 			String[] allergyArray = req.getParameterValues("allergyInfo");
 			String allergyInfo = String.join(", ", allergyArray);
-			
+			if (allergyArray != null) allergyInfo = String.join(", ", allergyArray);
 			
 			Part filePart = req.getPart("imagePath");
 			String image = null;
 			
 			if (filePart != null && filePart.getSize() > 0) {
-				InputStream inputStream = filePart.getInputStream();
-				byte[] imageBytes = inputStream.readAllBytes();
-				
-				image = Base64.getEncoder().encodeToString(imageBytes);
-				inputStream.close();
+				try (InputStream inputStream = filePart.getInputStream()) {
+				    byte[] imageBytes = inputStream.readAllBytes();
+				    image = Base64.getEncoder().encodeToString(imageBytes);
+				}
 			}
 			
 			
