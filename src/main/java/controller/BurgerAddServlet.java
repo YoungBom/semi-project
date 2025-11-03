@@ -1,10 +1,8 @@
 package controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.nio.file.Path;
 import java.util.Base64;
 
 import dao.BurgerDAO;

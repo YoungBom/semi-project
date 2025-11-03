@@ -53,7 +53,7 @@ public class BurgerDAO {
 	}
 	
 	// 버거 수정
-		// 단일 버거 불러오기
+		// 단일 버거 + 버거디테일 불러오기
 	public BurgerDTO getBurgerById(int id) {
 		String sql = """ 
 				SELECT b.id, b.name, b.price, b.image_path, b.brand, b.patty_type,
