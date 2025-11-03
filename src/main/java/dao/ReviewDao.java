@@ -16,8 +16,6 @@ import util.DBUtil;
 
 public class ReviewDao {
 	
-	List<ReviewDTO> rvList = new ArrayList<ReviewDTO>();
-	
 	ReviewDTO review = new ReviewDTO();
 	ReviewImageDTO reviewImage = new ReviewImageDTO();
 	
@@ -51,8 +49,11 @@ public class ReviewDao {
 			try { if(stmt != null) stmt.close();} catch (SQLException e) {e.printStackTrace(); }
 			try { if(rs != null) rs.close();} catch (SQLException e) {e.printStackTrace(); }
 		}
-		rvList.add(rv);
 		
 		return reviewId;
 	}
+	
+//	public List<ReviewDTO> getAllReview() {		
+//		
+//	}
 }

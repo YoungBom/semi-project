@@ -13,9 +13,6 @@ import util.DBUtil;
 
 public class ReviewImageDAO {
 	
-	List<ReviewImageDTO> riList = new ArrayList<ReviewImageDTO>();
-	
-	
 	public void addReviewImage (ReviewImageDTO ri) {
 		Connection conn = DBUtil.getConnection();
 		PreparedStatement pstmt = null;
@@ -38,7 +35,6 @@ public class ReviewImageDAO {
 			try { if(stmt != null) stmt.close();} catch (SQLException e) {e.printStackTrace(); }
 			try { if(rs != null) rs.close();} catch (SQLException e) {e.printStackTrace(); }
 		}
-		riList.add(ri);
 	}
 
 }
