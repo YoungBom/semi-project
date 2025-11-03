@@ -29,6 +29,13 @@ CREATE TABLE burger (
 	FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
+-- 우주님이 image_path의 데이터형을 LONGTEXT로 변경하지않으면 인코딩된 image_path가 버거 등록시 들어가지 않는다하심
+ALTER TABLE burger
+MODIFY COLUMN image_path LONGTEXT NULL;
+
+DESC burger;
+SELECT * FROM burger;
+
 -- 3️⃣ 버거 상세(product_details)
 CREATE TABLE burger_details (
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -64,7 +71,7 @@ CREATE TABLE review_image (
 	FOREIGN KEY (review_id) REFERENCES review(id) ON DELETE CASCADE
 );
 
-DESC review;
+SELECT * FROM user;
 
 INSERT INTO user (user_id, user_pw, email, phone, birth, gender, name, nickname, address)
 VALUES
@@ -166,6 +173,3 @@ VALUES
 (30, 890, 53, 42, 39, 990, 12, '밀, 쇠고기');
 
 
-ALTER TABLE burger MODIFY COLUMN image_path LONGTEXT;
-
-SELECT * FROM burger;
