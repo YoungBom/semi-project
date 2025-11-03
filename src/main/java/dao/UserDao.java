@@ -145,4 +145,17 @@ public class UserDao {
 			ps.executeUpdate();
 		}
 	}
+	
+	// 이메일 인증 //
+	public User findByEmail(String email) throws SQLException {
+	    String sql = "SELECT * FROM `user` WHERE email = ?";
+	    try (Connection con = DBUtil.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+	        ps.setString(1, email);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            return rs.next() ? map(rs) : null;
+	        }
+	    }
+	}
+
 }
