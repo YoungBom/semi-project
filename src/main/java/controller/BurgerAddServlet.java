@@ -2,8 +2,10 @@ package controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.file.Path;
+import java.util.Base64;
 
 import dao.BurgerDAO;
 import dto.BurgerDTO;
@@ -45,25 +47,24 @@ public class BurgerAddServlet extends HttpServlet {
 			int fat = Integer.parseInt(req.getParameter("fat"));
 			int sodium = Integer.parseInt(req.getParameter("sodium"));
 			int sugar = Integer.parseInt(req.getParameter("sugar"));
-			String allergyInfo = req.getParameter("allergyInfo");
+			String[] allergyArray = req.getParameterValues("allergyInfo");
+			String allergyInfo = String.join(", ", allergyArray);
+			
 			
 			Part filePart = req.getPart("imagePath");
-			String fileName = null;
-			String imageUrl = null;
-
+			String image = null;
+			
 			if (filePart != null && filePart.getSize() > 0) {
-				fileName = Path.of(filePart.getSubmittedFileName()).getFileName().toString();
-
-				String uploadPath = req.getServletContext().getRealPath("/image");
-				File uploadDir = new File(uploadPath);
-				if (!uploadDir.exists()) uploadDir.mkdirs();
-
-				filePart.write(uploadPath + File.separator + fileName);
-
-				imageUrl = "/image/" + fileName;
+				InputStream inputStream = filePart.getInputStream();
+				byte[] imageBytes = inputStream.readAllBytes();
+				
+				image = Base64.getEncoder().encodeToString(imageBytes);
+				inputStream.close();
 			}
+			
+			
 
-			BurgerDTO burger = new BurgerDTO(name, price, imageUrl, brand, pattyType);
+			BurgerDTO burger = new BurgerDTO(name, price, image, brand, pattyType);
 			BurgerDetailsDTO burgerDetails = new BurgerDetailsDTO(
 					calories, carbohydrates, protein, fat, sodium, sugar, allergyInfo
 			);
