@@ -9,9 +9,22 @@ public class BurgerDTO {
     private String brand;
     private String pattyType;   // ENUM('치킨','비프','기타')
 
+    private BurgerDetailsDTO details;
+    
     public BurgerDTO() {}
 
-    public int getId() { return id; }
+    
+    public BurgerDTO(String name, int price, String imagePath, String brand, String pattyType) {
+		super();
+		this.name = name;
+		this.price = price;
+		this.imagePath = imagePath;
+		this.brand = brand;
+		this.pattyType = pattyType;
+	}
+
+
+	public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
     public int getUserId() { return userId; }
@@ -31,4 +44,8 @@ public class BurgerDTO {
 
     public String getPattyType() { return pattyType; }
     public void setPattyType(String pattyType) { this.pattyType = pattyType; }
+    
+    public BurgerDetailsDTO getDetails() { return details; }
+    public void setDetails(BurgerDetailsDTO details) { this.details = details; }
+    
 }

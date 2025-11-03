@@ -166,3 +166,6 @@ VALUES
 (30, 890, 53, 42, 39, 990, 12, '밀, 쇠고기');
 
 
+ALTER TABLE burger MODIFY COLUMN image_path LONGTEXT;
+
+SELECT * FROM burger;
