@@ -40,16 +40,19 @@
 				<label class="form-label">브랜드</label>
 				<input type="text" name="brand" class="form-control" value="${burger.brand}">
 			</div>
-			<div class="mb-3">
+			<div class="mb-4">
 				<label class="form-label">가격</label>
 				<input type="number" name="price" class="form-control" value="${burger.price}">
-				</div>
+			</div>
+			<div class="mb-3">
+				<label class="form-label">패티</label>
 				<input type="radio" name="pattyType" value="치킨"
 					 ${burger.pattyType eq '치킨' ? 'checked' : ''}> 치킨
 				<input type="radio" name="pattyType" value="비프"
 					 ${burger.pattyType eq '비프' ? 'checked' : ''}> 비프
 				<input type="radio" name="pattyType" value="기타"
 					 ${burger.pattyType eq '기타' ? 'checked' : ''}> 기타
+			</div>	
 			<div class="mb-3">
 				<label class="form-label">이미지</label>
 				<input type="file" name="imagePath" class="form-control" accept="image/*">
