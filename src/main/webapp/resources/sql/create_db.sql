@@ -167,3 +167,5 @@ VALUES
 
 
 ALTER TABLE burger MODIFY COLUMN image_path LONGTEXT;
+
+SELECT * FROM burger;
