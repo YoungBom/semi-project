@@ -15,15 +15,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-<!-- ✅ main.css -->
 <link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
 </head>
 
 <body>
-<!-- ✅ 헤더 include -->
 <%@ include file="/include/header.jsp" %>
 
-<!-- ✅ Hero Section -->
 <section class="hero text-center text-white">
   <h1>국내 모든 버거 브랜드 한눈에!</h1>
   <p>맥도날드 · 버거킹 · 맘스터치 · 롯데리아 등 인기 버거 총집합</p>
