@@ -2,10 +2,6 @@
 <%
 model.User me = (model.User) request.getAttribute("me");
 String ctx = request.getContextPath();
-if (me == null) {
-	response.sendRedirect(ctx + "/edit");
-	return;
-}
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -13,42 +9,29 @@ if (me == null) {
 <meta charset="UTF-8">
 <title>회원정보 수정</title>
 <link rel="stylesheet" href="<%=ctx%>/resources/css/user.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/header.css">
-
 </head>
 <body>
-	
-
 	<h1>회원정보 수정</h1>
-
-	<div class="msg error"><%=request.getAttribute("error") == null ? "" : request.getAttribute("error")%></div>
-
-	<!-- action 경로 수정 -->
-	<form method="post" action="<%=ctx%>/edit" autocomplete="off">
+	<form method="post" action="<%=ctx%>/user/edit">
 		<label>이메일 <input type="email" name="email"
-			value="<%=me.getEmail()%>" required maxlength="255">
-		</label> <label>닉네임 <input type="text" name="nickname"
-			value="<%=me.getNickname()%>" required maxlength="255">
-		</label> <label>휴대폰 <input type="text" name="phone"
-			value="<%=me.getPhone() == null ? "" : me.getPhone()%>"
-			maxlength="20" pattern="^[0-9\\-+ ]{9,20}$">
-		</label> <label>생년월일 <input type="text" name="birth"
-			value="<%=me.getBirth() == null ? "" : me.getBirth()%>"
-			placeholder="YYYY-MM-DD">
-		</label> <label>성별 <select name="gender">
+			value="<%=me.getEmail()%>" required></label><br> <label>닉네임
+			<input name="nickname"
+			value="<%=me.getNickname() == null ? "" : me.getNickname()%>" required>
+		</label><br> <label>휴대폰 <input name="phone"
+			value="<%=me.getPhone() == null ? "" : me.getPhone()%>"></label><br> <label>생년월일
+			<input type="date" name="birth"
+			value="<%=me.getBirth() == null ? "" : me.getBirth()%>">
+		</label><br> <label>성별 <select name="gender">
 				<option value=""
 					<%=(me.getGender() == null || me.getGender().isEmpty()) ? "selected" : ""%>>선택</option>
-				<option value="남" <%="남".equals(me.getGender()) ? "selected" : ""%>>남</option>
-				<option value="여" <%="여".equals(me.getGender()) ? "selected" : ""%>>여</option>
+				<option value="M" <%="M".equals(me.getGender()) ? "selected" : ""%>>남성</option>
+				<option value="F" <%="F".equals(me.getGender()) ? "selected" : ""%>>여성</option>
 		</select>
-		</label> <label>주소 <input type="text" name="address"
-			value="<%=me.getAddress() == null ? "" : me.getAddress()%>"
-			maxlength="255">
-		</label>
-
+		</label><br> <label>주소 <input name="address"
+			value="<%=me.getAddress() == null ? "" : me.getAddress()%>"></label><br>
 		<div class="actions">
 			<button type="submit">저장</button>
-			<a href="<%=ctx%>/mypage">취소</a>
+			<a href="<%=ctx%>/user/mypage">취소</a>
 		</div>
 	</form>
 </body>

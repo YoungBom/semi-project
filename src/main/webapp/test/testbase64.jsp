@@ -62,7 +62,7 @@
   </div>
 </div>
 
-<!-- ✅ Footer -->
+
 <%@ include file="/include/footer.jsp" %>
 
 

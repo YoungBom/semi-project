@@ -2,10 +2,6 @@
 <%
 model.User me = (model.User) request.getAttribute("me");
 String ctx = request.getContextPath();
-if (me == null) {
-	response.sendRedirect(ctx + "/user/login.jsp");
-	return;
-}
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -15,10 +11,15 @@ if (me == null) {
 <link rel="stylesheet" href="<%=ctx%>/resources/css/user.css">
 </head>
 <body>
-	
+	<%
+	if (request.getAttribute("FLASH") != null) {
+	%>
+	<div class="flash"><%=request.getAttribute("FLASH")%></div>
+	<%
+	}
+	%>
 
 	<h1>마이페이지</h1>
-
 	<div class="card">
 		<p>
 			<strong>아이디</strong> :

@@ -14,10 +14,4 @@ public class AuthLogoutServlet extends HttpServlet {
 			s.invalidate();
 		resp.sendRedirect(req.getContextPath() + "/"); // 메인으로
 	}
-
-	// 404/405 디버그용: GET으로 접근해도 동작하게(문제 해결 후 제거해도 됨)
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doPost(req, resp);
-	}
 }

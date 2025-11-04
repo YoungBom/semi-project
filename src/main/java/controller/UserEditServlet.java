@@ -1,64 +1,48 @@
 package controller;
 
 import dao.UserDao;
+import model.User;
+import util.PasswordUtil;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 
-@WebServlet("/edit")
-public class UserEditServlet extends HttpServlet {
+@WebServlet("/password/change")
+public class PasswordChangeServlet extends HttpServlet {
 	private final UserDao userDao = new UserDao();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		HttpSession s = req.getSession(false);
-		if (s == null || s.getAttribute("LOGIN_UID") == null) {
-			resp.sendRedirect(req.getContextPath() + "/login?next="
-					+ java.net.URLEncoder.encode(req.getContextPath() + "/edit", "UTF-8"));
-			return;
-		}
-		int uid = (int) s.getAttribute("LOGIN_UID");
-		try {
-			var me = userDao.findByPk(uid);
-			req.setAttribute("me", me);
-			req.getRequestDispatcher("/user/edit.jsp").forward(req, resp);
-		} catch (Exception e) {
-			throw new ServletException(e);
-		}
+		req.getRequestDispatcher("/user/password_change.jsp").forward(req, resp);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		HttpSession s = req.getSession(false);
-		if (s == null || s.getAttribute("LOGIN_UID") == null) {
-			resp.sendRedirect(req.getContextPath() + "/login?next="
-					+ java.net.URLEncoder.encode(req.getContextPath() + "/edit", "UTF-8"));
-			return;
-		}
 		int uid = (int) s.getAttribute("LOGIN_UID");
 
-		// 폼 파라미터 — edit.jsp의 name과 반드시 일치
-		String email = req.getParameter("email");
-		String nickname = req.getParameter("nickname");
-		String phone = req.getParameter("phone");
-		String birth = req.getParameter("birth");
-		String gender = req.getParameter("gender");
-		String address = req.getParameter("address");
+		String cur = req.getParameter("current_pw");
+		String npw = req.getParameter("new_pw");
+		String npw2 = req.getParameter("new_pw2");
 
 		try {
-			// 간단 검증(필요 시 확장)
-			if (email == null || email.isBlank() || nickname == null || nickname.isBlank()) {
-				req.setAttribute("error", "필수 항목을 확인하세요.");
-				var me = userDao.findByPk(uid);
-				req.setAttribute("me", me);
-				req.getRequestDispatcher("/user/edit.jsp").forward(req, resp);
+			if (npw == null || !npw.equals(npw2)) {
+				req.setAttribute("error", "새 비밀번호가 일치하지 않습니다.");
+				req.getRequestDispatcher("/user/password_change.jsp").forward(req, resp);
 				return;
 			}
-
-			userDao.updateProfile(uid, email, nickname, phone, birth, gender, address); // ✅ 구현 필요
-			resp.sendRedirect(req.getContextPath() + "/mypage"); // 저장 후 마이페이지로
+			User me = userDao.findByPk(uid);
+			if (me == null || !PasswordUtil.verify(cur, me.getUser_pw())) {
+				req.setAttribute("error", "현재 비밀번호가 올바르지 않습니다.");
+				req.getRequestDispatcher("/user/password_change.jsp").forward(req, resp);
+				return;
+			}
+			userDao.updatePassword(uid, PasswordUtil.hash(npw));
+			s.setAttribute("FLASH", "비밀번호가 변경되었습니다.");
+			resp.sendRedirect(req.getContextPath() + "/user/mypage");
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
