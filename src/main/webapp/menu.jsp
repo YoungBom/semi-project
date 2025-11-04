@@ -61,7 +61,6 @@
       <c:otherwise>
         <div class="row g-4">
           <c:forEach var="b" items="${burgers}">
-<<<<<<< HEAD
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
               <div class="card burger-card shadow-sm">
               	<a href="${pageContext.request.contextPath}/burgerDetails?id=${b.id}" class="text-decoration-none text-dark">
@@ -100,7 +99,6 @@
                 </a>
               </div>
             </div>
-=======
           <div class="col-12 col-sm-6 col-md-4 col-lg-3">
 			  <div class="card burger-card shadow-sm" data-patty="${fn:trim(b.pattyType)}">
 			    <a href="${pageContext.request.contextPath}/burgerDetails?id=${b.id}" class="text-decoration-none text-dark">
@@ -125,7 +123,6 @@
 			    </a>
 			  </div>
 			</div>
->>>>>>> branch 'master' of https://github.com/DNyang1/semi-project.git
           </c:forEach>
         </div>
       </c:otherwise>
