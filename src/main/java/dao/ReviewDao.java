@@ -17,7 +17,6 @@ import util.DBUtil;
 public class ReviewDao {
 	
 	ReviewDTO review = new ReviewDTO();
-	ReviewImageDTO reviewImage = new ReviewImageDTO();
 	
 	public int addReview(ReviewDTO rv) {
 		Connection conn = DBUtil.getConnection();
