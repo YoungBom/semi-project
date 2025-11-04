@@ -25,6 +25,7 @@ public class BurgerSearchDAO {
 			
 			while (rs.next()) {
 				BurgerDTO b = new BurgerDTO();
+				b.setId(rs.getInt("id"));
 				b.setName(rs.getString("name"));
 				b.setBrand(rs.getString("brand"));
 				b.setPrice(rs.getInt("price"));
