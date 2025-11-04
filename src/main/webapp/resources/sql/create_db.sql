@@ -1,29 +1,21 @@
-CREATE DATABASE jspbookdb;
+-- Active: 1761795899147@@127.0.0.1@3306@semi_project
+CREATE DATABASE semi_project;
 
-SHOW DATABASES;
+USE semi_project;
 
-CREATE DATABASE bookmarketdb;
-
-USE bookmarketdb;
-
-CREATE TABLE IF NOT EXISTS book (
-	b_id VARCHAR(10),
-	b_name VARCHAR(20),
-	b_unitPrice INTEGER,
-	b_author VARCHAR(20),
-	b_description TEXT,
-	b_publisher VARCHAR(20),
-	b_category VARCHAR(20),
-	b_unitsInStock INTEGER,
-	b_releaseDate VARCHAR(20),
-	b_condition VARCHAR(20),
-	b_fileName VARCHAR(20),
-	PRIMARY KEY (b_id)
+-- 1️⃣ 회원(user)
+CREATE TABLE user (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	user_id VARCHAR(255) NOT NULL UNIQUE,           -- 로그인용 아이디
+	user_pw VARCHAR(255) NOT NULL,
+	email VARCHAR(255) NOT NULL UNIQUE,
+	phone VARCHAR(255) UNIQUE,
+	birth VARCHAR(255) NOT NULL,
+	gender ENUM('남','여') NOT NULL,
+	name VARCHAR(255) NOT NULL,
+	nickname VARCHAR(255),
+	address VARCHAR(255)
 );
-
-
-DESC book;
-INSERT INTO book (b_id, b_name, b_unitPrice, b_author, b_description, b_publisher, b_category, b_unitsInStock, b_releaseDate, b_condition, b_fileName)
 
 -- 2️⃣ 버거(burger)
 CREATE TABLE burger (
@@ -82,74 +74,70 @@ CREATE TABLE review_image (
 SELECT * FROM user;
 
 INSERT INTO user (user_id, user_pw, email, phone, birth, gender, name, nickname, address)
-
 VALUES
-	('ISBN1234', 'C# 프로그래밍', 27000, '우재남', 'C#을 처음 접하는 독자를 대상으로 일대일 수업처럼 자세히 설명한 책이다. 꼭 알아야 할 핵심 개념은 기본 예제로 최대한 쉽게 설명했으며, 중요한 내용은 응용 예제, 퀴즈, 셀프 스터디, 예제 모음으로 한번 더 복습할 수 있다.', '한빛아카데미', 'IT모바일', 1000, '2022/10/06', 'New', 'ISBN1234.jpg'),
-	('ISBN1235', '자바마스터', 30000, '송미영', '자바를 처음 배우는 학생을 위해 자바의 기본 개념과 실습 예제를 그림을 이용하여 쉽게 설명합니다. 자바의 이론적 개념→기본 예제→프로젝트 순으로 단계별 학습이 가능하며, 각 챕터의 프로젝트를 실습하면서 온라인 서점을 완성할 수 있도록 구성하였습니다.', '한빛아카데미', 'IT모바일', 1000, '2023/01/01', 'New', 'ISBN1235.jpg'),
-	('ISBN1236', '파이썬 프로그래밍', 30000, '최성철', '파이썬으로 프로그래밍을 시작하는 입문자가 쉽게 이해할 수 있도록 기본 개념을 상세하게 설명하며, 다양한 예제를 제시합니다. 또한 프로그래밍의 기초 원리를 이해하면서 파이썬으로 데이터를 처리하는 기법도 배웁니다.', '한빛아카데미', 'IT모바일', 1000, '2023/01/01', 'New', 'ISBN1236.jpg');
+('user01', 'pw01', 'user01@email.com', '010-1111-0001', '1995-01-01', '남', '홍길동', '길동이', '서울시 강남구'),
+('user02', 'pw02', 'user02@email.com', '010-1111-0002', '1994-02-02', '여', '김영희', '희희', '서울시 송파구'),
+('user03', 'pw03', 'user03@email.com', '010-1111-0003', '1990-03-03', '남', '이철수', '철수짱', '부산시 해운대구'),
+('user04', 'pw04', 'user04@email.com', '010-1111-0004', '1993-04-04', '여', '박민정', '밍밍', '대구시 수성구'),
+('user05', 'pw05', 'user05@email.com', '010-1111-0005', '1991-05-05', '남', '최진호', '진호맨', '광주시 북구'),
+('user06', 'pw06', 'user06@email.com', '010-1111-0006', '1992-06-06', '여', '정은지', '은지짱', '인천시 연수구'),
+('user07', 'pw07', 'user07@email.com', '010-1111-0007', '1998-07-07', '남', '오세훈', '훈이', '서울시 노원구'),
+('user08', 'pw08', 'user08@email.com', '010-1111-0008', '1999-08-08', '여', '장예진', '예진이', '서울시 은평구'),
+('user09', 'pw09', 'user09@email.com', '010-1111-0009', '2000-09-09', '남', '김민수', '민수킹', '대전시 서구'),
+('user10', 'pw10', 'user10@email.com', '010-1111-0010', '1997-10-10', '여', '이유리', '유리별', '서울시 강서구'),
+('user11', 'pw11', 'user11@email.com', '010-1111-0011', '1991-01-15', '남', '한상우', '상우', '부산시 남구'),
+('user12', 'pw12', 'user12@email.com', '010-1111-0012', '1993-02-16', '여', '문지현', '지현짱', '서울시 동작구'),
+('user13', 'pw13', 'user13@email.com', '010-1111-0013', '1992-03-17', '남', '조민석', '민석이', '인천시 미추홀구'),
+('user14', 'pw14', 'user14@email.com', '010-1111-0014', '1994-04-18', '여', '서예린', '예린', '서울시 용산구'),
+('user15', 'pw15', 'user15@email.com', '010-1111-0015', '1995-05-19', '남', '백승호', '승호', '경기도 성남시'),
+('user16', 'pw16', 'user16@email.com', '010-1111-0016', '1996-06-20', '여', '이민아', '미나', '경기도 수원시'),
+('user17', 'pw17', 'user17@email.com', '010-1111-0017', '1997-07-21', '남', '정도윤', '도윤', '부산시 동래구'),
+('user18', 'pw18', 'user18@email.com', '010-1111-0018', '1998-08-22', '여', '윤소희', '소희', '서울시 마포구'),
+('user19', 'pw19', 'user19@email.com', '010-1111-0019', '1999-09-23', '남', '강하준', '하준', '대구시 달서구'),
+('user20', 'pw20', 'user20@email.com', '010-1111-0020', '2000-10-24', '여', '이서연', '서연', '광주시 서구'),
+('user21', 'pw21', 'user21@email.com', '010-1111-0021', '1995-11-01', '남', '김준호', '준호', '서울시 중구'),
+('user22', 'pw22', 'user22@email.com', '010-1111-0022', '1994-12-02', '여', '최수연', '수연', '서울시 강동구'),
+('user23', 'pw23', 'user23@email.com', '010-1111-0023', '1993-11-03', '남', '박지호', '지호', '인천시 서구'),
+('user24', 'pw24', 'user24@email.com', '010-1111-0024', '1992-10-04', '여', '오하늘', '하늘', '부산시 해운대구'),
+('user25', 'pw25', 'user25@email.com', '010-1111-0025', '1991-09-05', '남', '류시원', '시원', '서울시 서초구'),
+('user26', 'pw26', 'user26@email.com', '010-1111-0026', '1990-08-06', '여', '배은영', '은영', '대전시 중구'),
+('user27', 'pw27', 'user27@email.com', '010-1111-0027', '1989-07-07', '남', '임성훈', '성훈', '서울시 관악구'),
+('user28', 'pw28', 'user28@email.com', '010-1111-0028', '1988-06-08', '여', '조하나', '하나', '서울시 종로구'),
+('user29', 'pw29', 'user29@email.com', '010-1111-0029', '1987-05-09', '남', '노태현', '태현', '부산시 북구'),
+('user30', 'pw30', 'user30@email.com', '010-1111-0030', '1986-04-10', '여', '윤지민', '지민', '경기도 고양시');
 
-SELECT * FROM book;
-
-
-USE jspbookdb;
-
-CREATE TABLE IF NOT EXISTS member (
-	id VARCHAR(20),
-  passwd VARCHAR(20),
-  name VARCHAR(30),
-  PRIMARY KEY (id)
-);
-
-SELECT * FROM member;
-USE jspbookdb;
-
-
-USE jspbookdb;
-
-DROP TABLE member;
-
-CREATE TABLE IF NOT EXISTS member (
-	id VARCHAR(20),
-  passwd VARCHAR(20),
-  name VARCHAR(30),
-  PRIMARY KEY (id)
-);
-
-INSERT INTO member (id, passwd, name) 
-VALUES 
-	('1', '1234', '홍길순'),
-	('2', '1235', '홍길동');
-
-SELECT * FROM member;
-USE bookmarketdb;
-
-CREATE TABLE member (
-	id VARCHAR(10),
-	password VARCHAR(10) NOT NULL,
-	name VARCHAR(10) NOT NULL,
-	gender VARCHAR(4),
-	birth VARCHAR(10),
-	mail VARCHAR(30),
-	phone VARCHAR(20),
-	address VARCHAR(90),
-	regist_day VARCHAR(50),
-	PRIMARY KEY (id)
-);
-CREATE TABLE password_reset (
-  id         INT AUTO_INCREMENT PRIMARY KEY,
-  user_id    INT NOT NULL,
-  token      VARCHAR(128) NOT NULL UNIQUE,
-  expires_at TIMESTAMP NOT NULL,
-  used_at    TIMESTAMP NULL,
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT fk_reset_user FOREIGN KEY (user_id) REFERENCES user(id)
-);
-
-
-
-SELECT * FROM bookmarketdb.member;userPRIMARYuser
-DROP TABLE member;
-DESC TABLE password_reset;
+INSERT INTO burger (user_id, name, price, image_path, brand, patty_type)
+VALUES
+(1, '빅맥', 5500, '/img/bigmac.jpg', '맥도날드', '비프'),
+(2, '상하이 스파이시 버거', 5800, '/img/shanghai.jpg', '맥도날드', '치킨'),
+(3, '와퍼', 6500, '/img/whopper.jpg', '버거킹', '비프'),
+(4, '통새우버거', 6000, '/img/shrimp.jpg', '롯데리아', '기타'),
+(5, '한우불고기버거', 7000, '/img/bulgogi.jpg', '맥도날드', '비프'),
+(6, '치즈버거', 4800, '/img/cheese.jpg', '버거킹', '비프'),
+(7, '불고기버거', 5200, '/img/bulgogi_burger.jpg', '롯데리아', '비프'),
+(8, '치킨버거', 5300, '/img/chicken.jpg', '버거킹', '치킨'),
+(9, '슈퍼새우버거', 6700, '/img/super_shrimp.jpg', '맥도날드', '기타'),
+(10, '베이컨치즈버거', 6900, '/img/bacon_cheese.jpg', '버거킹', '비프'),
+(11, '치즈불고기버거', 6400, '/img/cheese_bulgogi.jpg', '롯데리아', '비프'),
+(12, '스파이시치킨버거', 5900, '/img/spicy_chicken.jpg', '버거킹', '치킨'),
+(13, '더블와퍼', 8000, '/img/double_whopper.jpg', '버거킹', '비프'),
+(14, '치즈스테이크버거', 7800, '/img/cheese_steak.jpg', '맥도날드', '비프'),
+(15, '새우버거', 5500, '/img/shrimp_burger.jpg', '롯데리아', '기타'),
+(16, '화이트갈릭버거', 7500, '/img/white_garlic.jpg', '버거킹', '비프'),
+(17, '치킨텐더버거', 5700, '/img/chicken_tender.jpg', '맥도날드', '치킨'),
+(18, '치즈더블버거', 7400, '/img/cheese_double.jpg', '버거킹', '비프'),
+(19, '슈비버거', 7100, '/img/shrimp_beef.jpg', '맥도날드', '기타'),
+(20, '콰트로치즈버거', 7700, '/img/4cheese.jpg', '버거킹', '비프'),
+(21, '와규버거', 9000, '/img/wagyu.jpg', '롯데리아', '비프'),
+(22, '더블치킨버거', 6800, '/img/double_chicken.jpg', '버거킹', '치킨'),
+(23, '치즈킹버거', 7600, '/img/cheese_king.jpg', '버거킹', '비프'),
+(24, '비프불고기버거', 6200, '/img/beef_bulgogi.jpg', '맥도날드', '비프'),
+(25, '베이컨에그버거', 5900, '/img/bacon_egg.jpg', '롯데리아', '비프'),
+(26, '클래식치킨버거', 6100, '/img/classic_chicken.jpg', '버거킹', '치킨'),
+(27, '더블새우버거', 7200, '/img/double_shrimp.jpg', '맥도날드', '기타'),
+(28, '크리스피치킨버거', 6300, '/img/crispy_chicken.jpg', '롯데리아', '치킨'),
+(29, '치즈와퍼', 7000, '/img/cheese_whopper.jpg', '버거킹', '비프'),
+(30, '트리플버거', 8900, '/img/triple_burger.jpg', '맥도날드', '비프');
 
 INSERT INTO burger_details (burger_id, calories, carbohydrates, protein, fat, sodium, sugar, allergy_info)
 VALUES
@@ -183,4 +171,3 @@ VALUES
 (28, 640, 48, 34, 30, 880, 9, '밀, 닭고기'),
 (29, 700, 50, 36, 32, 920, 10, '밀, 우유'),
 (30, 890, 53, 42, 39, 990, 12, '밀, 쇠고기');
-
