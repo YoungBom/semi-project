@@ -1,41 +1,29 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-logo">
-      <h2>BurgerHub</h2>
-      <p>Delicious burgers made with love 🍔</p>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<footer class="bg-dark text-light pt-4">
+  <div class="container d-flex justify-content-between align-items-start flex-wrap">
+
+    <div>
+      <h4 class="fw-bold">BurgerHub</h4>
+      <p class="text-secondary">Delicious burgers made with love 🍔</p>
     </div>
 
-    <div class="footer-contact">
-      <h3>Contact Us</h3>
+    <div>
+      <h5>Contact</h5>
       <p>📞 010-1234-5678</p>
       <p>✉️ contact@burgerhub.com</p>
       <p>🏠 서울특별시 강남구 버거로 123</p>
     </div>
 
-    <div class="footer-social">
-      <h3>Follow Us</h3>
-      <div class="social-item">
-        <a href="#"><img src="image/instagram.png" alt="Instagram"></a>
-        <span>@burgerhub_official</span>
-      </div>
-      <div class="social-item">
-        <a href="#"><img src="image/kakaotalk.png" alt="KakaoTalk"></a>
-        <span>카카오톡 ID: burgerhub</span>
-      </div>
+    <div>
+      <h5>Follow Us</h5>
+      <p>📸 @burgerhub_official</p>
+      <p>💬 카카오톡: burgerhub</p>
     </div>
+
   </div>
-  <div class="footer-bottom">
-    <p>© 2025 BurgerHub. All rights reserved.</p>
+
+  <div class="text-center py-3 border-top border-secondary mt-3">
+    © 2025 BurgerHub. All rights reserved.
   </div>
 </footer>
-</body>
-</html>

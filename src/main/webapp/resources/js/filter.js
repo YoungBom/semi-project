@@ -1,58 +1,50 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const container = document.getElementById("burgerContainer");
-  const buttons = document.querySelectorAll(".filter-btn");
-  const base = window.location.origin + "/semi-project";
+// /resources/js/filter.js
+document.addEventListener("DOMContentLoaded", function () {
+  const btns = document.querySelectorAll(".filter-btn");
+  // 카드(.burger-card)와 그 격자 칼럼(.col-*)를 같이 잡아둠
+  const cards = document.querySelectorAll(".burger-card");
 
-  console.log("✅ base:", base);
+  function normalize(s) {
+    return (s || "").trim();
+  }
 
-  fetchBurgers("all");
+  function cardPatty(card) {
+    // 우선 data-patty 우선
+    const fromData = normalize(card.getAttribute("data-patty"));
+    if (fromData) return fromData;
 
-  buttons.forEach(btn => {
+    // data-가 없으면 카드 내부 텍스트에서 백업으로 추출
+    const txtEl = card.querySelector(".card-text");
+    return normalize(txtEl ? txtEl.textContent : "");
+  }
+
+  function showColOf(card) {
+    // .burger-card 의 부모가 곧 .col-12 col-sm-6 ... 칼럼
+    const col = card.parentElement;
+    if (col) col.style.display = "";
+  }
+
+  function hideColOf(card) {
+    const col = card.parentElement;
+    if (col) col.style.display = "none";
+  }
+
+  btns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      buttons.forEach(b => b.classList.remove("active"));
+      // 버튼 active 토글
+      btns.forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
-      const type = btn.dataset.type;
-      fetchBurgers(type);
+
+      const type = btn.getAttribute("data-type"); // all | 비프 | 치킨 | 기타
+
+      cards.forEach((card) => {
+        const patty = cardPatty(card);
+        if (type === "all" || patty === type) {
+          showColOf(card);
+        } else {
+          hideColOf(card);
+        }
+      });
     });
   });
-
-  async function fetchBurgers(type) {
-    container.innerHTML = "<p class='text-center mt-5 text-muted'>로딩 중...</p>";
-    try {
-      const res = await fetch(base + "/filter", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: "patty=" + encodeURIComponent(type)
-      });
-
-      const burgers = await res.json();
-      if (!burgers || burgers.length === 0) {
-        container.innerHTML = "<p class='text-center text-muted mt-5'>결과 없음 😢</p>";
-        return;w
-      }
-      renderBurgers(burgers);
-    } catch (err) {
-      console.error("❌ 필터링 오류:", err);
-      container.innerHTML = "<p class='text-center text-danger mt-5'>오류 발생 ❌</p>";
-    }
-  }
-
-  function renderBurgers(burgers) {
-    console.log("🎨 렌더링 데이터 확인:", burgers[0]);
-    container.innerHTML = burgers.map(b => `
-      <div class="col-md-3 col-sm-6">
-        <div class="card burger-card">
-          <div class="card-body">
-            <span class="badge bg-warning text-dark mb-2">${b.brand || "-"}</span>
-            <h5 class="card-title">${b.name || "-"}</h5>
-            <p class="card-text">${b.pattyType || "-"}</p>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <span class="price">${b.price || "-"} 원</span>
-              <span class="rating">⭐</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    `).join("");
-  }
 });

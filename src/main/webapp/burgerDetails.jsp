@@ -208,31 +208,22 @@ body.lotteria {
     
     <!-- 왼쪽 이미지 -->
     <div class="col-md-5 text-center burger-image">
-<%--       <c:choose>
-        <c:when test="${not empty burger.imagePath}">
-          <img src="${pageContext.request.contextPath}${burger.imagePath}" alt="${burger.name}">
-        </c:when>
-        <c:otherwise>
-          <img src="${pageContext.request.contextPath}/image/1.png" alt="기본 이미지">
-        </c:otherwise>
-      </c:choose> --%>
-			<c:choose>
-    	<c:when test="${fn:startsWith(burger.imagePath, '/')}">
-        	<img 
-            src="${pageContext.request.contextPath}${burger.imagePath}" 
-            class="card-img-top" 
-            alt="${burger.name}"
-            style="height:200px; object-fit:cover;">
-    	</c:when>
-
-   	 	<c:otherwise>
-        	<img 
-            src="${burger.imagePath}" 
-            class="card-img-top" 
-            alt="${burger.name}"
-            style="height:200px; object-fit:cover;">
-    	</c:otherwise>
-			</c:choose>  
+		<c:choose>
+	    	<c:when test="${fn:startsWith(burger.imagePath, '/')}">
+	        	<img 
+	            src="${pageContext.request.contextPath}${burger.imagePath}" 
+	            class="card-img-top" 
+	            alt="${burger.name}"
+	            style="height:200px; object-fit:cover;">
+	    	</c:when>
+	   	 	<c:otherwise>
+	        	<img 
+	            src="${burger.imagePath}" 
+	            class="card-img-top" 
+	            alt="${burger.name}"
+	            style="height:200px; object-fit:cover;">
+	    	</c:otherwise>
+		</c:choose>  
     </div>
 
     <!-- 오른쪽 정보 -->
@@ -267,14 +258,14 @@ body.lotteria {
       <div class="nutrition-card">
         <h5><i class="bi bi-activity"></i>영양 정보</h5>
         <div class="nutrition-list">
-          <div class="nutrition-item"><i class="bi bi-fire"></i><span>칼로리:</span> ${details.calories} kcal</div>
-          <div class="nutrition-item"><i class="bi bi-droplet-half"></i><span>탄수화물:</span> ${details.carbohydrates} g</div>
-          <div class="nutrition-item"><i class="bi bi-basket2-fill"></i><span>단백질:</span> ${details.protein} g</div>
-          <div class="nutrition-item"><i class="bi bi-circle-half"></i><span>지방:</span> ${details.fat} g</div>
-          <div class="nutrition-item"><i class="bi bi-shield-exclamation"></i><span>나트륨:</span> ${details.sodium} mg</div>
-          <div class="nutrition-item"><i class="bi bi-cup-hot"></i><span>당류:</span> ${details.sugar} g</div>
+          <div class="nutrition-item"><i class="bi bi-fire"></i><span>칼로리:</span> ${burger.details.calories} kcal</div>
+          <div class="nutrition-item"><i class="bi bi-droplet-half"></i><span>탄수화물:</span> ${burger.details.carbohydrates} g</div>
+          <div class="nutrition-item"><i class="bi bi-basket2-fill"></i><span>단백질:</span> ${burger.details.protein} g</div>
+          <div class="nutrition-item"><i class="bi bi-circle-half"></i><span>지방:</span> ${burger.details.fat} g</div>
+          <div class="nutrition-item"><i class="bi bi-shield-exclamation"></i><span>나트륨:</span> ${burger.details.sodium} mg</div>
+          <div class="nutrition-item"><i class="bi bi-cup-hot"></i><span>당류:</span> ${burger.details.sugar} g</div>
           <div class="nutrition-item" style="grid-column: span 2;">
-            <i class="bi bi-exclamation-triangle"></i><span>알레르기 정보:</span> ${details.allergyInfo}
+            <i class="bi bi-exclamation-triangle"></i><span>알레르기 정보:</span> ${burger.details.allergyInfo}
           </div>
         </div>
       </div>

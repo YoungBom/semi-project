@@ -15,19 +15,52 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
+
+
 <!-- ✅ main.css -->
 <link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
 </head>
 
 <body>
-<!-- ✅ 헤더 include -->
 <%@ include file="/include/header.jsp" %>
 
-<!-- ✅ Hero Section -->
-<section class="hero text-center text-white">
-  <h1>국내 모든 버거 브랜드 한눈에!</h1>
-  <p>맥도날드 · 버거킹 · 맘스터치 · 롯데리아 등 인기 버거 총집합</p>
-</section>
+<!-- ✅ 메인 배너, 3초(3000ms)마다 슬라이드 되게함 -->
+<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+  <div class="carousel-inner">
+
+    <div class="carousel-item active hero-slide" style="background-image: url('${pageContext.request.contextPath}/image/banner1.png');">
+      <div class="hero-content">
+        <h1>국내 BEST 3 브랜드 버거 총집합!</h1>
+        <p>맥도날드 · 버거킹 · 롯데리아 인기버거 한눈에 🍔🔥</p>
+      </div>
+    </div>
+
+    <div class="carousel-item hero-slide" style="background-image: url('${pageContext.request.contextPath}/image/banner2.png');">
+      <div class="hero-content">
+        <h1>지금 인기 급상승 메뉴!</h1>
+        <p>유저 평점 기반 BEST 메뉴 추천</p>
+      </div>
+    </div>
+
+    <div class="carousel-item hero-slide" style="background-image: url('${pageContext.request.contextPath}/image/banner3.png');">
+      <div class="hero-content">
+        <h1>버거 매니아들의 피드백</h1>
+        <p>실시간 리뷰 & 사진 업로드</p>
+      </div>
+    </div>
+
+  </div>
+  
+  <!-- 배너 컨트롤하는 부분 (전,후 화살표) -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon bg-dark rounded-circle p-3"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon bg-dark rounded-circle p-3"></span>
+  </button>
+</div>
+
+
 
 <!-- ✅ DB 연결 -->
 <sql:setDataSource var="db" 
@@ -48,7 +81,7 @@
       <div class="col-md-3 col-sm-6 mb-4">
         <div class="card burger-card shadow-sm">
         
-          <a href="${pageContext.request.contextPath}/burgerDetails?id=${b.id}" class="text-decoration-none text-dark">
+          <a href="${pageContext.request.contextPath}/burger/details?id=${b.id}" class="text-decoration-none text-dark">
 
 			<c:choose>
 			   	<c:when test="${fn:startsWith(b.image_path, '/')}">
@@ -56,19 +89,16 @@
 			           src="${pageContext.request.contextPath}${b.image_path}" 
 			           class="card-img-top" 
 			           alt="${b.name}"
-			           style="height:200px; object-fit:cover;">
+			           style="height:200px; object-fit:contain;">
 			   	</c:when>
-		
 	  	 		<c:otherwise>
 			       	<img 
 			           src="${b.image_path}" 
 			           class="card-img-top" 
 			           alt="${b.name}"
-			           style="height:200px; object-fit:cover;">
+			           style="height:200px; object-fit:contain;">
 	   			</c:otherwise>
 			</c:choose>
-			
-			
             <div class="card-body">
               <span class="badge badge-brand">${b.brand}</span>
               <h5 class="card-title mt-2">${b.name}</h5>
