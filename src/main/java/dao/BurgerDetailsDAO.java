@@ -25,7 +25,6 @@ public class BurgerDetailsDAO {
                 burger.setPrice(rs.getInt("price"));
                 burger.setBrand(rs.getString("brand"));
                 burger.setImagePath(rs.getString("image_path"));
-                burger.setPattyType(rs.getString("patty_type"));
             }
 
         } catch (Exception e) {

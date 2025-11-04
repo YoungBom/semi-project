@@ -1,255 +1,64 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <title>${burger.name} - BurgerHub 🍔</title>
 
-<!-- ✅ Bootstrap & Fonts -->
+<!-- ✅ Bootstrap + Google Fonts + main.css 그대로 불러오기 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
-
-<style>
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #fffaf0;
-  transition: background 0.5s ease;
-}
-
-/* 공통 카드 */
-.burger-card {
-  background: #fff;
-  border-radius: 30px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-  padding: 50px 60px;
-  max-width: 1100px;
-  margin: auto;
-  transition: all 0.4s ease;
-}
-
-.burger-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-}
-
-/* 이미지 */
-.burger-image {
-  background: #fffef8;
-  border-radius: 25px;
-  padding: 10px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 330px;
-}
-.burger-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 20px;
-}
-
-/* 타이틀 */
-.title-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.burger-logo {
-  max-width: 55px;
-  max-height: 55px;
-  object-fit: contain;
-  border-radius: 6px;
-  flex-shrink: 0;
-}
-
-.burger-title {
-  position: relative;
-  font-weight: 800;
-  font-size: 2.3rem;
-  margin-bottom: 0.6rem;
-  color: var(--main-color);
-  display: inline-block;
-  overflow: visible; /* 수정됨 */
-}
-
-.burger-title::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 0;
-  height: 4px;
-  background-color: var(--main-color, #ff9900);
-  border-radius: 4px;
-  transition: width 0.4s ease-in-out;
-}
-
-/* ✅ 카드 hover 시 밑줄 등장 */
-.burger-card:hover .burger-title::after {
-  width: 100%;
-}
-
-/* ✅ 패티 타입 표시 */
-.patty-type {
-  font-weight: 600;
-  font-size: 1.1rem;
-  margin-bottom: 0.3rem;
-  color: var(--main-color);
-  background-color: rgba(255, 153, 0, 0.08);
-  padding: 5px 10px;
-  border-radius: 10px;
-  display: inline-block;
-}
-
-/* 영양정보 카드 */
-.nutrition-card {
-  background-color: #fff;
-  border-radius: 20px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-  padding: 30px 35px;
-  transition: 0.3s ease;
-  border-top: 5px solid var(--main-color);
-}
-.nutrition-card h5 {
-  font-weight: 700;
-  margin-bottom: 25px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--main-color);
-}
-.nutrition-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  row-gap: 12px;
-  column-gap: 15px;
-}
-.nutrition-item {
-  background-color: #fff9e6;
-  padding: 10px 15px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.nutrition-item i {
-  color: var(--main-color);
-}
-
-/* ✅ 브랜드별 테마 색상 */
-:root { --main-color: #ff9900; }
-
-body.mcdonalds {
-  background: #fff5f5;
-  --main-color: #ffb300;
-}
-
-body.burgerking {
-  background: #fff8f0;
-  --main-color: #b22222;
-}
-
-body.lotteria {
-  background: #fff4f4;
-  --main-color: #e60012;
-}
-</style>
 </head>
 
-<body 
-  class="${burger.brand eq '맥도날드' ? 'mcdonalds' : (burger.brand eq '버거킹' ? 'burgerking' : (burger.brand eq '롯데리아' ? 'lotteria' : ''))}"
->
-
+<body>
 <!-- ✅ 헤더 -->
 <%@ include file="/include/header.jsp" %>
 
-<!-- ✅ 버거 상세 -->
-<main class="my-5 py-5">
-  <div class="burger-card row align-items-center g-5">
+<!-- ✅ 버거 상세 섹션 -->
+<main class="container my-5 py-5" style="max-width:1100px;">
+  <div class="row align-items-start justify-content-center g-5">
     
-    <!-- 왼쪽 이미지 -->
-    <div class="col-md-5 text-center burger-image">
-<%--       <c:choose>
+    <!-- 🍔 왼쪽: 이미지 -->
+    <div class="col-md-5 text-center">
+      <c:choose>
         <c:when test="${not empty burger.imagePath}">
-          <img src="${pageContext.request.contextPath}${burger.imagePath}" alt="${burger.name}">
+          <img src="${pageContext.request.contextPath}${burger.imagePath}" 
+               alt="${burger.name}" class="img-fluid rounded-4 shadow">
         </c:when>
         <c:otherwise>
-          <img src="${pageContext.request.contextPath}/image/1.png" alt="기본 이미지">
+          <img src="${pageContext.request.contextPath}/image/1.png" 
+               alt="기본 버거 이미지" class="img-fluid rounded-4 shadow">
         </c:otherwise>
-      </c:choose> --%>
-			<c:choose>
-    	<c:when test="${fn:startsWith(burger.imagePath, '/')}">
-        	<img 
-            src="${pageContext.request.contextPath}${burger.imagePath}" 
-            class="card-img-top" 
-            alt="${burger.name}"
-            style="height:200px; object-fit:cover;">
-    	</c:when>
-
-   	 	<c:otherwise>
-        	<img 
-            src="data:image/png;base64,${burger.imagePath}" 
-            class="card-img-top" 
-            alt="${burger.name}"
-            style="height:200px; object-fit:cover;">
-    	</c:otherwise>
-			</c:choose>  
+      </c:choose>
     </div>
 
-    <!-- 오른쪽 정보 -->
-    <div class="col-md-7">
-      <div class="title-container">
-        <img class="burger-logo"
-          src="<c:choose>
-                 <c:when test='${burger.brand eq "맥도날드"}'>
-                   ${pageContext.request.contextPath}/image/mcdonalds_logo.png
-                 </c:when>
-                 <c:when test='${burger.brand eq "버거킹"}'>
-                   ${pageContext.request.contextPath}/image/burgerking_logo.png
-                 </c:when>
-                 <c:when test='${burger.brand eq "롯데리아"}'>
-                   ${pageContext.request.contextPath}/image/lotteria_logo.png
-                 </c:when>
-                 <c:otherwise>
-                   ${pageContext.request.contextPath}/image/default_logo.png
-                 </c:otherwise>
-               </c:choose>" 
-          alt="${burger.brand} 로고">
-        <h2 class="burger-title">${burger.name}</h2>
-      </div>
+    <!-- 📋 오른쪽: 정보 -->
+    <div class="col-md-6">
+      <h2 class="fw-bold text-dark mb-2">${burger.name}</h2>
+      <p class="text-secondary mb-1">${burger.brand}</p>
+      <h4 class="text-warning fw-bold mb-4">${burger.price}원</h4>
 
-      <p class="badge badge-brand">${burger.brand}</p>
-
-      <!-- ✅ 패티 타입 추가 -->
-      <p class="patty-type">${burger.pattyType}</p>
-
-      <h4 class="fw-bold mb-4" style="color: var(--main-color);">${burger.price}원</h4>
-
-      <div class="nutrition-card">
-        <h5><i class="bi bi-activity"></i>영양 정보</h5>
-        <div class="nutrition-list">
-          <div class="nutrition-item"><i class="bi bi-fire"></i><span>칼로리:</span> ${details.calories} kcal</div>
-          <div class="nutrition-item"><i class="bi bi-droplet-half"></i><span>탄수화물:</span> ${details.carbohydrates} g</div>
-          <div class="nutrition-item"><i class="bi bi-basket2-fill"></i><span>단백질:</span> ${details.protein} g</div>
-          <div class="nutrition-item"><i class="bi bi-circle-half"></i><span>지방:</span> ${details.fat} g</div>
-          <div class="nutrition-item"><i class="bi bi-shield-exclamation"></i><span>나트륨:</span> ${details.sodium} mg</div>
-          <div class="nutrition-item"><i class="bi bi-cup-hot"></i><span>당류:</span> ${details.sugar} g</div>
-          <div class="nutrition-item" style="grid-column: span 2;">
-            <i class="bi bi-exclamation-triangle"></i><span>알레르기 정보:</span> ${details.allergyInfo}
-          </div>
-        </div>
+      <div class="p-4 bg-white rounded-4 shadow-sm">
+        <h5 class="text-warning fw-bold mb-3">영양 정보</h5>
+        <ul class="list-unstyled mb-0">
+          <li>칼로리: ${details.calories} kcal</li>
+          <li>탄수화물: ${details.carbohydrates} g</li>
+          <li>단백질: ${details.protein} g</li>
+          <li>지방: ${details.fat} g</li>
+          <li>나트륨: ${details.sodium} mg</li>
+          <li>당류: ${details.sugar} g</li>
+          <li>알레르기 정보: ${details.allergyInfo}</li>
+        </ul>
       </div>
     </div>
   </div>
 </main>
+
+<!-- ✅ 리뷰 (작성 전 주석처리) -->
+<%-- <%@ include file="/include/review.jsp" %> --%>
 
 <!-- ✅ 푸터 -->
 <%@ include file="/include/footer.jsp" %>
