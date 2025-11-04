@@ -15,6 +15,8 @@ if (me == null) {
 <link rel="stylesheet" href="<%=ctx%>/resources/css/user.css">
 </head>
 <body>
+	
+
 	<h1>마이페이지</h1>
 
 	<div class="card">

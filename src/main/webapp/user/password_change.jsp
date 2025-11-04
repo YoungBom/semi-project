@@ -10,6 +10,8 @@ String ctx = request.getContextPath();
 <link rel="stylesheet" href="<%=ctx%>/resources/css/user.css">
 </head>
 <body>
+	<jsp:include page="/include/header.jsp" />
+
 	<h1>비밀번호 변경</h1>
 	<div class="msg error"><%=request.getAttribute("error") == null ? "" : request.getAttribute("error")%></div>
 

@@ -17,6 +17,8 @@
 
 <!-- ✅ main.css -->
 <link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
+<link rel="stylesheet"
+      href="<%=request.getContextPath()%>/resources/css/header.css?v=<%=System.currentTimeMillis()%>">
 </head>
 
 <body>

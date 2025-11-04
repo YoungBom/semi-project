@@ -7,6 +7,7 @@ import java.sql.*;
 
 public class UserDao {
 
+	/* ---------- 공통 매퍼 ---------- */
 	private User map(ResultSet rs) throws SQLException {
 		User u = new User();
 		u.setId(rs.getInt("id"));
@@ -22,6 +23,7 @@ public class UserDao {
 		return u;
 	}
 
+	/* ---------- 조회 ---------- */
 	public User findByPk(int id) throws SQLException {
 		String sql = "SELECT * FROM `user` WHERE id=?";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -82,6 +84,20 @@ public class UserDao {
 		}
 	}
 
+	public boolean nicknameExistsExcept(String nickname, int exceptUserId) throws SQLException {
+		String sql = "SELECT 1 FROM `user` WHERE nickname=? AND id<>?";
+		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			if (con == null)
+				throw new SQLException("DB connection is null");
+			ps.setString(1, nickname);
+			ps.setInt(2, exceptUserId);
+			try (ResultSet rs = ps.executeQuery()) {
+				return rs.next();
+			}
+		}
+	}
+
+	
 	public int insert(User u) throws SQLException {
 		String sql = "INSERT INTO `user` (user_id,user_pw,email,phone,birth,gender,name,nickname,address) "
 				+ "VALUES (?,?,?,?,?,?,?,?,?)";
@@ -108,18 +124,21 @@ public class UserDao {
 		}
 	}
 
-	public int updateProfile(int id, String nickname, String phone, String address, String birth, String gender)
-			throws SQLException {
-		String sql = "UPDATE `user` SET nickname=?, phone=?, address=?, birth=?, gender=? WHERE id=?";
+	
+	public int updateProfile(int id, String email, String nickname, String phone, String birth, String gender,
+			String address) throws SQLException {
+		String sql = "UPDATE `user` SET email=?, nickname=?, phone=?, birth=?, gender=?, address=? WHERE id=?";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			if (con == null)
 				throw new SQLException("DB connection is null");
-			ps.setString(1, nickname);
-			ps.setString(2, phone);
-			ps.setString(3, address);
-			ps.setString(4, birth);
-			ps.setString(5, gender);
-			ps.setInt(6, id);
+			int i = 1;
+			ps.setString(i++, email);
+			ps.setString(i++, nickname);
+			ps.setString(i++, phone);
+			ps.setString(i++, birth);
+			ps.setString(i++, gender);
+			ps.setString(i++, address);
+			ps.setInt(i, id);
 			return ps.executeUpdate();
 		}
 	}
@@ -132,19 +151,6 @@ public class UserDao {
 			ps.setString(1, hashedPw);
 			ps.setInt(2, id);
 			return ps.executeUpdate();
-		}
-	}
-
-	public boolean nicknameExistsExcept(String nickname, int exceptUserId) throws SQLException {
-		String sql = "SELECT 1 FROM `user` WHERE nickname=? AND id<>?";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			if (con == null)
-				throw new SQLException("DB connection is null");
-			ps.setString(1, nickname);
-			ps.setInt(2, exceptUserId);
-			try (ResultSet rs = ps.executeQuery()) {
-				return rs.next();
-			}
 		}
 	}
 }
