@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const burgers = await res.json();
       if (!burgers || burgers.length === 0) {
         container.innerHTML = "<p class='text-center text-muted mt-5'>결과 없음 😢</p>";
-        return;
+        return;w
       }
       renderBurgers(burgers);
     } catch (err) {
