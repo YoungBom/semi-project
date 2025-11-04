@@ -8,10 +8,13 @@ public class ReviewDTO {
     private int userId;
     private double rating;
     private String content;
+    private String nickname;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    private String imagePath;
 
-    public ReviewDTO() {}
+
+	public ReviewDTO() {}
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -33,4 +36,7 @@ public class ReviewDTO {
 
     public Timestamp getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(Timestamp updatedAt) { this.updatedAt = updatedAt; }
+    
+    public String getImagePath() { return imagePath; }
+    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 }
