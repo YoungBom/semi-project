@@ -58,7 +58,6 @@
 			           alt="${b.name}"
 			           style="height:200px; object-fit:cover;">
 			   	</c:when>
-		
 	  	 		<c:otherwise>
 			       	<img 
 			           src="${b.image_path}" 
@@ -67,8 +66,6 @@
 			           style="height:200px; object-fit:cover;">
 	   			</c:otherwise>
 			</c:choose>
-			
-			
             <div class="card-body">
               <span class="badge badge-brand">${b.brand}</span>
               <h5 class="card-title mt-2">${b.name}</h5>
