@@ -26,6 +26,7 @@
     	
 	    <div class="user-actions">
 	      <a href="#">로그인</a>
+	      <a href="${pageContext.request.contextPath}/burger/list" class="btn">버거리스트</a>
 	    </div>
 	  </div>
 	</nav>

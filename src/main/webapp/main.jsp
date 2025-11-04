@@ -70,7 +70,7 @@
 
    	 	<c:otherwise>
         	<img 
-            src="data:image/png;base64,${b.image_path}" 
+            src="${b.image_path}" 
             class="card-img-top" 
             alt="${b.name}"
             style="height:200px; object-fit:cover;">
