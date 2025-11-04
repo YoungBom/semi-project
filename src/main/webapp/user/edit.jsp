@@ -2,6 +2,10 @@
 <%
 model.User me = (model.User) request.getAttribute("me");
 String ctx = request.getContextPath();
+if (me == null) { 
+	response.sendRedirect(ctx + "/edit");
+	return;
+}
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -15,7 +19,8 @@ String ctx = request.getContextPath();
 
 	<div class="msg error"><%=request.getAttribute("error") == null ? "" : request.getAttribute("error")%></div>
 
-	<form method="post" action="<%=ctx%>/user/edit" autocomplete="off">
+	<!-- action 경로 수정 -->
+	<form method="post" action="<%=ctx%>/edit" autocomplete="off">
 		<label>이메일 <input type="email" name="email"
 			value="<%=me.getEmail()%>" required maxlength="255">
 		</label> <label>닉네임 <input type="text" name="nickname"
@@ -33,8 +38,7 @@ String ctx = request.getContextPath();
 				<option value="여" <%="여".equals(me.getGender()) ? "selected" : ""%>>여</option>
 		</select>
 		</label> <label>주소 <input type="text" name="address"
-			value="<%=me.getAddress() == null ? "" : me.getAddress()%>"
-			maxlength="255">
+			value="<%=me.getAddress() == null ? "" : me.getAddress()%>" maxlength="255">
 		</label>
 
 		<div class="actions">
