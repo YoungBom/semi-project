@@ -15,12 +15,7 @@
     <div class="d-flex justify-content-between mb-3">
       <div>
         <a href="${pageContext.request.contextPath}/burger/add" class="btn btn-primary">+ 새 버거 등록</a>
-        
       </div>
-      <form class="d-flex" action="searchBurger" method="get">
-        <input type="text" name="keyword" class="form-control me-2" placeholder="버거 이름 검색">
-        <button class="btn btn-outline-secondary" type="submit">검색</button>
-      </form>
     </div>
 
     <!-- 버거 목록 테이블 -->
