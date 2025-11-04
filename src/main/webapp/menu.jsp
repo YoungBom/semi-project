@@ -60,7 +60,7 @@
 				
 				  <c:when test="${not empty b.imagePath}">
 				    <img 
-				      src="data:image/png;base64,${b.imagePath}" 
+				      src="${b.imagePath}" 
 				      class="card-img-top" 
 				      alt="${b.name}"
 				      style="height:200px; object-fit:cover;">
