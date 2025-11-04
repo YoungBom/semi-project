@@ -25,11 +25,11 @@
 <head>
   <meta charset="UTF-8">
   <title>BurgerHub | 전체 메뉴</title>
- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+ <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 </head>
 
 
@@ -78,14 +78,14 @@
           <c:forEach var="b" items="${burgers}">
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
               <div class="card burger-card shadow-sm">
-              	<a href="${pageContext.request.contextPath}/burgerDetails?id=${b.id}" class="text-decoration-none text-dark">
+              	<a href="${pageContext.request.contextPath}/burger/details?id=${b.id}" class="text-decoration-none text-dark">
                <c:choose>
 				  <c:when test="${not empty b.imagePath and fn:startsWith(b.imagePath, '/')}">
 				    <img 
 				      src="${pageContext.request.contextPath}${b.imagePath}" 
 				      class="card-img-top" 
 				      alt="${b.name}"
-				      style="height:200px; object-fit:cover;">
+				      style="height:200px; object-fit:contain;">
 				  </c:when>
 				
 				  <c:when test="${not empty b.imagePath}">
@@ -93,7 +93,7 @@
 				      src="${b.imagePath}" 
 				      class="card-img-top" 
 				      alt="${b.name}"
-				      style="height:200px; object-fit:cover;">
+				      style="height:200px; object-fit:contain;">
 				  </c:when>
 				
 				  <c:otherwise>
@@ -101,7 +101,7 @@
 				      src="${pageContext.request.contextPath}/image/noimage.png" 
 				      class="card-img-top" 
 				      alt="이미지 없음"
-				      style="height:200px; object-fit:cover;">
+				      style="height:200px; object-fit:contain;">
 				  </c:otherwise>
 				</c:choose>
 				
