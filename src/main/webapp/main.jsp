@@ -48,33 +48,24 @@
       <div class="col-md-3 col-sm-6 mb-4">
         <div class="card burger-card shadow-sm">
         
-<%-- 		<img src="data:image/png;base64,${b.image_path}" class="card-img-top" alt="${b.name}"> --%>
-		
-          <!-- ✅ 상세보기로 이동 -->
           <a href="${pageContext.request.contextPath}/burgerDetails?id=${b.id}" class="text-decoration-none text-dark">
-            	<!-- src ="/semi-project/img/버거이름.jpg" -->
-<%--             <img 
-              src="${pageContext.request.contextPath}${b.image_path}" 
-              class="card-img-top" 
-              alt="${b.name}" 
-              style="height:200px; object-fit:cover;"> --%>
 
 			<c:choose>
-    	<c:when test="${fn:startsWith(b.image_path, '/')}">
-        	<img 
-            src="${pageContext.request.contextPath}${b.image_path}" 
-            class="card-img-top" 
-            alt="${b.name}"
-            style="height:200px; object-fit:cover;">
-    	</c:when>
-
-   	 	<c:otherwise>
-        	<img 
-            src="data:image/png;base64,${b.image_path}" 
-            class="card-img-top" 
-            alt="${b.name}"
-            style="height:200px; object-fit:cover;">
-    	</c:otherwise>
+			   	<c:when test="${fn:startsWith(b.image_path, '/')}">
+			       	<img 
+			           src="${pageContext.request.contextPath}${b.image_path}" 
+			           class="card-img-top" 
+			           alt="${b.name}"
+			           style="height:200px; object-fit:cover;">
+			   	</c:when>
+		
+	  	 		<c:otherwise>
+			       	<img 
+			           src="data:image/png;base64,${b.image_path}" 
+			           class="card-img-top" 
+			           alt="${b.name}"
+			           style="height:200px; object-fit:cover;">
+	   			</c:otherwise>
 			</c:choose>
 			
 			
