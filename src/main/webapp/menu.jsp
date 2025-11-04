@@ -99,6 +99,30 @@
                 </a>
               </div>
             </div>
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+			  <div class="card burger-card shadow-sm" data-patty="${fn:trim(b.pattyType)}">
+			    <a href="${pageContext.request.contextPath}/burgerDetails?id=${b.id}" class="text-decoration-none text-dark">
+			      <c:choose>
+			        <c:when test="${not empty b.imagePath and fn:startsWith(b.imagePath, '/')}">
+			          <img src="${pageContext.request.contextPath}${b.imagePath}" class="card-img-top" alt="${b.name}" style="height:200px; object-fit:cover;">
+			        </c:when>
+			        <c:when test="${not empty b.imagePath}">
+			          <img src="data:image/png;base64,${b.imagePath}" class="card-img-top" alt="${b.name}" style="height:200px; object-fit:cover;">
+			        </c:when>
+			        <c:otherwise>
+			          <img src="${pageContext.request.contextPath}/image/noimage.png" class="card-img-top" alt="이미지 없음" style="height:200px; object-fit:cover;">
+			        </c:otherwise>
+			      </c:choose>
+			
+			      <div class="card-body text-center">
+			        <span class="badge badge-brand d-inline-block mb-2">${b.brand}</span>
+			        <h5 class="card-title">${b.name}</h5>
+			        <p class="card-text text-secondary">${b.pattyType}</p>
+			        <p class="price">${b.price}원</p>
+			      </div>
+			    </a>
+			  </div>
+			</div>
           </c:forEach>
         </div>
       </c:otherwise>
