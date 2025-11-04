@@ -22,7 +22,7 @@ body {
 }
 
 /* 내부 정렬용 컨테이너 */
-.navar .container {
+.navbar .container {
   width: 100%;
   max-width: 1200px;
   padding: 0 40px;
