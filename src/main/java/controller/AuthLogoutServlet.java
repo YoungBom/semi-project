@@ -12,10 +12,12 @@ public class AuthLogoutServlet extends HttpServlet {
 		HttpSession s = req.getSession(false);
 		if (s != null)
 			s.invalidate();
-		resp.sendRedirect(req.getContextPath() + "/"); // ✅ 메인으로
+		resp.sendRedirect(req.getContextPath() + "/"); // 메인으로
 	}
 
-	// (임시) GET 눌러도 동작하게 하고 싶으면 주석 해제
-	   @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-	       throws ServletException, IOException { doPost(req, resp); }
+	// 404/405 디버그용: GET으로 접근해도 동작하게(문제 해결 후 제거해도 됨)
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req, resp);
+	}
 }

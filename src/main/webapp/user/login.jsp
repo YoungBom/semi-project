@@ -13,8 +13,6 @@
 
 	<h1>로그인</h1>
 
-
-
 	<form method="post" action="<%=request.getContextPath()%>/login"
 		autocomplete="on">
 		<label> 아이디 <input type="text" name="user_id" required
