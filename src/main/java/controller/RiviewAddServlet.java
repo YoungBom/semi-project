@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Collection;
+import java.util.UUID;
 
 import dao.ReviewDao;
 import dao.ReviewImageDAO;
@@ -29,7 +30,7 @@ public class RiviewAddServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	// 외부 저장 경로 지정 (⚠️ 서버 외부 절대경로)
-    private static final String UPLOAD_DIR = "/Users/juan/uploads/review_images"; 
+    private static final String UPLOAD_DIR = "d:\\upload"; 
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -66,7 +67,8 @@ public class RiviewAddServlet extends HttpServlet {
 		for (Part part : parts) {
 			if (part.getName().equals("images") && part.getSize() > 0) {
 				ReviewImageDTO ri = new ReviewImageDTO();
-				String fileName = part.getSubmittedFileName();
+				String uuid = UUID.randomUUID().toString();
+				String fileName = uuid + part.getSubmittedFileName();
 				String filePath = UPLOAD_DIR + File.separator + fileName;
 				part.write(filePath);
 				ri.setReviewId(reviewId);
@@ -76,7 +78,7 @@ public class RiviewAddServlet extends HttpServlet {
 			}
 		}
 		
-		resp.sendRedirect("review.jsp");
+		resp.sendRedirect("burgerDetails.jsp");
 		
 		
 	

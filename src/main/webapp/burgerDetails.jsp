@@ -22,7 +22,7 @@ body {
 }
 
 /* 공통 카드 */
-.burger-card {
+.burger-card, .card{
   background: #fff;
   border-radius: 30px;
   box-shadow: 0 15px 35px rgba(0,0,0,0.08);
@@ -161,6 +161,16 @@ body.lotteria {
   background: #fff4f4;
   --main-color: #e60012;
 }
+
+/* ✅ 리뷰 */
+.form-control:focus {
+    border-color: #F59E0B;
+    box-shadow: 0 0 0 0.2rem rgba(245, 158, 11, 0.25);
+  }
+.btn-warning:hover {
+	background-color: #F59E0B;
+	border-color: #F59E0B;
+}
 </style>
 </head>
 
@@ -249,6 +259,82 @@ body.lotteria {
       </div>
     </div>
   </div>
+
+
+	<div class="my-5 py-5">
+		  <div class="card shadow-sm">
+		    <div class="card-body">
+		      <h3 class="card-title mb-4 text-center">리뷰 등록</h3>
+		      <form action="${pageContext.request.contextPath}/ReviewAddProcess" method="post" class="comment-form" enctype="multipart/form-data">
+		        
+		        <div class="mb-3">
+		          <label for="name" class="form-label">닉네임</label>
+		          <input type="text" class="form-control" value="버거짱짱맨" readonly="readonly">
+		        </div>
+		
+		        <div class="mb-3">
+		          <label for="content" class="form-label">댓글</label>
+		          <textarea class="form-control" id="content" name="content" rows="5" placeholder="댓글을 입력하세요" required></textarea>
+		        </div>
+		        
+		        <div class="mb-3">          
+		          <input type="file" class="form-control" id="image" name="images" multiple="multiple" required>
+		        </div>
+		        
+		        <div class="mb-3">          
+		          <label for="rating" class="form-label">별점</label>
+		          <input type="text" class="form-control" id="rating" name="rating" placeholder="별점을 입력하세요(0~5)" required>
+		        </div>
+		
+		        <div class="text-end">
+		          <button type="submit" class="btn btn-warning rounded-3">등록</button>
+		        </div>
+		      </form>
+		    </div>
+			<div class="my-4">
+				<div class="border-0 rounded-0 bg-white shadow-0">
+					<div class="review">
+					<!-- 리뷰 추가될 영역 -->
+					</div>
+				</div>
+			</div>
+		  </div>
+		
+	</div>
+	
+	
+	
+	<script type="text/javascript">
+			document.querySelector(".btn").addEventListener('click', function() {
+			const reviewBody = document.querySelector(".review");
+			const review = document.createElement("div");
+			review.className = "card-body px-4 py-4 border-bottom";
+			review.innerHTML = `
+				<!-- 프로필 영역 -->
+				<div class="d-flex align-items-center mb-3">
+					<div class="me-3">
+						<img src="https://via.placeholder.com/50" alt="사용자이미지" class="rounded-circle border" style="display:block; width:50px; height:50px">
+					</div>
+					<div>
+						<strong class="d-block">닉네임</strong>
+						<small class="text-muted">2025.11.01 3시 30분</small>
+					</div>
+				</div>					
+				<!-- 본문 영역 -->
+				<div class="mb-2">
+					<div class="mb-2">
+						<img alt="이미지" src="" style="width:100px; height:100px; display:inline-block; background-color:#fffef8">
+					</div>
+					<p class="mb-0">
+					가나다라마바사아자차카타파가나다라마바사아자차카타파가나다라마바사아자차카타파
+					</p>
+				</div>
+				`;
+			reviewBody.appendChild(review);
+		})
+	</script>
+	
+	</div>
 </main>
 
 <!-- ✅ 푸터 -->
