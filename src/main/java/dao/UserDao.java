@@ -1,4 +1,3 @@
-// src/main/java/dao/UserDao.java
 package dao;
 
 import model.User;
@@ -8,7 +7,6 @@ import java.sql.*;
 
 public class UserDao {
 
-	// ResultSet -> User 매핑
 	private User map(ResultSet rs) throws SQLException {
 		User u = new User();
 		u.setId(rs.getInt("id"));
@@ -24,36 +22,23 @@ public class UserDao {
 		return u;
 	}
 
-	// 회원가입 INSERT //
-	
-	public int insert(User u) throws SQLException {
-		String sql = "INSERT INTO `user` " + "(user_id,user_pw,email,phone,birth,gender,name,nickname,address) "
-				+ "VALUES (?,?,?,?,?,?,?,?,?)";
-		try (Connection con = DBUtil.getConnection();
-				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
-			ps.setString(1, u.getUser_id());
-			ps.setString(2, u.getUser_pw());
-			ps.setString(3, u.getEmail());
-			ps.setString(4, u.getPhone());
-			ps.setString(5, u.getBirth());
-			ps.setString(6, u.getGender());
-			ps.setString(7, u.getName());
-			ps.setString(8, u.getNickname());
-			ps.setString(9, u.getAddress());
-
-			ps.executeUpdate();
-			try (ResultSet rs = ps.getGeneratedKeys()) {
-				return rs.next() ? rs.getInt(1) : 0;
+	public User findByPk(int id) throws SQLException {
+		String sql = "SELECT * FROM `user` WHERE id=?";
+		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			if (con == null)
+				throw new SQLException("DB connection is null");
+			ps.setInt(1, id);
+			try (ResultSet rs = ps.executeQuery()) {
+				return rs.next() ? map(rs) : null;
 			}
 		}
 	}
 
-	// 로그인 아이디로 조회하기 //
-	
 	public User findByLoginId(String loginId) throws SQLException {
-		String sql = "SELECT * FROM `user` WHERE user_id = ?";
+		String sql = "SELECT * FROM `user` WHERE user_id=?";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			if (con == null)
+				throw new SQLException("DB connection is null");
 			ps.setString(1, loginId);
 			try (ResultSet rs = ps.executeQuery()) {
 				return rs.next() ? map(rs) : null;
@@ -61,24 +46,23 @@ public class UserDao {
 		}
 	}
 
-	// 기본키로 조회 (마이페이지) //
-	
-	
-	public User findByPk(int pk) throws SQLException {
-		String sql = "SELECT * FROM `user` WHERE id = ?";
+	public User findByEmail(String email) throws SQLException {
+		String sql = "SELECT * FROM `user` WHERE email=?";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setInt(1, pk);
+			if (con == null)
+				throw new SQLException("DB connection is null");
+			ps.setString(1, email);
 			try (ResultSet rs = ps.executeQuery()) {
 				return rs.next() ? map(rs) : null;
 			}
 		}
 	}
 
-	// 중복 체크 //
-	
 	public boolean idExists(String loginId) throws SQLException {
-		String sql = "SELECT 1 FROM `user` WHERE user_id = ?";
+		String sql = "SELECT 1 FROM `user` WHERE user_id=?";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			if (con == null)
+				throw new SQLException("DB connection is null");
 			ps.setString(1, loginId);
 			try (ResultSet rs = ps.executeQuery()) {
 				return rs.next();
@@ -87,8 +71,10 @@ public class UserDao {
 	}
 
 	public boolean emailExists(String email) throws SQLException {
-		String sql = "SELECT 1 FROM `user` WHERE email = ?";
+		String sql = "SELECT 1 FROM `user` WHERE email=?";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			if (con == null)
+				throw new SQLException("DB connection is null");
 			ps.setString(1, email);
 			try (ResultSet rs = ps.executeQuery()) {
 				return rs.next();
@@ -96,67 +82,69 @@ public class UserDao {
 		}
 	}
 
-	public boolean existsEmailExceptMe(String email, int myId) throws SQLException {
-		String sql = "SELECT 1 FROM `user` WHERE email=? AND id<>?";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setString(1, email);
-			ps.setInt(2, myId);
-			try (ResultSet rs = ps.executeQuery()) {
-				return rs.next();
+	public int insert(User u) throws SQLException {
+		String sql = "INSERT INTO `user` (user_id,user_pw,email,phone,birth,gender,name,nickname,address) "
+				+ "VALUES (?,?,?,?,?,?,?,?,?)";
+		try (Connection con = DBUtil.getConnection();
+				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+			if (con == null)
+				throw new SQLException("DB connection is null");
+			int i = 1;
+			ps.setString(i++, u.getUser_id());
+			ps.setString(i++, u.getUser_pw());
+			ps.setString(i++, u.getEmail());
+			ps.setString(i++, u.getPhone());
+			ps.setString(i++, u.getBirth());
+			ps.setString(i++, u.getGender());
+			ps.setString(i++, u.getName());
+			ps.setString(i++, u.getNickname());
+			ps.setString(i++, u.getAddress());
+			int rows = ps.executeUpdate();
+			try (ResultSet rs = ps.getGeneratedKeys()) {
+				if (rs.next())
+					u.setId(rs.getInt(1));
 			}
+			return rows;
 		}
 	}
 
-	public boolean existsNicknameExceptMe(String nickname, int myId) throws SQLException {
-		String sql = "SELECT 1 FROM `user` WHERE nickname=? AND id<>?";
+	public int updateProfile(int id, String nickname, String phone, String address, String birth, String gender)
+			throws SQLException {
+		String sql = "UPDATE `user` SET nickname=?, phone=?, address=?, birth=?, gender=? WHERE id=?";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			if (con == null)
+				throw new SQLException("DB connection is null");
 			ps.setString(1, nickname);
-			ps.setInt(2, myId);
-			try (ResultSet rs = ps.executeQuery()) {
-				return rs.next();
-			}
-		}
-	}
-
-	// 프로필 수정 //
-	
-	public void updateProfile(int id, String email, String nickname, String phone, String birth, String gender,
-			String address) throws SQLException {
-		String sql = "UPDATE `user` SET email=?, nickname=?, phone=?, birth=?, gender=?, address=? WHERE id=?";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setString(1, email);
-			ps.setString(2, nickname);
-			ps.setString(3, phone);
+			ps.setString(2, phone);
+			ps.setString(3, address);
 			ps.setString(4, birth);
 			ps.setString(5, gender);
-			ps.setString(6, address);
-			ps.setInt(7, id);
-			ps.executeUpdate();
+			ps.setInt(6, id);
+			return ps.executeUpdate();
 		}
 	}
 
-	// 비밀번호 수정 //
-	
-	public void updatePassword(int id, String hashed) throws SQLException {
+	public int updatePassword(int id, String hashedPw) throws SQLException {
 		String sql = "UPDATE `user` SET user_pw=? WHERE id=?";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setString(1, hashed);
+			if (con == null)
+				throw new SQLException("DB connection is null");
+			ps.setString(1, hashedPw);
 			ps.setInt(2, id);
-			ps.executeUpdate();
+			return ps.executeUpdate();
 		}
 	}
-	
-	// 이메일 인증 //
-	public User findByEmail(String email) throws SQLException {
-	    String sql = "SELECT * FROM `user` WHERE email = ?";
-	    try (Connection con = DBUtil.getConnection();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
-	        ps.setString(1, email);
-	        try (ResultSet rs = ps.executeQuery()) {
-	            return rs.next() ? map(rs) : null;
-	        }
-	    }
-	}
 
-	
+	public boolean nicknameExistsExcept(String nickname, int exceptUserId) throws SQLException {
+		String sql = "SELECT 1 FROM `user` WHERE nickname=? AND id<>?";
+		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			if (con == null)
+				throw new SQLException("DB connection is null");
+			ps.setString(1, nickname);
+			ps.setInt(2, exceptUserId);
+			try (ResultSet rs = ps.executeQuery()) {
+				return rs.next();
+			}
+		}
+	}
 }
