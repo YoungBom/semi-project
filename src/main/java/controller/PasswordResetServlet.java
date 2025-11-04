@@ -1,6 +1,6 @@
 package controller;
 
-import dao.PasswordResetDao;
+import dao.PasswordResetDAO;
 import dao.UserDao;
 import model.User;
 import util.PasswordUtil;
@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @WebServlet("/password/reset")
 public class PasswordResetServlet extends HttpServlet {
-    private final PasswordResetDao resetDao = new PasswordResetDao();
+    private final PasswordResetDAO resetDao = new PasswordResetDAO();
     private final UserDao userDao = new UserDao();
 
     @Override

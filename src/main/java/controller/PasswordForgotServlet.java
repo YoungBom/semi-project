@@ -1,6 +1,6 @@
 package controller;
 
-import dao.PasswordResetDao;
+import dao.PasswordResetDAO;
 import dao.UserDao;
 import model.User;
 import jakarta.servlet.ServletException;
@@ -15,7 +15,7 @@ import java.util.Base64;
 @WebServlet("/password/forgot")
 public class PasswordForgotServlet extends HttpServlet {
     private final UserDao userDao = new UserDao();
-    private final PasswordResetDao resetDao = new PasswordResetDao();
+    private final PasswordResetDAO resetDao = new PasswordResetDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
