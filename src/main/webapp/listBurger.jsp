@@ -14,7 +14,8 @@
     <!-- 상단 버튼 영역 -->
     <div class="d-flex justify-content-between mb-3">
       <div>
-        <a href="addBurger.jsp" class="btn btn-primary">+ 새 버거 등록</a>
+        <a href="${pageContext.request.contextPath}/burger/add" class="btn btn-primary">+ 새 버거 등록</a>
+        
       </div>
       <form class="d-flex" action="searchBurger" method="get">
         <input type="text" name="keyword" class="form-control me-2" placeholder="버거 이름 검색">
@@ -30,7 +31,6 @@
           <th>버거 이름</th>
           <th>가격</th>
           <th>브랜드</th>
-          <th>이미지</th>
           <th>관리</th>
         </tr>
       </thead>
@@ -42,10 +42,7 @@
             <td>${burger.price}원</td>
             <td>${burger.brand}</td>
             <td>
-              <img src="img/burger/${burger.image}" alt="${burger.name}" width="80" class="rounded">
-            </td>
-            <td>
-              <a href="editBurger.jsp?id=${burger.id}" class="btn btn-sm btn-warning">수정</a>
+              <a href="${pageContext.request.contextPath}/burger/edit?id=${burger.id}" class="btn btn-sm btn-warning">수정</a>
               <a href="deleteBurger?id=${burger.id}" class="btn btn-sm btn-danger"
                  onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
             </td>

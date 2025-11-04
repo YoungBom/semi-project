@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import dto.BurgerDTO;
 import dto.BurgerDetailsDTO;
@@ -132,5 +134,31 @@ public class BurgerDAO {
 			return 0;
 		}
 	}
+	// 모든 버거 조회
+	public List<BurgerDTO> getAllBurgers() {
+		List<BurgerDTO> list = new ArrayList<>();
+		String sql = "SELECT * FROM burger ORDER BY id DESC";
+		
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery()) {
+			
+	        while (rs.next()) {
+	            BurgerDTO burger = new BurgerDTO();
+	            burger.setId(rs.getInt("id"));
+	            burger.setName(rs.getString("name"));
+	            burger.setPrice(rs.getInt("price"));
+	            burger.setBrand(rs.getString("brand"));
+	            burger.setImagePath(rs.getString("image_path"));
+	            list.add(burger);
+	        }
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
 	// 버거 삭제
 }
