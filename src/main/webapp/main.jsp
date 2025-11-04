@@ -25,8 +25,8 @@
 
 <!-- ✅ Hero Section -->
 <section class="hero text-center text-white">
-  <h1>국내 모든 버거 브랜드 한눈에!</h1>
-  <p>맥도날드 · 버거킹 · 맘스터치 · 롯데리아 등 인기 버거 총집합</p>
+  <h1>국내 BEST 3 브랜드의 인기 버거를 한눈에!</h1>
+  <p>< 맥도날드 · 버거킹 · 롯데리아 > 인기 버거 총 집합!</p>
 </section>
 
 <!-- ✅ DB 연결 -->

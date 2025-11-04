@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Header</title>
 </head>
 <body>
 	<nav class="navbar">
@@ -12,9 +12,9 @@
     	<a class="logo" href="${pageContext.request.contextPath}/main.jsp">🍔 BurgerHub</a>
     	<ul class="nav-links">
 	      <li><a href="${pageContext.request.contextPath}/menu.jsp">메뉴</a></li>
-	      <li><a href="#">이벤트</a></li>
-	      <li><a href="#">공지사항</a></li>
-	      <li><a href="#">고객센터</a></li>
+	      <li><a href="${pageContext.request.contextPath}/event.jsp">이벤트</a></li>
+	      <li><a href="${pageContext.request.contextPath}/notice.jsp">공지사항</a></li>
+	      <li><a href="${pageContext.request.contextPath}/customerService.jsp">고객센터</a></li>
     	</ul>
     	
     	<form action="${pageContext.request.contextPath}/search" method="post" class="search-form">
