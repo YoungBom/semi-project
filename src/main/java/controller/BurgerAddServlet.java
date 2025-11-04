@@ -1,10 +1,8 @@
 package controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.nio.file.Path;
 import java.util.Base64;
 
 import dao.BurgerDAO;
@@ -49,20 +47,18 @@ public class BurgerAddServlet extends HttpServlet {
 			int sugar = Integer.parseInt(req.getParameter("sugar"));
 			String[] allergyArray = req.getParameterValues("allergyInfo");
 			String allergyInfo = String.join(", ", allergyArray);
-			
+			if (allergyArray != null) allergyInfo = String.join(", ", allergyArray);
 			
 			Part filePart = req.getPart("imagePath");
 			String image = null;
+			String mimeType = "image/jpeg";
 			
 			if (filePart != null && filePart.getSize() > 0) {
-				InputStream inputStream = filePart.getInputStream();
-				byte[] imageBytes = inputStream.readAllBytes();
-				
-				image = Base64.getEncoder().encodeToString(imageBytes);
-				inputStream.close();
-			}
-			
-			
+				try (InputStream inputStream = filePart.getInputStream()) {
+			        byte[] imageBytes = inputStream.readAllBytes();
+			        image = "data:" + mimeType + ";base64," + Base64.getEncoder().encodeToString(imageBytes);
+				}
+			}			
 
 			BurgerDTO burger = new BurgerDTO(name, price, image, brand, pattyType);
 			BurgerDetailsDTO burgerDetails = new BurgerDetailsDTO(
@@ -86,7 +82,7 @@ public class BurgerAddServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("❌ 예외 발생");
+			System.out.println("예외 발생");
 
 			out.println("<script>");
 			out.println("alert('예외 발생: " + e.getMessage().replace("'", "\\'") + "');");

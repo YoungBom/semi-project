@@ -24,7 +24,7 @@
 				<label class="form-label">브랜드</label>
 				<input type="text" name="brand" class="form-control">
 			</div>
-			<div class="mb-3">
+			<div class="mb-4">
 				<label class="form-label">가격</label>
 				<input type="number" name="price" class="form-control">
 			</div>
