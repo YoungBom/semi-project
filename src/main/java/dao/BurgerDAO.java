@@ -49,7 +49,6 @@ public class BurgerDAO {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("insertBuger 예외발생");
 			return 0;
 		}
 	}

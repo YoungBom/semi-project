@@ -66,10 +66,12 @@ CREATE TABLE review (
 -- 5️⃣ 리뷰 이미지(review_image)
 CREATE TABLE review_image (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	review_id INT,
-	image_path VARCHAR(255) NOT NULL,
+	review_id INT NOT NULL,
+	image_path VARCHAR(255),
 	FOREIGN KEY (review_id) REFERENCES review(id) ON DELETE CASCADE
 );
+
+DROP TABLE review_image;
 
 SELECT * FROM user;
 

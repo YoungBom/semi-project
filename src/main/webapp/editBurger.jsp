@@ -146,12 +146,12 @@
 
         <h5>버거 상세</h5>
         <div class="row g-2">
-          <div class="col-6"><input type="number" name="calories" class="form-control" value="${burger.details.calories}" placeholder="칼로리"></div>
-          <div class="col-6"><input type="number" name="carbohydrates" class="form-control" value="${burger.details.carbohydrates}" placeholder="탄수화물"></div>
-          <div class="col-6"><input type="number" name="protein" class="form-control" value="${burger.details.protein}" placeholder="단백질"></div>
-          <div class="col-6"><input type="number" name="fat" class="form-control" value="${burger.details.fat}" placeholder="지방"></div>
-          <div class="col-6"><input type="number" name="sodium" class="form-control" value="${burger.details.sodium}" placeholder="나트륨"></div>
-          <div class="col-6"><input type="number" name="sugar" class="form-control" value="${burger.details.sugar}" placeholder="당류"></div>
+          <div class="col-6"><input type="number" name="calories" class="form-control" value="${burger.details.calories}" placeholder="칼로리" min="0"></div>
+          <div class="col-6"><input type="number" name="carbohydrates" class="form-control" value="${burger.details.carbohydrates}" placeholder="탄수화물" min="0"></div>
+          <div class="col-6"><input type="number" name="protein" class="form-control" value="${burger.details.protein}" placeholder="단백질" min="0"></div>
+          <div class="col-6"><input type="number" name="fat" class="form-control" value="${burger.details.fat}" placeholder="지방" min="0"></div>
+          <div class="col-6"><input type="number" name="sodium" class="form-control" value="${burger.details.sodium}" placeholder="나트륨" min="0"></div>
+          <div class="col-6"><input type="number" name="sugar" class="form-control" value="${burger.details.sugar}" placeholder="당류" min="0"></div>
         </div>
 
         <hr>
