@@ -17,7 +17,7 @@
         <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/menu.jsp">메뉴</a></li>
         <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/event.jsp">이벤트</a></li>
         <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/notice.jsp">공지사항</a></li>
-        <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/customerService.jsp">고객센터</a></li>
+        <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/findStore.jsp">매장찾기</a></li>
       </ul>
 
       <form action="${pageContext.request.contextPath}/search" method="post" class="d-flex me-3">
