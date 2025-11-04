@@ -28,6 +28,7 @@ public class BurgerSearchDAO {
 				b.setId(rs.getInt("id"));
 				b.setName(rs.getString("name"));
 				b.setBrand(rs.getString("brand"));
+				b.setPattyType(rs.getString("patty_type"));
 				b.setPrice(rs.getInt("price"));
 				b.setImagePath(rs.getString("image_path"));
 				burgerList.add(b);
@@ -57,9 +58,11 @@ public class BurgerSearchDAO {
 			
 			while (rs.next()) {
 				BurgerDTO b = new BurgerDTO();
+				b.setId(rs.getInt("id"));
 				b.setName(rs.getString("name"));
 				b.setBrand(rs.getString("brand"));
 				b.setPrice(rs.getInt("price"));
+				b.setPattyType(rs.getString("patty_type"));
 				b.setImagePath(rs.getString("image_path"));
 				burgerList.add(b);
 			}
