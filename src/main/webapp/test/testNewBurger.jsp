@@ -25,11 +25,10 @@
 	  <p>맥도날드 · 버거킹 · 맘스터치 · 롯데리아 등 인기 버거 총집합</p>
 	</section>
 
-<!-- ✅ 버거 리스트 섹션 -->
 <div class="container my-5">
   <h2 class="fw-bold mb-4 text-center">🔥 인기 버거 메뉴</h2>
   <div class="row justify-content-center">
-    <c:forEach var="b" items="${burgers.rows}">
+    <c:forEach var="b" items="${burgerList}">
       <div class="col-md-3 col-sm-6 mb-4">
         <div class="card burger-card shadow-sm">
         
