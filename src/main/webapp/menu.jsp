@@ -75,14 +75,18 @@
 				  </c:otherwise>
 				</c:choose>
 				
-                <div class="card-body text-center">
-                  <span class="badge badge-brand d-inline-block mb-2">${b.brand}</span>
-                  <h5 class="card-title">${b.name}</h5>
-                  <p class="card-text">${b.pattyType}</p>
-                  <p class="price">${b.price}원</p>
-                </div>
-                </a>
+               <div class="card-body">
+	              <span class="badge badge-brand">${b.brand}</span>
+	              <h5 class="card-title mt-2">${b.name}</h5>
+	              <p class="card-text text-secondary">${b.pattyType}</p>
+
+	              <div class="d-flex justify-content-between align-items-center mt-3">
+	                <span class="price fw-bold text-warning">${b.price}원</span>
+	                <span class="rating">⭐</span>
+	              </div>
               </div>
+             </a>
+            </div>
             </div>
           </c:forEach>
         </div>
