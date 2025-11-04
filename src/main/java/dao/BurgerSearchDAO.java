@@ -25,8 +25,9 @@ public class BurgerSearchDAO {
 			
 			while (rs.next()) {
 				BurgerDTO b = new BurgerDTO();
+				b.setId(rs.getInt("id"));
 				b.setName(rs.getString("name"));
-				b.setBrand(rs.getNString("brand"));
+				b.setBrand(rs.getString("brand"));
 				b.setPrice(rs.getInt("price"));
 				b.setImagePath(rs.getString("image_path"));
 				burgerList.add(b);
@@ -42,7 +43,6 @@ public class BurgerSearchDAO {
 	}
 	
 	public List<BurgerDTO> searchBurgers(String keyword) {
-		System.out.println("🔍 검색 DAO 호출: keyword = [" + keyword + "]");
 		List<BurgerDTO> burgerList = new ArrayList<BurgerDTO>();
 		String sql = "SELECT * FROM burger "
 					+"WHERE name LIKE ? OR brand LIKE ? ORDER BY brand , name";
@@ -63,17 +63,42 @@ public class BurgerSearchDAO {
 				b.setImagePath(rs.getString("image_path"));
 				burgerList.add(b);
 			}
-			System.out.println("🔍 검색 DAO 실행됨, SQL = " + sql);
-			System.out.println("🔍 검색 키워드 = " + keyword);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DBUtil.close(conn , pstmt , rs);
 		}
-		System.out.println("🔍 검색 결과 개수 = " + burgerList.size());
 		return burgerList;
 		
 	}
 	
+	public List<BurgerDTO> getBurgerByPatty(String pattyType) {
+		List<BurgerDTO> list = new ArrayList<BurgerDTO>();
+		String sql = "SELECT * FROM burger WHERE patty_type = ? ORDER BY brand, name";
+		
+		try {
+			conn = DBUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pattyType);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				BurgerDTO b = new BurgerDTO();
+				b.setId(rs.getInt("id"));
+			    b.setUserId(rs.getInt("user_id"));
+			    b.setName(rs.getString("name"));
+			    b.setPrice(rs.getInt("price"));
+			    b.setImagePath(rs.getString("image_path"));
+			    b.setBrand(rs.getString("brand"));
+			    b.setPattyType(rs.getString("patty_type"));
+				list.add(b);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(conn,pstmt,rs);
+		}
+		return list;
+	}
 	
 }
