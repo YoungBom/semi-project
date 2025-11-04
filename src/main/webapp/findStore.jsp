@@ -101,8 +101,8 @@
 <script>
 (function(){
 	const icons = {
-	  "버거킹": "https://cdn.jsdelivr.net/gh/enchantedfire/logo-set/burgerking.png",
-	  "롯데리아": "https://cdn.jsdelivr.net/gh/enchantedfire/logo-set/lotteria.png",
+	  "버거킹": "/semi-project/image/burgerkingMarker.png",
+	  "롯데리아": "/semi-project/image/lotteriaMarker.png",
 	  "맥도날드": "/semi-project/image/mcdonaldMarker.png"
 	};
   const brands = ["버거킹", "롯데리아", "맥도날드"];
