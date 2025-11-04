@@ -53,14 +53,14 @@
 			           src="${pageContext.request.contextPath}${b.image_path}" 
 			           class="card-img-top" 
 			           alt="${b.name}"
-			           style="height:200px; object-fit:cover;">
+			           style="height:200px; object-fit:contain;">
 			   	</c:when>
 	  	 		<c:otherwise>
 			       	<img 
 			           src="${b.image_path}" 
 			           class="card-img-top" 
 			           alt="${b.name}"
-			           style="height:200px; object-fit:cover;">
+			           style="height:200px; object-fit:contain;">
 	   			</c:otherwise>
 			</c:choose>
             <div class="card-body">
