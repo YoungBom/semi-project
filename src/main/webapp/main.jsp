@@ -22,8 +22,8 @@
 <%@ include file="/include/header.jsp" %>
 
 <section class="hero text-center text-white">
-  <h1>국내 모든 버거 브랜드 한눈에!</h1>
-  <p>맥도날드 · 버거킹 · 맘스터치 · 롯데리아 등 인기 버거 총집합</p>
+  <h1>국내 BEST 3 브랜드의 인기 버거를 한눈에!</h1>
+  <p>< 맥도날드 · 버거킹 · 롯데리아 > 인기 버거 총 집합!</p>
 </section>
 
 <!-- ✅ DB 연결 -->
@@ -53,14 +53,14 @@
 			           src="${pageContext.request.contextPath}${b.image_path}" 
 			           class="card-img-top" 
 			           alt="${b.name}"
-			           style="height:200px; object-fit:cover;">
+			           style="height:200px; object-fit:contain;">
 			   	</c:when>
 	  	 		<c:otherwise>
 			       	<img 
 			           src="${b.image_path}" 
 			           class="card-img-top" 
 			           alt="${b.name}"
-			           style="height:200px; object-fit:cover;">
+			           style="height:200px; object-fit:contain;">
 	   			</c:otherwise>
 			</c:choose>
             <div class="card-body">
