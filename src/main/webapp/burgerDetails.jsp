@@ -196,7 +196,7 @@ body.lotteria {
 
    	 	<c:otherwise>
         	<img 
-            src="data:image/png;base64,${burger.imagePath}" 
+            src="${burger.imagePath}" 
             class="card-img-top" 
             alt="${burger.name}"
             style="height:200px; object-fit:cover;">
