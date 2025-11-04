@@ -61,6 +61,46 @@
       <c:otherwise>
         <div class="row g-4">
           <c:forEach var="b" items="${burgers}">
+<<<<<<< HEAD
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+              <div class="card burger-card shadow-sm">
+              	<a href="${pageContext.request.contextPath}/burgerDetails?id=${b.id}" class="text-decoration-none text-dark">
+               <c:choose>
+				  <c:when test="${not empty b.imagePath and fn:startsWith(b.imagePath, '/')}">
+				    <img 
+				      src="${pageContext.request.contextPath}${b.imagePath}" 
+				      class="card-img-top" 
+				      alt="${b.name}"
+				      style="height:200px; object-fit:cover;">
+				  </c:when>
+				
+				  <c:when test="${not empty b.imagePath}">
+				    <img 
+				      src="${b.imagePath}" 
+				      class="card-img-top" 
+				      alt="${b.name}"
+				      style="height:200px; object-fit:cover;">
+				  </c:when>
+				
+				  <c:otherwise>
+				    <img 
+				      src="${pageContext.request.contextPath}/image/noimage.png" 
+				      class="card-img-top" 
+				      alt="이미지 없음"
+				      style="height:200px; object-fit:cover;">
+				  </c:otherwise>
+				</c:choose>
+				
+                <div class="card-body text-center">
+                  <span class="badge badge-brand d-inline-block mb-2">${b.brand}</span>
+                  <h5 class="card-title">${b.name}</h5>
+                  <p class="card-text">${b.pattyType}</p>
+                  <p class="price">${b.price}원</p>
+                </div>
+                </a>
+              </div>
+            </div>
+=======
           <div class="col-12 col-sm-6 col-md-4 col-lg-3">
 			  <div class="card burger-card shadow-sm" data-patty="${fn:trim(b.pattyType)}">
 			    <a href="${pageContext.request.contextPath}/burgerDetails?id=${b.id}" class="text-decoration-none text-dark">
@@ -85,6 +125,7 @@
 			    </a>
 			  </div>
 			</div>
+>>>>>>> branch 'master' of https://github.com/DNyang1/semi-project.git
           </c:forEach>
         </div>
       </c:otherwise>
