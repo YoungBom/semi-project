@@ -125,6 +125,18 @@ body {
   background-color: #ff6600;
   color: #fff;
 }
+
+/* 패티필터링 */
+.filter-btns { text-align:center; margin-bottom: 16px; }
+.filter-btn { 
+  border: 1px solid #ff9900; 
+  background:#fff; color:#ff9900; 
+  border-radius: 24px; padding:6px 14px; margin:0 6px; font-weight:600;
+}
+.filter-btn.active { background:#ff9900; color:#fff; }
+
+
+
 /* 메인 배너 */
 .hero {
     background: url('../../image/banner.png') center/cover;
