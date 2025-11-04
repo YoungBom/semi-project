@@ -51,15 +51,14 @@ public class BurgerAddServlet extends HttpServlet {
 			
 			Part filePart = req.getPart("imagePath");
 			String image = null;
+			String mimeType = "image/jpeg";
 			
 			if (filePart != null && filePart.getSize() > 0) {
 				try (InputStream inputStream = filePart.getInputStream()) {
-				    byte[] imageBytes = inputStream.readAllBytes();
-				    image = Base64.getEncoder().encodeToString(imageBytes);
+			        byte[] imageBytes = inputStream.readAllBytes();
+			        image = "data:" + mimeType + ";base64," + Base64.getEncoder().encodeToString(imageBytes);
 				}
-			}
-			
-			
+			}			
 
 			BurgerDTO burger = new BurgerDTO(name, price, image, brand, pattyType);
 			BurgerDetailsDTO burgerDetails = new BurgerDetailsDTO(
