@@ -43,8 +43,8 @@
             <td>${burger.brand}</td>
             <td>
               <a href="${pageContext.request.contextPath}/burger/edit?id=${burger.id}" class="btn btn-sm btn-warning">수정</a>
-              <a href="deleteBurger?id=${burger.id}" class="btn btn-sm btn-danger"
-                 onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
+              <a href="${pageContext.request.contextPath}/burger/delete?id=${burger.id}" class="btn btn-sm btn-danger"
+s                 onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
             </td>
           </tr>
         </c:forEach>
@@ -54,7 +54,7 @@
     <!-- 버거가 없을 때 -->
     <c:if test="${empty burgerList}">
       <div class="text-center text-muted mt-5">
-        등록된 버거가 없습니다. <a href="addBurger.jsp" class="text-decoration-none">지금 추가하기</a>
+        등록된 버거가 없습니다. <a href="${pageContext.request.contextPath}/burger/add" class="text-decoration-none">지금 추가하기</a>
       </div>
     </c:if>
   </div>

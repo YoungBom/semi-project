@@ -159,6 +159,21 @@ public class BurgerDAO {
 		}
 		return list;
 	}
-	
+
 	// 버거 삭제
+	public int deleteBurger(int id) {
+	    int result = 0;
+	    String sql = "DELETE FROM burger WHERE id = ?";
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+	        pstmt.setInt(1, id);
+	        result = pstmt.executeUpdate();
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return result;
+	}
 }
