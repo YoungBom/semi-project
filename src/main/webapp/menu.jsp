@@ -66,7 +66,7 @@
           <c:forEach var="b" items="${burgers}">
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
               <div class="card burger-card shadow-sm">
-              	<a href="${pageContext.request.contextPath}/burgerDetails?id=${b.id}" class="text-decoration-none text-dark">
+              	<a href="${pageContext.request.contextPath}/burger/details?id=${b.id}" class="text-decoration-none text-dark">
                <c:choose>
 				  <c:when test="${not empty b.imagePath and fn:startsWith(b.imagePath, '/')}">
 				    <img 
