@@ -322,8 +322,6 @@ body.lotteria {
 			reviewBody.appendChild(review);
 		})
 	</script>
-	
-	</div>
 </main>
 
 <!-- ✅ 푸터 -->
