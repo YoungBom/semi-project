@@ -33,6 +33,11 @@ public class BurgerListServlet extends HttpServlet{
 
 	    BurgerDAO dao = new BurgerDAO();
 	    BurgerDTO burger = dao.getBurgerById(id);
+	    if (burger == null) {
+	        System.err.println("getBurgerById()가 null 반환 — id=" + id);
+	        resp.sendRedirect(req.getContextPath() + "/burger/list");
+	        return;
+	    }
 	    boolean newStatus = !burger.isNewBurger();
 	    dao.updateIsNew(id, newStatus);
 
