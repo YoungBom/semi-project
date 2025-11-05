@@ -153,23 +153,32 @@ body {
 }
 
 /* 메인 배너 */
-.hero {
-    background: url('../../image/banner.png') center/cover;
-    color: white;
-    text-align: center;
-    padding: 100px 20px;
-    background-blend-mode: darken;
-    background-color: rgba(0,0,0,0.4);
+.hero-slide {
+  height: 500px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  filter: brightness(0.85);
 }
 
-.hero h1 {
-    font-size: 3rem;
-    font-weight: 700;
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  text-shadow: 0 3px 10px rgba(0,0,0,0.7);
 }
 
-.hero p {
-    font-size: 1.2rem;
-    opacity: 0.9;
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 800;
+}
+
+.hero-content p {
+  font-size: 1.3rem;
+  margin-top: 10px;
 }
 
 /* 버거 콘텐츠 등록 양식 */

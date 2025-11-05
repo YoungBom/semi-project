@@ -4,9 +4,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>부거 관리 🍔</title>
-<link rel="stylesheet"
-      href="<%=request.getContextPath()%>/resources/css/header.css?v=<%=System.currentTimeMillis()%>">
+  <title>부거 관리</title>
 
   <!-- ✅ Bootstrap & Fonts -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">

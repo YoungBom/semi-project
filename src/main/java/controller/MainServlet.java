@@ -1,27 +1,28 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 
+import dao.BurgerDAO;
+import dto.BurgerDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import dao.BurgerDAO;
-import dto.BurgerDTO;
 
-@WebServlet("/burger/details")
-public class BurgerDetailsServlet extends HttpServlet {
+@WebServlet("/main")
+public class MainServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private BurgerDAO burgerDAO = new BurgerDAO();
-    
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-    	int id = Integer.parseInt(req.getParameter("id"));
-        BurgerDTO burger = burgerDAO.getBurgerById(id);
 
-        req.setAttribute("burger", burger);
-        req.getRequestDispatcher("/burgerDetails.jsp").forward(req, resp);
+        List<BurgerDTO> burgerList = burgerDAO.getAllBurgers();
+
+        req.setAttribute("burgerList", burgerList);
+        req.getRequestDispatcher("/main.jsp").forward(req, resp);
     }
 }
