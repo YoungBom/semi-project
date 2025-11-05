@@ -7,6 +7,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -15,192 +16,16 @@
 
 <!-- ✅ Bootstrap & Fonts -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/details.css">
 
-<style>
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #fffaf0;
-  transition: background 0.5s ease;
-}
 
-/* 공통 카드 */
-.burger-card, .card{
-  background: #fff;
-  border-radius: 30px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-  padding: 50px 60px;
-  max-width: 1100px;
-  margin: auto;
-  transition: all 0.4s ease;
-}
-
-.burger-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-}
-
-/* 이미지 */
-.burger-image {
-  background: #fffef8;
-  border-radius: 25px;
-  padding: 10px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 310px;
-}
-.burger-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 20px;
-}
-
-/* 타이틀 */
-.title-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.burger-logo {
-  max-width: 55px;
-  max-height: 55px;
-  object-fit: contain;
-  border-radius: 6px;
-  flex-shrink: 0;
-}
-
-.burger-title {
-  position: relative;
-  font-weight: 800;
-  font-size: 2.3rem;
-  margin-bottom: 0.6rem;
-  color: var(--main-color);
-  display: inline-block;
-  overflow: visible; /* 수정됨 */
-}
-
-.burger-title::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 0;
-  height: 4px;
-  background-color: var(--main-color, #ff9900);
-  border-radius: 4px;
-  transition: width 0.4s ease-in-out;
-}
-
-/* ✅ 카드 hover 시 밑줄 등장 */
-.burger-card:hover .burger-title::after {
-  width: 100%;
-}
-
-/* ✅ 패티 타입 표시 */
-.patty-type {
-  font-weight: 600;
-  font-size: 1.1rem;
-  margin-bottom: 0.3rem;
-  color: var(--main-color);
-  background-color: rgba(255, 153, 0, 0.08);
-  padding: 5px 10px;
-  border-radius: 10px;
-  display: inline-block;
-}
-
-/* 영양정보 카드 */
-.nutrition-card {
-  background-color: #fff;
-  border-radius: 20px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-  padding: 30px 35px;
-  transition: 0.3s ease;
-  border-top: 5px solid var(--main-color);
-}
-.nutrition-card h5 {
-  font-weight: 700;
-  margin-bottom: 25px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--main-color);
-}
-.nutrition-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  row-gap: 12px;
-  column-gap: 15px;
-}
-.nutrition-item {
-  background-color: #fff9e6;
-  padding: 10px 15px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.nutrition-item i {
-  color: var(--main-color);
-}
-
-/* ✅ 브랜드별 테마 색상 */
-:root { --main-color: #ff9900; }
-
-body.mcdonalds {
-  background: #fff5f5;
-  --main-color: #ffb300;
-}
-
-body.burgerking {
-  background: #fff8f0;
-  --main-color: #b22222;
-}
-
-body.lotteria {
-  background: #fff4f4;
-  --main-color: #e60012;
-}
-
-/* ✅ 리뷰 */
-.form-control:focus {
-    border-color: #F59E0B;
-    box-shadow: 0 0 0 0.2rem rgba(245, 158, 11, 0.25);
-  }
-.btn-warning:hover {
-	background-color: #F59E0B;
-	border-color: #F59E0B;
-}
-</style>
-
-<script type="text/javascript">
-	function checkForm(e) {
-		const ratingValue = Number(document.reviewForm.rating.value); 
-		if (isNaN(ratingValue) || ratingValue < 0 || ratingValue > 5) {
-			alert("별점은 0~5점으로 입력해주세요");
-			document.reviewForm.rating.select();
-			e.preventDefault();
-			return;
-		}
-		
-		const content = document.reviewForm.content.value;
-		if (content.length > 100){
-			alert("내용이 너무 많습니다.");
-			document.reviewForm.content.select();
-			e.preventDefault();
-			return;
-		}
-		
-	}
-</script>
+<!-- JS 연결 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/details.js"></script>
 </head>
-
 <body 
   class="${burger.brand eq '맥도날드' ? 'mcdonalds' : (burger.brand eq '버거킹' ? 'burgerking' : (burger.brand eq '롯데리아' ? 'lotteria' : ''))}"
 >
@@ -276,89 +101,100 @@ body.lotteria {
     </div>
   </div>
 
+  <div class="my-5 py-5">
+    <div class="card shadow-sm">
+      <div class="text-end mb-3">
+        <button type="button" class="btn btn-warning rounded-3" data-bs-toggle="modal" data-bs-target="#reviewModal">
+          리뷰 등록
+        </button>
+      </div>
+		  
+      <div class="card-body">
+      <h3 class="card-title mb-4 text-center">리뷰 목록</h3>
+        <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-lg modal-dialog-centered">
+		    <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="reviewModalLabel">리뷰 등록</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+              </div>
 
-	<div class="my-5 py-5">
-		  <div class="card shadow-sm">
-		    <div class="card-body">
-		      <h3 class="card-title mb-4 text-center">리뷰 등록</h3>
-		      <form action="${pageContext.request.contextPath}/ReviewAddProcess" name="reviewForm" method="post" class="comment-form" enctype="multipart/form-data">
-		        <input type="hidden" name="burgerId" value="${burger.id}">
-		        <div class="mb-3">
-		          <label for="name" class="form-label">닉네임</label>
-		          <input type="text" class="form-control" value="버거짱짱맨" readonly="readonly">
-		        </div>
-		
-		        <div class="mb-3">
-		          <label for="content" class="form-label">댓글</label>
-		          <textarea class="form-control" id="content" name="content" rows="5" placeholder="댓글을 입력하세요"></textarea>
-		        </div>
-		        
-		        <div class="mb-3">          
-		          <input type="file" class="form-control" id="image" name="images" value="" multiple="multiple">
-		        </div>
-		        
-		        <div class="mb-3">          
-		          <label for="rating" class="form-label">별점</label>
-		          <input type="text" class="form-control" id="rating" name="rating" placeholder="별점을 입력하세요(0~5)" required>
-		        </div>
-		
-		        <div class="text-end">
-		          <button type="submit" class="btn btn-warning rounded-3" onclick="checkForm(event)">등록</button>
-		        </div>
-		      </form>
-		    </div>
-			<div class="my-4">
-				<div class="border-0 rounded-0 bg-white shadow-0">
-					<div class="review">
-					<!-- 리뷰 추가될 영역 -->
-					<%
-					int burgerId = Integer.parseInt(request.getParameter("id"));
-	        		ReviewDAO rvDao = new ReviewDAO();
-	        		List<ReviewDTO> recordList = rvDao.getReview(burgerId);
-	        		
-	        		for(int i = 0; i < recordList.size(); i++){
-	        			ReviewDTO record = new ReviewDTO();
-	        			record = recordList.get(i);
-	        			
-	        			Timestamp updatedAt = record.getUpdatedAt();
-	        			String content = record.getContent();
-	        			String imgPath = record.getImagePath();
-					%>
-		        		<!-- 프로필 영역 -->
-						<div class="card-body px-4 py-4 border-bottom">
-							<div class="d-flex align-items-center mb-3">
-								<div class="me-3">
-									<i class="bi bi-person-circle profileIcon" style="font-size: 30px;"></i>
-								</div>
-								<div>
-									<strong class="d-block">닉네임</strong>
-									<small class="text-muted"><%= updatedAt %></small>
-								</div>
-							</div>
-						
-							<!-- 본문 영역 -->
-							<div class="mb-2">
-								<div class="mb-2">
-									<img alt="이미지" src="${pageContext.request.contextPath}/image/<%= imgPath %>" style="width:100px; height:100px; display:inline-block; background-color:#fffef8">
-								</div>
-								<p class="mb-0">
-								<%= content %>
-								</p>
-							</div>		        	
-						</div>
-		        	<% 
-		        		}
-		        		
-					%>
-					</div>
-				</div>
-			</div>
-		  </div>
-		
-	</div>
-	
-	
-	</div>
+		      <div class="modal-body">
+                <form action="${pageContext.request.contextPath}/ReviewAddProcess"
+		              method="post"
+		              enctype="multipart/form-data"
+		              class="comment-form">
+			          <input type="hidden" name="burgerId" value="${burger.id}">
+			
+			          <div class="mb-3">
+			            <label class="form-label">닉네임</label>
+			            <input type="text" class="form-control" value="버거왕광팬" readonly>
+			          </div>
+			
+			          <div class="mb-3">
+			            <label for="content" class="form-label">댓글</label>
+			            <textarea class="form-control" id="content" name="content" rows="5" placeholder="댓글을 입력하세요"></textarea>
+			          </div>
+			
+			          <div class="mb-3">
+			            <label for="image" class="form-label">이미지 업로드</label>
+			            <input type="file" class="form-control" id="image" name="images" multiple>
+			          </div>
+			
+			          <div class="mb-3">
+			            <label for="rating" class="form-label">별점</label>
+			            <input type="text" class="form-control" id="rating" name="rating" placeholder="별점을 입력하세요(0~5)" required>
+			          </div>
+			
+			          <div class="text-end">
+			            <button type="submit" class="btn btn-warning rounded-3">등록</button>
+			          </div>
+		        </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="my-4">
+        <div class="border-0 rounded-0 bg-white shadow-0">
+          <div class="review">
+              <!-- 리뷰 리스트 반복 출력 -->
+            <c:forEach var="record" items="${reviewList}">
+              <div class="card-body px-4 py-4 border-bottom">
+                <!-- 프로필 영역 -->
+                <div class="d-flex align-items-center mb-3">
+                  <div class="me-3">
+                    <i class="bi bi-person-circle profileIcon" style="font-size: 30px;"></i>
+                  </div>
+                  <div>
+                    <strong class="d-block">닉네임</strong>
+                    <small class="text-muted">
+                      <fmt:formatDate value="${record.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                    </small>
+                  </div>
+                </div>
+          
+                <!-- 본문 영역 -->
+                <div class="mb-2">
+                  <c:if test="${not empty record.imagePath}">
+                    <div class="mb-2">
+                      <img 
+                        alt="이미지"
+                        src="${pageContext.request.contextPath}/image/${record.imagePath}"
+                        style="width:100px; height:100px; display:inline-block; background-color:#fffef8;">
+                    </div>
+                  </c:if>
+                  <p class="mb-0">
+                    ${record.content}
+                  </p>
+                </div>
+              </div>
+            </c:forEach>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
 
 <!-- ✅ 푸터 -->
