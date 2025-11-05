@@ -59,20 +59,8 @@ public class ReviewDAO {
 		ResultSet rs = null;
 		
 		try {
-			String sql = "SELECT "
-					+ "r.id as review_id,"
-					+ "b.id as burger_id,"
-					+ "u.id as user_id,"
-					+ "rating,"
-					+ "content,"
-					+ "created_at,"
-					+ "updated_at,"
-					+ "ri.image_path as image_path,"
-					+ "nickname"
-					+ "FROM review r"
-					+ "RIGHT JOIN review_image ri ON r.id=ri.review_id"
-					+ "JOIN burger b ON ? = b.id"
-					+ "JOIN user u ON r.? = u.id;";
+			String sql = "SELECT r.id as review_id, b.id as burger_id, u.id as user_id, rating, content, created_at, updated_at, ri.image_path as image_path, nickname "
+					+ "FROM review r RIGHT JOIN review_image ri ON r.id = ri.review_id JOIN burger b ON b.id = ? JOIN user u ON u.id = ?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, burgerId);
@@ -84,9 +72,7 @@ public class ReviewDAO {
 				// 리뷰아이디 추가하기(리뷰아이디 즉 게시물등록한id)가 똑같으면 사진을 list로 배열
 				review.setNickname(rs.getString("nickname"));
 				review.setContent(rs.getString("content"));
-				Timestamp createdAtTime = rs.getTimestamp("created_at");
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				review.setWriteCreatedAtTime(sdf.format(createdAtTime));
+				review.setCreatedAt(rs.getTimestamp("created_at"));
 				review.setImagePath(rs.getString("image_path"));
 				
 				recordList.add(review);

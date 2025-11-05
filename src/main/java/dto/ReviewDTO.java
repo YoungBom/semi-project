@@ -10,9 +10,7 @@ public class ReviewDTO {
     private String content;
     private String nickname;
     private Timestamp createdAt;
-    private String writeCreatedAtTime; // 출력용 변수
     private Timestamp updatedAt;
-    private String writeUpdatedAtTime; // 출력용 변수
     private String imagePath;
 
 
@@ -46,16 +44,5 @@ public class ReviewDTO {
     
     public String getNickname() { return nickname; }
     public void setNickname(String nickname) { this.nickname = nickname; }
-    
-    
-    // TIME(작성일) 출력용
-    public String getWriteCreatedAtTime() { return writeCreatedAtTime; }
-    public void setWriteCreatedAtTime(String writeCreatedAtTime) { this.writeCreatedAtTime = writeCreatedAtTime; }
-        
-    public String getWriteUpdatedAtTime() { return writeUpdatedAtTime; }
-    public void setWriteUpdatedAtTime(String writeUpdatedAtTime) { this.writeUpdatedAtTime = writeUpdatedAtTime; }
-    
-    
-    
     
 }

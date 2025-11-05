@@ -167,9 +167,9 @@
                     <i class="bi bi-person-circle profileIcon" style="font-size: 30px;"></i>
                   </div>
                   <div>
-                    <strong class="d-block">닉네임</strong>
+                    <strong class="d-block">${record.nickname}</strong>
                     <small class="text-muted">
-                      <fmt:formatDate value="${record.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                      <fmt:formatDate value="${record.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
                     </small>
                   </div>
                 </div>
