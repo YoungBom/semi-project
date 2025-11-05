@@ -1,3 +1,4 @@
+<%@page import="dto.BurgerDTO"%>
 <%@page import="dao.ReviewDao"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.util.List"%>
@@ -180,12 +181,8 @@ body.lotteria {
 
 <script type="text/javascript">
 	function checkForm(e) {
-		if (document.reviewForm.rating.value < 0) {
-			alert("별점은 0~5점으로 입력해주세요");
-			document.reviewForm.rating.select();
-			e.preventDefault();
-			return;
-		} else if (document.reviewForm.rating.value > 5) {
+		double ratingValue = Number(document.reviewForm.rating.value); 
+		if (isNaN(ratingValue) || ratingValue < 0 && ratingValue > 5) {
 			alert("별점은 0~5점으로 입력해주세요");
 			document.reviewForm.rating.select();
 			e.preventDefault();
@@ -295,7 +292,7 @@ body.lotteria {
 		        
 		        <div class="mb-3">          
 		          <label for="rating" class="form-label">별점</label>
-		          <input type="number" class="form-control" id="rating" name="rating" placeholder="별점을 입력하세요(0~5)" required>
+		          <input type="text" class="form-control" id="rating" name="rating" placeholder="별점을 입력하세요(0~5)" required>
 		        </div>
 		
 		        <div class="text-end">
@@ -308,7 +305,7 @@ body.lotteria {
 					<div class="review">
 					<!-- 리뷰 추가될 영역 -->
 					<%	
-						int burgerId = Integer.parseInt(request.getParameter("id"));
+						int burgerId = Integer.parseInt(request.getParameter("burgerId"));
 		        		ReviewDao rvDao = new ReviewDao();
 		        		List<ReviewDTO> recordList = rvDao.getReview(burgerId);
 		        		
