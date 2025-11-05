@@ -339,7 +339,7 @@ body.lotteria {
 							<!-- 본문 영역 -->
 							<div class="mb-2">
 								<div class="mb-2">
-									<img alt="이미지" src="${pageContext.request.contextPath}/<%= imgPath %>" style="width:100px; height:100px; display:inline-block; background-color:#fffef8">
+									<img alt="이미지" src="${pageContext.request.contextPath}/image/<%= imgPath %>" style="width:100px; height:100px; display:inline-block; background-color:#fffef8">
 								</div>
 								<p class="mb-0">
 								<%= content %>

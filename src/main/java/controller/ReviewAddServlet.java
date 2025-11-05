@@ -130,7 +130,7 @@ public class ReviewAddServlet extends HttpServlet {
 		                }
 
 		                ri.setReviewId(reviewId);
-		                ri.setImagePath(filePath);
+		                ri.setImagePath(fileName);
 		                reviewImageDao.addReviewImage(ri);
 		            }
 		        }
