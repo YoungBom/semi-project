@@ -66,8 +66,48 @@
   </button>
 </div>
 
+<div class="container my-5">
+  <h2 class="fw-bold mb-4 text-center">🔥 새로운 버거</h2>
+  <div class="row justify-content-center">
+    <c:set var="shown" value="0" />
+    <c:forEach var="b" items="${burgerList}">
+      <c:if test="${b.newBurger and shown < 4}">
+        <div class="col-md-3 col-sm-6 mb-4">
+          <div class="card burger-card shadow-sm">
+            <a href="${pageContext.request.contextPath}/burger/details?id=${b.id}" class="text-decoration-none text-dark">
 
-
+              <c:choose>
+                <c:when test="${fn:startsWith(b.imagePath, '/')}">
+                  <img src="${pageContext.request.contextPath}${b.imagePath}"
+                       class="card-img-top"
+                       alt="${b.name}"
+                       style="height:200px; object-fit:contain;">
+                </c:when>
+                <c:otherwise>
+                  <img src="${b.imagePath}"
+                       class="card-img-top"
+                       alt="${b.name}"
+                       style="height:200px; object-fit:contain;">
+                </c:otherwise>
+              </c:choose>
+              <div class="card-body">
+              	<span class="badge bg-danger text-light">NEW</span>
+                <span class="badge badge-brand">${b.brand}</span>
+                <h5 class="card-title mt-2">${b.name}</h5>
+                <p class="card-text text-secondary">${b.pattyType}</p>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <span class="price fw-bold text-warning">${b.price}원</span>
+                  <span class="rating">⭐</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <c:set var="shown" value="${shown + 1}" />
+      </c:if>
+    </c:forEach>
+  </div>
+</div>
 <!-- ✅ 버거 리스트 섹션 -->
 <div class="container mt-5 text-center">
   <h2 class="fw-bold mb-4 text-center">🔥 인기 버거 메뉴</h2>
@@ -111,7 +151,6 @@
     </c:forEach>
   </div>
 </div>
-
 <!-- ✅ 푸터 include -->
 <%@ include file="/include/footer.jsp" %>
 </body>
