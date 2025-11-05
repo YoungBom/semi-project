@@ -16,4 +16,15 @@ public class DBUtil {
 			throw new RuntimeException("DB 연결 실패", e);
 		}
 	}
+	public static void close(AutoCloseable... resources) {
+	      for (AutoCloseable r : resources) {
+	         if (r != null) {
+	            try {
+	               r.close();
+	            } catch (Exception e) {
+	               e.printStackTrace();
+	            }
+	         }
+	      }
+	   }
 }
