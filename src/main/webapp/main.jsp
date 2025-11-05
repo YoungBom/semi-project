@@ -34,21 +34,21 @@
 <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
   <div class="carousel-inner">
 
-    <div class="carousel-item active hero-slide" style="background-image: url('${pageContext.request.contextPath}/image/banner1.png');">
+    <div class="carousel-item active hero-slide" style="background-image: url('${pageContext.request.contextPath}/img/banner1.png');">
       <div class="hero-content">
         <h1>국내 BEST 3 브랜드 버거 총집합!</h1>
         <p>맥도날드 · 버거킹 · 롯데리아 인기버거 한눈에 🍔🔥</p>
       </div>
     </div>
 
-    <div class="carousel-item hero-slide" style="background-image: url('${pageContext.request.contextPath}/image/banner2.png');">
+    <div class="carousel-item hero-slide" style="background-image: url('${pageContext.request.contextPath}/img/banner2.png');">
       <div class="hero-content">
         <h1>지금 인기 급상승 메뉴!</h1>
         <p>유저 평점 기반 BEST 메뉴 추천</p>
       </div>
     </div>
 
-    <div class="carousel-item hero-slide" style="background-image: url('${pageContext.request.contextPath}/image/banner3.png');">
+    <div class="carousel-item hero-slide" style="background-image: url('${pageContext.request.contextPath}/img/banner3.png');">
       <div class="hero-content">
         <h1>버거 매니아들의 피드백</h1>
         <p>실시간 리뷰 & 사진 업로드</p>
