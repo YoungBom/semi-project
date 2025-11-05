@@ -269,38 +269,150 @@ form::after {
 	color: #333;
 }
 
-/* 로그인 버튼 - actions 안에서도 강제로 덮어쓰기 */
-.actions button.btn-login {
-  display:inline-block;
-  padding: 12px 22px;
-  font-size: 16px;
+/* 로그인 버튼 - 컴팩트 버전 */
+.btn-login {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+
+  /* 크기 ↓ */
+  padding: 10px 16px;
+  font-size: 15px;
   font-weight: 600;
-  color: #fff;
-  background: #ff8a00;
-  border: none;
-  border-radius: 12px;                /* 999px 덮어쓰기 */
+  line-height: 1;
+  min-width: 140px;          /* 고정폭 싫으면 이 줄 지워도 됨 */
+
+  color: #fff;               /* 글자 흰색 */
+  background: linear-gradient(180deg, var(--brand-orange) 0%, var(--brand-orange-dk) 100%);
+  border: 1px solid var(--brand-orange-dk);
+
+  border-radius: 10px;       /* 둥글게(필요하면 12~14px로 더 둥글게) */
+  box-shadow: 0 3px 10px rgba(255, 122, 34, .28);
+
   cursor: pointer;
-  box-shadow: 0 6px 16px rgba(255,138,0,0.25);
-  transition: transform .05s ease, box-shadow .2s ease, opacity .2s ease;
+  transition: transform .06s ease, box-shadow .2s ease, background-color .2s ease, filter .2s ease;
 }
 
-.actions button.btn-login:hover{
-  box-shadow: 0 8px 20px rgba(255,138,0,0.35);
-  opacity: .95;
+.btn-login:hover {
+  filter: brightness(1.03);
+  box-shadow: 0 5px 14px rgba(255, 122, 34, .32);
 }
 
-.actions button.btn-login:active{
+.btn-login:active {
   transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(255, 122, 34, .26);
 }
 
-.actions button.btn-login:focus{
-  outline: none;
-  box-shadow:
-    0 0 0 3px rgba(255,138,0,.25),
-    0 8px 20px rgba(255,138,0,0.35);
+.btn-login:focus-visible {
+  outline: 3px solid rgba(255,122,34,.25);
+  outline-offset: 2px;
 }
 
-.actions button.btn-login:disabled{
+.btn-login:disabled {
   opacity: .6;
   cursor: not-allowed;
+  box-shadow: none;
 }
+
+
+@media (max-width: 480px) {
+  .btn-login { min-width: 100%; }
+}
+.logout-form { display:flex; justify-content:center; }
+
+.btn-logout{
+  --bg: var(--brand-orange);
+  --bg-dk: var(--brand-orange-dk);
+  --text: #fff;
+  --ring: rgba(255,122,34,.35);
+
+  display:inline-flex; align-items:center; gap:.6rem;
+  padding:.9rem 1.25rem;
+  border:none; border-radius:9999px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-dk) 100%);
+  color: var(--text); font-weight:700; letter-spacing:.02em;
+  box-shadow: 0 8px 18px rgba(255,122,34,.25), 0 2px 0 rgba(0,0,0,.05) inset;
+  cursor:pointer; user-select:none;
+  transition: transform .08s ease, box-shadow .2s ease, filter .2s ease;
+}
+.btn-logout .ico{ opacity:.95; }
+.btn-logout:hover{ filter:saturate(1.05) brightness(1.02); box-shadow:0 10px 22px rgba(255,122,34,.32); }
+.btn-logout:active{ transform: translateY(1px) scale(.995); }
+.btn-logout:focus-visible{
+  outline:0;
+  box-shadow:0 10px 22px rgba(255,122,34,.32), 0 0 0 4px var(--ring);
+}
+
+.btn-logout .spinner{
+  width:16px; height:16px; border-radius:50%;
+  border:2px solid rgba(255,255,255,.45);
+  border-top-color:#fff; display:none;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin{ to{ transform: rotate(360deg);} }
+.btn-logout.loading .label{ opacity:.85; }
+.btn-logout.loading .spinner{ display:inline-block; }
+.btn-logout.loading{ pointer-events:none; filter:grayscale(.1) brightness(.98); }
+
+@media (prefers-reduced-motion: reduce){
+  .btn-logout{ transition:none; }
+  .btn-logout:active{ transform:none; }
+}
+/* 로그인 폼 버튼 가운데 정렬 */
+.actions.center{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-top: 16px;
+}
+
+/* 공용 오렌지 버튼(로그인) */
+.btn-primary{
+  --bg: var(--brand-orange);
+  --bg-dk: var(--brand-orange-dk);
+  --text: #fff;
+
+  display:inline-flex; justify-content:center; align-items:center;
+  min-width: 160px; height: 44px;
+  padding: 0 18px;
+  border: 0; border-radius: 12px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-dk) 100%);
+  color: var(--text); font-weight: 700;
+  box-shadow: 0 6px 16px rgba(255,122,34,.28), 0 1px 0 rgba(0,0,0,.05) inset;
+  cursor:pointer; transition: transform .08s ease, filter .2s ease, box-shadow .2s ease;
+}
+.btn-primary:hover{ filter:saturate(1.05) brightness(1.02); box-shadow:0 8px 20px rgba(255,122,34,.34); }
+.btn-primary:active{ transform: translateY(1px) scale(.995); }
+.btn-primary:focus-visible{ outline:0; box-shadow:0 0 0 4px rgba(255,122,34,.35); }
+
+/* ===== 모달 ===== */
+.modal{ position:fixed; inset:0; display:none; }
+.modal.show{ display:block; }
+.modal-backdrop{
+  position:absolute; inset:0; background:rgba(0,0,0,.35); backdrop-filter: blur(2px);
+}
+.modal-panel{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  width:min(520px, 90vw); background:var(--surface,#fff);
+  border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,.25);
+  overflow:hidden;
+}
+.modal-header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 18px; background:linear-gradient(180deg,#fff 0%, #FEFAF0 100%);
+  border-bottom:1px solid var(--line,#ededed);
+}
+.modal-header h3{ margin:0; font-size:18px; color:var(--ink-strong,#1f1f1f); }
+.modal-close{
+  border:0; background:transparent; font-size:24px; line-height:1; cursor:pointer; color:#999;
+}
+.modal-body{ padding:18px; color:var(--ink,#333); }
+.modal-footer{ padding:14px 18px; display:flex; justify-content:flex-end; gap:8px; border-top:1px solid var(--line,#ededed); }
+
+/* 모션 감소 선호 */
+@media (prefers-reduced-motion: reduce){
+  .btn-primary{ transition:none; }
+}
+
+
