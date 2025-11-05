@@ -25,5 +25,4 @@ public class MainServlet extends HttpServlet {
         req.setAttribute("burgerList", burgerList);
         req.getRequestDispatcher("/main.jsp").forward(req, resp);
     }
-    a
 }
