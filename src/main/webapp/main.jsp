@@ -15,7 +15,6 @@
 <head>
 <meta charset="UTF-8">
 <title>BurgerHub 🍔</title>
-
 <!-- ✅ Bootstrap & Google Fonts -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -70,7 +69,7 @@
 
 
 <!-- ✅ 버거 리스트 섹션 -->
-<div class="container my-5">
+<div class="container mt-5 text-center">
   <h2 class="fw-bold mb-4 text-center">🔥 인기 버거 메뉴</h2>
   <div class="row justify-content-center">
     <c:forEach var="b" items="${burgerList}">
