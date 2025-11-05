@@ -14,7 +14,7 @@ import dto.ReviewImageDTO;
 import dto.UserDTO;
 import util.DBUtil;
 
-public class ReviewDao {
+public class ReviewDAO {
 	
 	ReviewDTO review = new ReviewDTO();
 	

@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.util.Collection;
 import java.util.UUID;
 
-import dao.ReviewDao;
+import dao.ReviewDAO;
 import dao.ReviewImageDAO;
 import dto.BurgerDTO;
 import dto.ReviewDTO;
@@ -36,7 +36,7 @@ public class RiviewAddServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		ReviewDTO rv = new ReviewDTO();
-		ReviewDao reviewDao = new ReviewDao();
+		ReviewDAO reviewDao = new ReviewDAO();
 		
 		// 버거ID, 유저ID는 추후 전달받은 값으로 처리
 		int burgerId = 1;
