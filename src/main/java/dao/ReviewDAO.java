@@ -21,7 +21,6 @@ public class ReviewDAO {
 	public int addReview(ReviewDTO rv) {
 		Connection conn = DBUtil.getConnection();
 		PreparedStatement pstmt = null;
-		Statement stmt = null;
 		ResultSet rs = null;
 		int rs2 = 0;
 		int reviewId = 0;
@@ -45,7 +44,6 @@ public class ReviewDAO {
 		} finally {
 			try { if(conn != null) conn.close();} catch (SQLException e) {e.printStackTrace(); }
 			try { if(pstmt != null) pstmt.close();} catch (SQLException e) {e.printStackTrace(); }
-			try { if(stmt != null) stmt.close();} catch (SQLException e) {e.printStackTrace(); }
 			try { if(rs != null) rs.close();} catch (SQLException e) {e.printStackTrace(); }
 		}
 		
@@ -57,7 +55,6 @@ public class ReviewDAO {
 		List<ReviewDTO> recordList = new ArrayList<ReviewDTO>();
 		Connection conn = DBUtil.getConnection();
 		PreparedStatement pstmt = null; 
-		Statement stmt = null;
 		ResultSet rs = null;
 		
 		try {

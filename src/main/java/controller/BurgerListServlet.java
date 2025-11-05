@@ -38,9 +38,11 @@ public class BurgerListServlet extends HttpServlet{
 	        resp.sendRedirect(req.getContextPath() + "/burger/list");
 	        return;
 	    }
-	    boolean newStatus = !burger.isNewBurger();
+	    boolean newStatus = !burger.isNewBurger();	
 	    dao.updateIsNew(id, newStatus);
-
-	    resp.sendRedirect(req.getContextPath() + "/burger/list");
+	    System.out.println("✅ AJAX 요청 도착: id=" + id);
+	    System.out.println("변경 전 상태: " + burger.isNewBurger());
+	    System.out.println("변경 후 상태: " + newStatus);
+	    resp.setStatus(HttpServletResponse.SC_OK);
 	}
 }

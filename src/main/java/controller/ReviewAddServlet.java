@@ -51,7 +51,7 @@ public class ReviewAddServlet extends HttpServlet {
 		            break;
 		    }
 		}
-		/*
+		/* 아래코드 안먹힘
 		 * try { idParam = req.getParameter("burgerId");
 		 * 
 		 * // 그래도 null이라면 수동으로 파트 탐색 if (idParam == null || idParam.isEmpty()) { Part
@@ -67,6 +67,7 @@ public class ReviewAddServlet extends HttpServlet {
 		 * return; }
          * int burgerId = Integer.parseInt(idParam);
 		 */
+		
 		int userId = 1;
 		String content = req.getParameter("content");
 		String unitRating = req.getParameter("rating");
@@ -129,7 +130,7 @@ public class ReviewAddServlet extends HttpServlet {
 		                }
 
 		                ri.setReviewId(reviewId);
-		                ri.setImagePath(filePath);
+		                ri.setImagePath(fileName);
 		                reviewImageDao.addReviewImage(ri);
 		            }
 		        }
@@ -146,6 +147,7 @@ public class ReviewAddServlet extends HttpServlet {
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
-		resp.sendRedirect("burgerDetails.jsp?burgerId="+burgerId);
+		// 중요!
+		resp.sendRedirect("/semi-project/burger/details?id="+burgerId);
 	}
 }
