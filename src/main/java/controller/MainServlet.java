@@ -23,6 +23,6 @@ public class MainServlet extends HttpServlet {
         List<BurgerDTO> burgerList = burgerDAO.getAllBurgers();
 
         req.setAttribute("burgerList", burgerList);
-        req.getRequestDispatcher("/testNewBurger.jsp").forward(req, resp);
+        req.getRequestDispatcher("/main.jsp").forward(req, resp);
     }
 }
