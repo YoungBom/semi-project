@@ -4,7 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,24 +52,41 @@ public class ReviewDAO {
 	}
 	
 	// 유저, 버거 조인 필요
-	public List<ReviewDTO> getReview(int burgerId) {		
+	public List<ReviewDTO> getReview(int burgerId, int userId) {		
 		List<ReviewDTO> recordList = new ArrayList<ReviewDTO>();
 		Connection conn = DBUtil.getConnection();
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null;
 		
 		try {
-			String sql = "SELECT * FROM review r RIGHT JOIN review_image ri ON r.id=ri.review_id JOIN burger b ON r.burger_id = b.id WHERE b.id = ? ;";
+			String sql = "SELECT "
+					+ "r.id as review_id,"
+					+ "b.id as burger_id,"
+					+ "u.id as user_id,"
+					+ "rating,"
+					+ "content,"
+					+ "created_at,"
+					+ "updated_at,"
+					+ "ri.image_path as image_path,"
+					+ "nickname"
+					+ "FROM review r"
+					+ "RIGHT JOIN review_image ri ON r.id=ri.review_id"
+					+ "JOIN burger b ON ? = b.id"
+					+ "JOIN user u ON r.? = u.id;";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, burgerId);
+			pstmt.setInt(2, userId);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
 				ReviewDTO review = new ReviewDTO();
 				// 리뷰아이디 추가하기(리뷰아이디 즉 게시물등록한id)가 똑같으면 사진을 list로 배열
+				review.setNickname(rs.getString("nickname"));
 				review.setContent(rs.getString("content"));
-				review.setUpdatedAt(rs.getTimestamp("updated_at"));
+				Timestamp createdAtTime = rs.getTimestamp("created_at");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				review.setWriteCreatedAtTime(sdf.format(createdAtTime));
 				review.setImagePath(rs.getString("image_path"));
 				
 				recordList.add(review);
