@@ -16,8 +16,10 @@ public class ReviewDTO {
 
 	public ReviewDTO() {}
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+
+
+	public int getId() { return id; }
+	public void setId(int id) { this.id = id; }
 
     public int getBurgerId() { return burgerId; }
     public void setBurgerId(int burgerId) { this.burgerId = burgerId; }
@@ -39,4 +41,8 @@ public class ReviewDTO {
     
     public String getImagePath() { return imagePath; }
     public void setImagePath(String imagePath) { this.imagePath = imagePath; }
+    
+    public String getNickname() { return nickname; }
+    public void setNickname(String nickname) { this.nickname = nickname; }
+    
 }

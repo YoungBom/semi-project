@@ -43,7 +43,7 @@ public class ReviewAddServlet extends HttpServlet {
 		// 1️⃣ URL에서 버거 ID 파라미터 읽기 (예: ?id=3)
 		int burgerId = 0;
 
-		// multipart/form-data에서는 getParameter가 안 먹힐 수 있으므로 Part에서 직접 가져오기 시도
+		// multipart/form-data에서는 getParameter가 안 먹힐 수 있으므로 Part에서 직접 가져오기 시도(특히 hidden, file input 태그))
 		for (Part part : req.getParts()) {
 		    switch (part.getName()) {
 		        case "burgerId":
@@ -68,6 +68,7 @@ public class ReviewAddServlet extends HttpServlet {
          * int burgerId = Integer.parseInt(idParam);
 		 */
 		
+		// 추후 로그인되면 userId 값 가져오기
 		int userId = 1;
 		String content = req.getParameter("content");
 		String unitRating = req.getParameter("rating");
