@@ -46,7 +46,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 330px;
+  height: 310px;
 }
 .burger-image img {
   width: 100%;
@@ -192,15 +192,13 @@ body.lotteria {
 	        	<img 
 	            src="${pageContext.request.contextPath}${burger.imagePath}" 
 	            class="card-img-top" 
-	            alt="${burger.name}"
-	            style="height:200px; object-fit:cover;">
+	            alt="${burger.name}">
 	    	</c:when>
 	   	 	<c:otherwise>
 	        	<img 
 	            src="${burger.imagePath}" 
 	            class="card-img-top" 
-	            alt="${burger.name}"
-	            style="height:200px; object-fit:cover;">
+	            alt="${burger.name}">
 	    	</c:otherwise>
 		</c:choose>  
     </div>
