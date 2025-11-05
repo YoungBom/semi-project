@@ -5,13 +5,13 @@ import util.DBUtil;
 
 import java.sql.*;
 
-public class UserDao {
+public class UserDAO {
 
 	private User map(ResultSet rs) throws SQLException {
 		User u = new User();
 		u.setId(rs.getInt("id"));
 		u.setUser_id(rs.getString("user_id"));
-		u.setUser_pw(rs.getString("user_pw")); // 해시 저장
+		u.setUser_pw(rs.getString("user_pw"));
 		u.setEmail(rs.getString("email"));
 		u.setPhone(rs.getString("phone"));
 		u.setBirth(rs.getString("birth"));
@@ -32,6 +32,7 @@ public class UserDao {
 		}
 	}
 
+
 	public User findByLoginId(String loginId) throws SQLException {
 		String sql = "SELECT * FROM `user` WHERE user_id=?";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -42,6 +43,7 @@ public class UserDao {
 		}
 	}
 
+	
 	public User findByEmail(String email) throws SQLException {
 		String sql = "SELECT * FROM `user` WHERE email=?";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -52,6 +54,7 @@ public class UserDao {
 		}
 	}
 
+	
 	public int insert(User u) throws SQLException {
 		String sql = "INSERT INTO `user` (user_id,user_pw,email,phone,birth,gender,name,nickname,address) "
 				+ "VALUES (?,?,?,?,?,?,?,?,?)";
@@ -76,28 +79,49 @@ public class UserDao {
 		}
 	}
 
-	public int updateProfile(int id, String email, String nickname, String phone, String birth, String gender,
-			String address) throws SQLException {
-		String sql = "UPDATE `user` SET email=?, nickname=?, phone=?, birth=?, gender=?, address=? WHERE id=?";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			int i = 1;
-			ps.setString(i++, email);
-			ps.setString(i++, nickname);
-			ps.setString(i++, phone);
-			ps.setString(i++, birth);
-			ps.setString(i++, gender);
-			ps.setString(i++, address);
-			ps.setInt(i, id);
-			return ps.executeUpdate();
-		}
+	
+	public boolean idExists(String userId) throws SQLException {
+		return findByLoginId(userId) != null;
 	}
 
-	public int updatePassword(int id, String hashedPw) throws SQLException {
-		String sql = "UPDATE `user` SET user_pw=? WHERE id=?";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setString(1, hashedPw);
-			ps.setInt(2, id);
-			return ps.executeUpdate();
-		}
+	public boolean emailExists(String email) throws SQLException {
+		return findByEmail(email) != null;
 	}
+	
+	public int updatePassword(int id, String hashedPw) throws SQLException {
+	    String sql = "UPDATE `user` SET user_pw=? WHERE id=?";
+	   
+	    try (Connection con = DBUtil.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+	        ps.setString(1, hashedPw);
+	        ps.setInt(2, id);
+	        return ps.executeUpdate();
+	    }
+	}
+	
+	public int updateProfile(int id,
+	                         String email,
+	                         String nickname,
+	                         String phone,
+	                         String birth,
+	                         String gender,
+	                         String address) throws SQLException {
+	    String sql = "UPDATE `user` " +
+	                 "SET email=?, nickname=?, phone=?, birth=?, gender=?, address=? " +
+	                 "WHERE id=?";
+	    try (Connection con = DBUtil.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+	        int i = 1;
+	        ps.setString(i++, email);
+	        ps.setString(i++, nickname);
+	        ps.setString(i++, phone);
+	        ps.setString(i++, birth);
+	        ps.setString(i++, gender);
+	        ps.setString(i++, address);
+	        ps.setInt(i, id);
+	        return ps.executeUpdate();
+	    }
+	}
+
+
 }

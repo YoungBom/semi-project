@@ -1,6 +1,6 @@
 package controller;
 
-import dao.UserDao;
+import dao.UserDAO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -8,7 +8,7 @@ import java.io.IOException;
 
 @WebServlet("/id/lookup")
 public class IdLookupServlet extends HttpServlet {
-	private final UserDao userDao = new UserDao();
+	private final UserDAO userDao = new UserDAO();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DBUtil {
-	private static final String URL = "jdbc:mysql://127.0.0.1:3306/demo_app?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
-	private static final String USER = "root"; // 또는 appuser
-	private static final String PASS = "비밀번호";
+	private static final String URL = "jdbc:mysql://127.0.0.1:3306/semi_project?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&characterEncoding=utf8";
+	private static final String USER = "root"; // 학원 DB 계정
+	private static final String PASS = "1234"; // 학원 DB 비번
 
 	public static Connection getConnection() throws RuntimeException {
 		try {

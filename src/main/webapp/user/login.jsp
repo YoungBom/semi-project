@@ -25,7 +25,7 @@ String ctx = request.getContextPath();
 			autocomplete="username"></label><br> <label>비밀번호 <input
 			type="password" name="user_pw" required
 			autocomplete="current-password"></label><br>
-		<button type="submit">로그인</button>
+		<button type="submit" class ="btn-login">로그인</button>
 	</form>
 </body>
 </html>

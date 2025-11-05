@@ -1,6 +1,6 @@
 package controller;
 
-import dao.UserDao;
+import dao.UserDAO;
 import model.User;
 import util.PasswordUtil;
 
@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @WebServlet("/login")
 public class AuthLoginServlet extends HttpServlet {
-	private final UserDao userDao = new UserDao();
+	private final UserDAO userDao = new UserDAO();
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -1,6 +1,6 @@
 package controller;
 
-import dao.UserDao;
+import dao.UserDAO;
 import model.User;
 import util.PasswordUtil;
 
@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @WebServlet("/password/change")
 public class PasswordChangeServlet extends HttpServlet {
-    private final UserDao userDao = new UserDao();
+    private final UserDAO userDao = new UserDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -55,7 +55,7 @@ public class PasswordChangeServlet extends HttpServlet {
                 return;
             }
 
-            // 현재 비번 검증(user_pw 컬럼의 해시와 비교)
+            
             boolean ok = PasswordUtil.verify(cur, me.getUser_pw());
             if (!ok) {
                 req.setAttribute("error", "현재 비밀번호가 올바르지 않습니다.");
@@ -63,7 +63,7 @@ public class PasswordChangeServlet extends HttpServlet {
                 return;
             }
 
-            // 새 비번 저장
+           
             String hashed = PasswordUtil.hash(npw);
             userDao.updatePassword(uid, hashed);
 

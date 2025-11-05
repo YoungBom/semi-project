@@ -22,10 +22,9 @@ String ctx = request.getContextPath();
 			<input type="date" name="birth"
 			value="<%=me.getBirth() == null ? "" : me.getBirth()%>">
 		</label><br> <label>성별 <select name="gender">
-				<option value=""
-					<%=(me.getGender() == null || me.getGender().isEmpty()) ? "selected" : ""%>>선택</option>
-				<option value="M" <%="M".equals(me.getGender()) ? "selected" : ""%>>남성</option>
-				<option value="F" <%="F".equals(me.getGender()) ? "selected" : ""%>>여성</option>
+				<option value="" disabled>선택</option>
+				<option value="남" <%="남".equals(me.getGender()) ? "selected" : ""%>>남성</option>
+				<option value="여" <%="여".equals(me.getGender()) ? "selected" : ""%>>여성</option>
 		</select>
 		</label><br> <label>주소 <input name="address"
 			value="<%=me.getAddress() == null ? "" : me.getAddress()%>"></label><br>

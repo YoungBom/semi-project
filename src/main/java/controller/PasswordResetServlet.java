@@ -1,7 +1,7 @@
 package controller;
 
 import dao.PasswordResetDAO;
-import dao.UserDao;
+import dao.UserDAO;
 import util.PasswordUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,7 +12,7 @@ import java.io.IOException;
 @WebServlet("/password/reset")
 public class PasswordResetServlet extends HttpServlet {
 	private final PasswordResetDAO resetDao = new PasswordResetDAO();
-	private final UserDao userDao = new UserDao();
+	private final UserDAO userDao = new UserDAO();
 
 	// 폼 표시 (token 쿼리스트링으로 전달)
 	@Override

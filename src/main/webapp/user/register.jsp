@@ -48,7 +48,7 @@
 		<div class="row">
 			<label> 생년월일(*) <input type="date" name="birth" required>
 			</label> <label> 휴대폰(*) <input type="text" name="phone"
-				maxlength="20" placeholder="010-0000-0000"
+				maxlength="20" placeholder="01000000000"
 				pattern="^[0-9\-+ ]{9,20}$" autocomplete="tel">
 			</label>
 		</div>
