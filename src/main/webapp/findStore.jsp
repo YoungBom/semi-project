@@ -100,11 +100,11 @@
 
 <script>
 (function(){
-  const icons = {
-    "버거킹": "https://img.icons8.com/color/48/hamburger.png",
-    "롯데리아": "https://img.icons8.com/color/48/french-fries.png",
-    "맥도날드": "https://img.icons8.com/color/48/cheeseburger.png"
-  };
+	const icons = {
+	  "버거킹": "/semi-project/image/burgerkingMarker.png",
+	  "롯데리아": "/semi-project/image/lotteriaMarker.png",
+	  "맥도날드": "/semi-project/image/mcdonaldMarker.png"
+	};
   const brands = ["버거킹", "롯데리아", "맥도날드"];
 
   const map = new kakao.maps.Map(document.getElementById('map'), {
@@ -185,7 +185,7 @@
     const marker = new kakao.maps.Marker({
       map: map,
       position: new kakao.maps.LatLng(place.y, place.x),
-      image: new kakao.maps.MarkerImage(icons[brand], new kakao.maps.Size(40,40))
+      image: new kakao.maps.MarkerImage(icons[brand], new kakao.maps.Size(50,50))
     });
 
     const addr = place.road_address_name || place.address_name || "";
