@@ -6,6 +6,8 @@
 <head>
   <meta charset="UTF-8">
   <title>부거 수정</title>
+<link rel="stylesheet"
+      href="<%=request.getContextPath()%>/resources/css/header.css?v=<%=System.currentTimeMillis()%>">
 
   <!-- ✅ Bootstrap & Google Fonts -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
