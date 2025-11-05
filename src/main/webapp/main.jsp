@@ -1,12 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <%
     if (request.getAttribute("burgerList") == null) {
         response.sendRedirect(request.getContextPath() + "/main");
         return;
     }
 %>
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -66,7 +69,7 @@
 
 
 <!-- ✅ 버거 리스트 섹션 -->
-<div class="container my-5">
+<div class="container mt-5 text-center">
   <h2 class="fw-bold mb-4 text-center">🔥 인기 버거 메뉴</h2>
   <div class="row justify-content-center">
     <c:forEach var="b" items="${burgerList}">
