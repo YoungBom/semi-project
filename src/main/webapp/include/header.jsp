@@ -3,7 +3,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3">
   <div class="container">
 
-    <a class="navbar-brand fw-bold fs-4" href="${pageContext.request.contextPath}/">
+    <a class="navbar-brand fw-bold fs-4" href="${pageContext.request.contextPath}/main">
       🍔 BurgerHub
     </a>
 

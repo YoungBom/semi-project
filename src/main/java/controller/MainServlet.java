@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/")
+@WebServlet("/main")
 public class MainServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private BurgerDAO burgerDAO = new BurgerDAO();
