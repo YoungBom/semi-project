@@ -6,14 +6,47 @@ body {
     padding-top: 100px;
     box-sizing: border-box;
 }
-
-
-
-h2 {
-    text-align: center;
-    color: #ff6600;
-    margin-top: 20px;
+.page-title {
+  font-size: 1.6rem;
+  margin-top: 20px;
+  margin-bottom: 25px;
 }
+
+.card.active {
+  border: 2px solid #ff6600;
+  box-shadow: 0 4px 12px rgba(255,102,0,0.4);
+  transform: translateY(-3px);
+}
+
+#myLocationBtn {
+  position: fixed;
+  left: 25px;
+  bottom: 25px;
+  background: #ff6600;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(255,102,0,0.4);
+  transition: all 0.25s ease;
+  z-index: 999;
+}
+
+#myLocationBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(255,102,0,0.55);
+}
+
+
+
+
+
+
+
+
 
 #map {
     width: 90%;
