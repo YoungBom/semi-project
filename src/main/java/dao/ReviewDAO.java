@@ -84,4 +84,8 @@ public class ReviewDAO {
 		
 		return recordList;
 	}
+	
+	public void deleteReview() {
+		
+	}
 }
