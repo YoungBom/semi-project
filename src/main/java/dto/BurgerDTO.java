@@ -8,6 +8,7 @@ public class BurgerDTO {
     private String imagePath;
     private String brand;
     private String pattyType;   // ENUM('치킨','비프','기타')
+    private boolean newBurger;
 
     private BurgerDetailsDTO details;
     
@@ -47,5 +48,8 @@ public class BurgerDTO {
     
     public BurgerDetailsDTO getDetails() { return details; }
     public void setDetails(BurgerDetailsDTO details) { this.details = details; }
+    
+    public boolean isNewBurger() { return newBurger; }
+    public void setNewBurger(boolean newBurger) { this.newBurger  = newBurger; }
     
 }
