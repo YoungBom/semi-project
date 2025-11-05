@@ -1,5 +1,5 @@
 <%@page import="dto.BurgerDTO"%>
-<%@page import="dao.ReviewDao"%>
+<%@page import="dao.ReviewDAO"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.util.List"%>
 <%@page import="dto.ReviewDTO"%>
@@ -304,19 +304,19 @@ body.lotteria {
 				<div class="border-0 rounded-0 bg-white shadow-0">
 					<div class="review">
 					<!-- 리뷰 추가될 영역 -->
-					<%	
-						int burgerId = Integer.parseInt(request.getParameter("burgerId"));
-		        		ReviewDao rvDao = new ReviewDao();
-		        		List<ReviewDTO> recordList = rvDao.getReview(burgerId);
-		        		
-		        		for(int i = 0; i < recordList.size(); i++){
-		        			ReviewDTO record = new ReviewDTO();
-		        			record = recordList.get(i);
-		        			
-		        			Timestamp updatedAt = record.getUpdatedAt();
-		        			String content = record.getContent();
-		        			String imgPath = record.getImagePath();		        			
-		        	%>
+					<%
+					int burgerId = Integer.parseInt(request.getParameter("burgerId"));
+							        		ReviewDAO rvDao = new ReviewDAO();
+							        		List<ReviewDTO> recordList = rvDao.getReview(burgerId);
+							        		
+							        		for(int i = 0; i < recordList.size(); i++){
+							        			ReviewDTO record = new ReviewDTO();
+							        			record = recordList.get(i);
+							        			
+							        			Timestamp updatedAt = record.getUpdatedAt();
+							        			String content = record.getContent();
+							        			String imgPath = record.getImagePath();
+					%>
 		        		<!-- 프로필 영역 -->
 						<div class="card-body px-4 py-4 border-bottom">
 							<div class="d-flex align-items-center mb-3">
