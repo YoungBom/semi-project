@@ -3,9 +3,9 @@
 
   // ✅ 브랜드별 마커 이미지
   const icons = {
-    "버거킹": `${CTX}/image/burgerkingMarker.png`,
-    "롯데리아": `${CTX}/image/lotteriaMarker.png`,
-    "맥도날드": `${CTX}/image/mcdonaldMarker.png`
+    "버거킹": `${CTX}/img/burgerkingMarker.png`,
+    "롯데리아": `${CTX}/img/lotteriaMarker.png`,
+    "맥도날드": `${CTX}/img/mcdonaldMarker.png`
   };
 
   const brands = ["버거킹", "롯데리아", "맥도날드"];
