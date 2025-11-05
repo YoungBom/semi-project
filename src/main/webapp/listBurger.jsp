@@ -139,7 +139,7 @@
       color: #ff922b;
     }
   </style>
-</head>
+	</head>
 
 <body>
   <%@ include file="/include/header.jsp" %>
@@ -186,13 +186,13 @@
                    onclick="return confirm('정말 삭제하시겠습니까?')">
                    <i class="bi bi-trash"></i> 삭제
                 </a>
-		        <form action="${pageContext.request.contextPath}/burger/list" method="post" style="display:inline;">
-		          <input type="hidden" name="id" value="${burger.id}">
-		          <button type="submit"
-		                  class="btn btn-sm ${burger.newBurger ? 'btn-primary' : 'btn-outline-primary'} me-2">
-		                  NEW
-		          </button>
-		        </form>
+				<form action="${pageContext.request.contextPath}/burger/list" 
+						onsubmit="return toggleNew(event, ${burger.id}, this)">
+					<button type="submit" 
+					        class="btn btn-sm ${burger.newBurger ? 'btn-primary' : 'btn-outline-primary'} me-2">
+					  ${burger.newBurger ? 'NEW 해제' : 'NEW 표시'}
+					</button>
+				</form>
               </td>
             </tr>
           </c:forEach>
@@ -208,7 +208,23 @@
       </c:if>
     </div>
   </div>
-
+<script>
+function toggleNew(e, id, form) {
+  e.preventDefault();
+  fetch(form.action, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: "id=" + id
+  }).then(r => {
+    if (r.ok) {
+      const b = form.querySelector("button");
+      b.classList.toggle("btn-primary");
+      b.classList.toggle("btn-outline-primary");
+    }
+  });
+  return false;
+}
+</script>
   <%@ include file="/include/footer.jsp" %>
 </body>
 </html>
