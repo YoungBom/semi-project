@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -12,7 +12,7 @@
 </head>
 <body>
 
-	
+	<!-- Flash 메시지 -->
 	<c:if test="${not empty requestScope.FLASH}">
 		<div class="flash">
 			<c:out value="${requestScope.FLASH}" />
@@ -43,12 +43,20 @@
 			<c:out value="${me.phone}" />
 		</p>
 
-	
+		<!-- 생년월일: 1) birthView가 있으면 그대로 사용(컨트롤러 포맷), 
+                  2) 8자리 숫자면 yyyy-MM-dd로 가공,
+                  3) 그 외엔 원문 그대로 출력 -->
 		<c:choose>
-			<c:when test="${me.birth instanceof java.util.Date}">
+			<c:when test="${not empty birthView}">
 				<p>
 					<strong>생년월일</strong> :
-					<fmt:formatDate value="${me.birth}" pattern="yyyy-MM-dd" />
+					<c:out value="${birthView}" />
+				</p>
+			</c:when>
+			<c:when test="${not empty me.birth and me.birth matches '\\d{8}'}">
+				<p>
+					<strong>생년월일</strong> :
+					${fn:substring(me.birth,0,4)}-${fn:substring(me.birth,4,6)}-${fn:substring(me.birth,6,8)}
 				</p>
 			</c:when>
 			<c:otherwise>
