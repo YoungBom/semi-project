@@ -3,100 +3,25 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+
 <title>🍔 BurgerHub — 내 주변 매장</title>
-<style>
-  body {
-    background: #fffaf0;
-    font-family: 'Noto Sans KR', sans-serif;
-    margin: 0;
-  }
-
-  h2 {
-    text-align: center;
-    color: #ff6600;
-    margin-top: 20px;
-  }
-
-  #map {
-    width: 90%;
-    height: 520px;
-    margin: 30px auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,.1);
-    position: relative;
-  }
-
-  /* ✅ 내 위치 버튼 (화면 좌하단 고정) */
-  #myLocationBtn {
-    position: fixed;
-    left: 25px;
-    bottom: 25px;
-    background: #ff6600;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    font-size: 22px;
-    cursor: pointer;
-    box-shadow: 0 8px 20px rgba(255,102,0,0.4);
-    transition: all 0.2s ease;
-    z-index: 999;
-  }
-  #myLocationBtn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 26px rgba(255,102,0,0.55);
-  }
-
-  /* ✅ 카드 리스트 */
-  #list {
-    width: 90%;
-    margin: 20px auto 80px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 20px;
-  }
-
-  .card {
-    background: white;
-    border-radius: 16px;
-    padding: 18px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-    cursor: pointer;
-  }
-
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-  }
-
-  .card.active {
-    border: 2px solid #ff6600;
-    animation: focusFlash 0.6s ease;
-  }
-
-  @keyframes focusFlash {
-    0% { box-shadow: 0 0 0 rgba(255,102,0,0); }
-    50% { box-shadow: 0 0 12px rgba(255,102,0,0.8); }
-    100% { box-shadow: 0 0 0 rgba(255,102,0,0); }
-  }
-
-  .brand { color:#ff6600; font-weight:700; font-size:16px; margin-bottom:5px; }
-  .store { font-size:15px; margin-bottom:5px; font-weight:600; }
-  .addr { font-size:13px; color:#666; margin-bottom:3px; }
-  .phone { color:#c0392b; font-size:13px; }
-</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="resources/css/findStore.css" rel="stylesheet">
+<link href="resources/css/main.css" rel="stylesheet">
 
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2890edbb91db82862429679da4bd158c&libraries=services"></script>
 </head>
 <body>
+<%@ include file="/include/header.jsp" %>
+	
   <h2>📍 BurgerHub — 내 주변 패스트푸드 매장</h2>
   <div id="map"></div>
   <div id="list"></div>
 
   <!-- ✅ 화면 좌하단 고정 버튼 -->
   <button id="myLocationBtn" title="내 위치로 이동">📍</button>
+<%@ include file="/include/footer.jsp" %>
 
 <script>
 (function(){
