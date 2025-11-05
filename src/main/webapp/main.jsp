@@ -1,7 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<%
+    if (request.getAttribute("burgerList") == null) {
+        response.sendRedirect(request.getContextPath() + "/main");
+        return;
+    }
+%>
+
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -62,38 +69,27 @@
 
 
 
-<!-- ✅ DB 연결 -->
-<sql:setDataSource var="db" 
-   driver="com.mysql.cj.jdbc.Driver"
-   url="jdbc:mysql://127.0.0.1:3306/semi_project"
-   user="root"
-   password="1234" />
-
-<sql:query var="burgers" dataSource="${db}">
-    SELECT * FROM burger ORDER BY brand, name;
-</sql:query>
-
 <!-- ✅ 버거 리스트 섹션 -->
 <div class="container my-5">
   <h2 class="fw-bold mb-4 text-center">🔥 인기 버거 메뉴</h2>
   <div class="row justify-content-center">
-    <c:forEach var="b" items="${burgers.rows}">
+    <c:forEach var="b" items="${burgerList}">
       <div class="col-md-3 col-sm-6 mb-4">
         <div class="card burger-card shadow-sm">
         
           <a href="${pageContext.request.contextPath}/burger/details?id=${b.id}" class="text-decoration-none text-dark">
 
 			<c:choose>
-			   	<c:when test="${fn:startsWith(b.image_path, '/')}">
+			   	<c:when test="${fn:startsWith(b.imagePath, '/')}">
 			       	<img 
-			           src="${pageContext.request.contextPath}${b.image_path}" 
+			           src="${pageContext.request.contextPath}${b.imagePath}" 
 			           class="card-img-top" 
 			           alt="${b.name}"
 			           style="height:200px; object-fit:contain;">
 			   	</c:when>
 	  	 		<c:otherwise>
 			       	<img 
-			           src="${b.image_path}" 
+			           src="${b.imagePath}" 
 			           class="card-img-top" 
 			           alt="${b.name}"
 			           style="height:200px; object-fit:contain;">
@@ -102,7 +98,7 @@
             <div class="card-body">
               <span class="badge badge-brand">${b.brand}</span>
               <h5 class="card-title mt-2">${b.name}</h5>
-              <p class="card-text text-secondary">${b.patty_type}</p>
+              <p class="card-text text-secondary">${b.pattyType}</p>
 
               <div class="d-flex justify-content-between align-items-center mt-3">
                 <span class="price fw-bold text-warning">${b.price}원</span>
