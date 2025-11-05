@@ -167,10 +167,15 @@
                     <i class="bi bi-person-circle profileIcon" style="font-size: 30px;"></i>
                   </div>
                   <div>
-                    <strong class="d-block">닉네임</strong>
+                    <strong class="d-block">${record.nickname}</strong>
                     <small class="text-muted">
-                      <fmt:formatDate value="${record.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                      <fmt:formatDate value="${record.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
                     </small>
+                    <a href="${pageContext.request.contextPath}/review/delete?id=${record.id}"
+		             class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 m-3"
+		             onclick="return confirm('이 리뷰를 삭제하시겠습니까?');">
+		             <i class="bi bi-trash"></i> 삭제
+		          	 </a>
                   </div>
                 </div>
           
