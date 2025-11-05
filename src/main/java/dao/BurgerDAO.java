@@ -53,14 +53,13 @@ public class BurgerDAO {
 		}
 	}
 	
-	// 버거 수정
-		// 단일 버거 + 버거디테일 불러오기
+	// 단일 버거 + 버거디테일 불러오기
 	public BurgerDTO getBurgerById(int id) {
 		String sql = """ 
 				SELECT b.id, b.name, b.price, b.image_path, b.brand, b.patty_type, b.is_new,
 					d.calories, d.carbohydrates, d.protein, d.fat, d.sodium, d.sugar, d.allergy_info
 				FROM burger b
-				JOIN burger_details d ON b.id = d.burger_id
+				LEFT JOIN burger_details d ON b.id = d.burger_id
 				WHERE b.id = ?
 				""";
 		
