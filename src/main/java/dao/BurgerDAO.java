@@ -57,7 +57,7 @@ public class BurgerDAO {
 		// 단일 버거 + 버거디테일 불러오기
 	public BurgerDTO getBurgerById(int id) {
 		String sql = """ 
-				SELECT b.id, b.name, b.price, b.image_path, b.brand, b.patty_type,
+				SELECT b.id, b.name, b.price, b.image_path, b.brand, b.patty_type, b.is_new,
 					d.calories, d.carbohydrates, d.protein, d.fat, d.sodium, d.sugar, d.allergy_info
 				FROM burger b
 				JOIN burger_details d ON b.id = d.burger_id
@@ -79,6 +79,7 @@ public class BurgerDAO {
 					burger.setImagePath(rs.getString("image_path"));
 					burger.setBrand(rs.getString("brand"));
 					burger.setPattyType(rs.getString("patty_type"));
+					burger.setNewBurger(rs.getBoolean("is_new"));
 					
 					BurgerDetailsDTO details = new BurgerDetailsDTO();
 					details.setCalories(rs.getInt("calories"));
@@ -149,6 +150,7 @@ public class BurgerDAO {
 	            burger.setPrice(rs.getInt("price"));
 	            burger.setBrand(rs.getString("brand"));
 	            burger.setImagePath(rs.getString("image_path"));
+	            burger.setNewBurger(rs.getBoolean("is_new"));
 	            list.add(burger);
 	        }
 			
@@ -157,6 +159,19 @@ public class BurgerDAO {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	// new
+	public void updateIsNew(int id, boolean isNew) {
+	    String sql = "UPDATE burger SET is_new = ? WHERE id = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setBoolean(1, isNew);
+	        pstmt.setInt(2, id);
+	        pstmt.executeUpdate();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	// 버거 삭제

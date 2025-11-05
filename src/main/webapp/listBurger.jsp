@@ -173,6 +173,8 @@
               <td class="text-muted">${burger.id}</td>
               <td class="fw-semibold">${burger.name}</td>
               <td class="text-warning fw-bold">${burger.price}원</td>
+
+
               <td><span class="brand-badge">${burger.brand}</span></td>
               <td>
                 <a href="${pageContext.request.contextPath}/burger/edit?id=${burger.id}" 
@@ -184,6 +186,13 @@
                    onclick="return confirm('정말 삭제하시겠습니까?')">
                    <i class="bi bi-trash"></i> 삭제
                 </a>
+		        <form action="${pageContext.request.contextPath}/burger/list" method="post" style="display:inline;">
+		          <input type="hidden" name="id" value="${burger.id}">
+		          <button type="submit"
+		                  class="btn btn-sm ${burger.newBurger ? 'btn-primary' : 'btn-outline-primary'} me-2">
+		                  NEW
+		          </button>
+		        </form>
               </td>
             </tr>
           </c:forEach>
