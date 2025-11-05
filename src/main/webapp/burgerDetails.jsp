@@ -61,16 +61,16 @@
         <img class="burger-logo"
           src="<c:choose>
                  <c:when test='${burger.brand eq "맥도날드"}'>
-                   ${pageContext.request.contextPath}/image/mcdonalds_logo.png
+                   ${pageContext.request.contextPath}/img/mcdonalds_logo.png
                  </c:when>
                  <c:when test='${burger.brand eq "버거킹"}'>
-                   ${pageContext.request.contextPath}/image/burgerking_logo.png
+                   ${pageContext.request.contextPath}/img/burgerking_logo.png
                  </c:when>
                  <c:when test='${burger.brand eq "롯데리아"}'>
-                   ${pageContext.request.contextPath}/image/lotteria_logo.png
+                   ${pageContext.request.contextPath}/img/lotteria_logo.png
                  </c:when>
                  <c:otherwise>
-                   ${pageContext.request.contextPath}/image/default_logo.png
+                   ${pageContext.request.contextPath}/img/default_logo.png
                  </c:otherwise>
                </c:choose>" 
           alt="${burger.brand} 로고">
