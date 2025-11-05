@@ -151,6 +151,7 @@ public class BurgerDAO {
 	            burger.setBrand(rs.getString("brand"));
 	            burger.setImagePath(rs.getString("image_path"));
 	            burger.setNewBurger(rs.getBoolean("is_new"));
+	            burger.setPattyType(rs.getString("patty_type"));
 	            list.add(burger);
 	        }
 			
