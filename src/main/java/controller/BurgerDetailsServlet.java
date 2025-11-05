@@ -22,6 +22,6 @@ public class BurgerDetailsServlet extends HttpServlet {
         BurgerDTO burger = burgerDAO.getBurgerById(id);
 
         req.setAttribute("burger", burger);
-        req.getRequestDispatcher("/burgerDetails.jsp?burgerId="+id).forward(req, resp);
+        req.getRequestDispatcher("/burgerDetails.jsp?id="+id).forward(req, resp);
     }
 }

@@ -181,13 +181,22 @@ body.lotteria {
 
 <script type="text/javascript">
 	function checkForm(e) {
-		double ratingValue = Number(document.reviewForm.rating.value); 
-		if (isNaN(ratingValue) || ratingValue < 0 && ratingValue > 5) {
+		const ratingValue = Number(document.reviewForm.rating.value); 
+		if (isNaN(ratingValue) || ratingValue < 0 || ratingValue > 5) {
 			alert("별점은 0~5점으로 입력해주세요");
 			document.reviewForm.rating.select();
 			e.preventDefault();
 			return;
 		}
+		
+		const content = document.reviewForm.content.value;
+		if (content.length > 100){
+			alert("내용이 너무 많습니다.");
+			document.reviewForm.content.select();
+			e.preventDefault();
+			return;
+		}
+		
 	}
 </script>
 </head>
@@ -303,17 +312,17 @@ body.lotteria {
 					<div class="review">
 					<!-- 리뷰 추가될 영역 -->
 					<%
-					int burgerId = Integer.parseInt(request.getParameter("burgerId"));
-							        		ReviewDAO rvDao = new ReviewDAO();
-							        		List<ReviewDTO> recordList = rvDao.getReview(burgerId);
-							        		
-							        		for(int i = 0; i < recordList.size(); i++){
-							        			ReviewDTO record = new ReviewDTO();
-							        			record = recordList.get(i);
-							        			
-							        			Timestamp updatedAt = record.getUpdatedAt();
-							        			String content = record.getContent();
-							        			String imgPath = record.getImagePath();
+					int burgerId = Integer.parseInt(request.getParameter("id"));
+	        		ReviewDAO rvDao = new ReviewDAO();
+	        		List<ReviewDTO> recordList = rvDao.getReview(burgerId);
+	        		
+	        		for(int i = 0; i < recordList.size(); i++){
+	        			ReviewDTO record = new ReviewDTO();
+	        			record = recordList.get(i);
+	        			
+	        			Timestamp updatedAt = record.getUpdatedAt();
+	        			String content = record.getContent();
+	        			String imgPath = record.getImagePath();
 					%>
 		        		<!-- 프로필 영역 -->
 						<div class="card-body px-4 py-4 border-bottom">
