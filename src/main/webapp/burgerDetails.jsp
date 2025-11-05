@@ -1,3 +1,9 @@
+<%@page import="dto.BurgerDTO"%>
+<%@page import="dao.ReviewDAO"%>
+<%@page import="java.sql.Timestamp"%>
+<%@page import="java.util.List"%>
+<%@page import="dto.ReviewDTO"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -172,6 +178,18 @@ body.lotteria {
    border-color: #F59E0B;
 }
 </style>
+
+<script type="text/javascript">
+	function checkForm(e) {
+		double ratingValue = Number(document.reviewForm.rating.value); 
+		if (isNaN(ratingValue) || ratingValue < 0 && ratingValue > 5) {
+			alert("별점은 0~5점으로 입력해주세요");
+			document.reviewForm.rating.select();
+			e.preventDefault();
+			return;
+		}
+	}
+</script>
 </head>
 
 <body 
