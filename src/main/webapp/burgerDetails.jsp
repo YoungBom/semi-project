@@ -1,3 +1,9 @@
+<%@page import="dto.BurgerDTO"%>
+<%@page import="dao.ReviewDAO"%>
+<%@page import="java.sql.Timestamp"%>
+<%@page import="java.util.List"%>
+<%@page import="dto.ReviewDTO"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -172,6 +178,18 @@ body.lotteria {
 	border-color: #F59E0B;
 }
 </style>
+
+<script type="text/javascript">
+	function checkForm(e) {
+		double ratingValue = Number(document.reviewForm.rating.value); 
+		if (isNaN(ratingValue) || ratingValue < 0 && ratingValue > 5) {
+			alert("별점은 0~5점으로 입력해주세요");
+			document.reviewForm.rating.select();
+			e.preventDefault();
+			return;
+		}
+	}
+</script>
 </head>
 
 <body 
@@ -254,8 +272,8 @@ body.lotteria {
 		  <div class="card shadow-sm">
 		    <div class="card-body">
 		      <h3 class="card-title mb-4 text-center">리뷰 등록</h3>
-		      <form action="${pageContext.request.contextPath}/ReviewAddProcess" method="post" class="comment-form" enctype="multipart/form-data">
-		        
+		      <form action="${pageContext.request.contextPath}/ReviewAddProcess" name="reviewForm" method="post" class="comment-form" enctype="multipart/form-data">
+		        <input type="hidden" name="burgerId" value="${burger.id}">
 		        <div class="mb-3">
 		          <label for="name" class="form-label">닉네임</label>
 		          <input type="text" class="form-control" value="버거짱짱맨" readonly="readonly">
@@ -263,11 +281,11 @@ body.lotteria {
 		
 		        <div class="mb-3">
 		          <label for="content" class="form-label">댓글</label>
-		          <textarea class="form-control" id="content" name="content" rows="5" placeholder="댓글을 입력하세요" required></textarea>
+		          <textarea class="form-control" id="content" name="content" rows="5" placeholder="댓글을 입력하세요"></textarea>
 		        </div>
 		        
 		        <div class="mb-3">          
-		          <input type="file" class="form-control" id="image" name="images" multiple="multiple" required>
+		          <input type="file" class="form-control" id="image" name="images" value="" multiple="multiple">
 		        </div>
 		        
 		        <div class="mb-3">          
@@ -276,7 +294,7 @@ body.lotteria {
 		        </div>
 		
 		        <div class="text-end">
-		          <button type="submit" class="btn btn-warning rounded-3">등록</button>
+		          <button type="submit" class="btn btn-warning rounded-3" onclick="checkForm(event)">등록</button>
 		        </div>
 		      </form>
 		    </div>
@@ -284,6 +302,45 @@ body.lotteria {
 				<div class="border-0 rounded-0 bg-white shadow-0">
 					<div class="review">
 					<!-- 리뷰 추가될 영역 -->
+					<%
+					int burgerId = Integer.parseInt(request.getParameter("burgerId"));
+							        		ReviewDAO rvDao = new ReviewDAO();
+							        		List<ReviewDTO> recordList = rvDao.getReview(burgerId);
+							        		
+							        		for(int i = 0; i < recordList.size(); i++){
+							        			ReviewDTO record = new ReviewDTO();
+							        			record = recordList.get(i);
+							        			
+							        			Timestamp updatedAt = record.getUpdatedAt();
+							        			String content = record.getContent();
+							        			String imgPath = record.getImagePath();
+					%>
+		        		<!-- 프로필 영역 -->
+						<div class="card-body px-4 py-4 border-bottom">
+							<div class="d-flex align-items-center mb-3">
+								<div class="me-3">
+									<i class="bi bi-person-circle profileIcon" style="font-size: 30px;"></i>
+								</div>
+								<div>
+									<strong class="d-block">닉네임</strong>
+									<small class="text-muted"><%= updatedAt %></small>
+								</div>
+							</div>
+						
+							<!-- 본문 영역 -->
+							<div class="mb-2">
+								<div class="mb-2">
+									<img alt="이미지" src="${pageContext.request.contextPath}/<%= imgPath %>" style="width:100px; height:100px; display:inline-block; background-color:#fffef8">
+								</div>
+								<p class="mb-0">
+								<%= content %>
+								</p>
+							</div>		        	
+						</div>
+		        	<% 
+		        		}
+		        		
+					%>
 					</div>
 				</div>
 			</div>
@@ -291,37 +348,6 @@ body.lotteria {
 		
 	</div>
 	
-	
-	
-	<script type="text/javascript">
-			document.querySelector(".btn").addEventListener('click', function() {
-			const reviewBody = document.querySelector(".review");
-			const review = document.createElement("div");
-			review.className = "card-body px-4 py-4 border-bottom";
-			review.innerHTML = `
-				<!-- 프로필 영역 -->
-				<div class="d-flex align-items-center mb-3">
-					<div class="me-3">
-						<img src="https://via.placeholder.com/50" alt="사용자이미지" class="rounded-circle border" style="display:block; width:50px; height:50px">
-					</div>
-					<div>
-						<strong class="d-block">닉네임</strong>
-						<small class="text-muted">2025.11.01 3시 30분</small>
-					</div>
-				</div>					
-				<!-- 본문 영역 -->
-				<div class="mb-2">
-					<div class="mb-2">
-						<img alt="이미지" src="" style="width:100px; height:100px; display:inline-block; background-color:#fffef8">
-					</div>
-					<p class="mb-0">
-					가나다라마바사아자차카타파가나다라마바사아자차카타파가나다라마바사아자차카타파
-					</p>
-				</div>
-				`;
-			reviewBody.appendChild(review);
-		})
-	</script>
 	
 	</div>
 </main>
