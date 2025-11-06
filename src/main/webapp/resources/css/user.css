@@ -385,4 +385,18 @@ html, body { height: 100%; }
   font-size: 16px;
 }
 
-/* 하단 구분선과 문구도 폼 폭에 맞도록 기본 유지 (이미 OK) */
+/* 아이디/이메일 인라인 배치 */
+.row-compact{
+  display:grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+.btn-outline{
+  padding: 10px 14px; border-radius: 10px; background:#fff; color: var(--brand-orange);
+  border:1px solid var(--brand-orange); cursor:pointer;
+}
+.hint{ color: var(--ink-weak); font-size: 12px; margin-top: 6px; display:block; }
+.hint.ok{ color:#1B5E20; font-weight:600; }
+.hint.bad{ color:#C62828; font-weight:600; }
+
