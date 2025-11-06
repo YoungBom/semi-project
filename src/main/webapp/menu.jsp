@@ -7,11 +7,7 @@
 
 <%
     request.setCharacterEncoding("UTF-8");
-
-    // 검색 결과가 있으면 그대로 사용
     List<BurgerDTO> burgers = (List<BurgerDTO>) request.getAttribute("burgers");
-
-    // 검색 결과가 없으면 전체 메뉴 불러오기
     if (burgers == null) {
         BurgerSearchDAO dao = new BurgerSearchDAO();
         burgers = dao.getAllburger();
@@ -19,41 +15,33 @@
     }
 %>
 
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>BurgerHub | 전체 메뉴</title>
+<meta charset="UTF-8">
+<title>BurgerHub | 전체 메뉴</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
- 
 </head>
-<body>
 
+<body>
 <%@ include file="/include/header.jsp" %>
 
-
-
-
 <div class="container mt-5 text-center">
-
   <c:choose>
     <c:when test="${not empty keyword}">
       <h2 class="fw-bold mb-2">🔍 검색 결과 메뉴</h2>
       <p class="text-muted mb-4">"${keyword}" 에 대한 검색 결과입니다.</p>
     </c:when>
-
     <c:otherwise>
       <h2 class="fw-bold mb-2">🍔 전체 메뉴</h2>
       <p class="text-muted mb-4">원하는 버거를 골라보세요!</p>
     </c:otherwise>
   </c:choose>
 
-  <!-- 필터 버튼 -->
   <div class="d-flex justify-content-center gap-2 mb-5">
     <button class="btn btn-warning active rounded-pill px-4 fw-semibold filter-btn" data-type="all">전체</button>
     <button class="btn btn-outline-warning rounded-pill px-4 fw-semibold filter-btn" data-type="비프">비프</button>
@@ -67,64 +55,49 @@
         <p class="text-muted fs-5">🍔 검색된 버거가 없습니다 😢</p>
       </div>
     </c:when>
+    <c:otherwise>
+      <div class="row g-4">
+        <c:forEach var="b" items="${burgers}">
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card burger-card shadow-sm position-relative">
 
-      
-      
-      
-      <c:otherwise>
-        <div class="row g-4">
-          <c:forEach var="b" items="${burgers}">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="card burger-card shadow-sm">
-              	<a href="${pageContext.request.contextPath}/burger/details?id=${b.id}" class="text-decoration-none text-dark">
-               <c:choose>
-				  <c:when test="${not empty b.imagePath and fn:startsWith(b.imagePath, '/')}">
-				    <img 
-				      src="${pageContext.request.contextPath}${b.imagePath}" 
-				      class="card-img-top" 
-				      alt="${b.name}"
-				      style="height:200px; object-fit:contain;">
-				  </c:when>
-				
-				  <c:when test="${not empty b.imagePath}">
-				    <img 
-				      src="${b.imagePath}" 
-				      class="card-img-top" 
-				      alt="${b.name}"
-				      style="height:200px; object-fit:contain;">
-				  </c:when>
-				
-				  <c:otherwise>
-				    <img 
-				      src="${pageContext.request.contextPath}/image/noimage.png" 
-				      class="card-img-top" 
-				      alt="이미지 없음"
-				      style="height:200px; object-fit:contain;">
-				  </c:otherwise>
-				</c:choose>
-				
-            <div class="card-body text-start">
-              <span class="badge badge-brand">${b.brand}</span>
-              <h5 class="card-title mt-2">${b.name}</h5>
-              <p class="card-text text-secondary">${b.pattyType}</p>
+              <!-- ✅ 책갈피 브랜드 로고 -->
+              <div class="brand-flag">
+                <img src="${pageContext.request.contextPath}/img/${b.brand eq '맥도날드' ? 'mcdonalds_logo.png' : (b.brand eq '버거킹' ? 'burgerking_logo.png' : (b.brand eq '롯데리아' ? 'lotteria_logo.png' : 'default_logo.png'))}"
+                     alt="${b.brand} 로고">
+              </div>
 
-              <div class="d-flex justify-content-between align-items-center mt-3">
-                <span class="price fw-bold text-warning">${b.price}원</span>
-                <span class="rating">⭐</span>
-              </div>
+              <a href="${pageContext.request.contextPath}/burger/details?id=${b.id}" class="text-decoration-none text-dark">
+                <c:choose>
+                  <c:when test="${not empty b.imagePath and fn:startsWith(b.imagePath, '/')}">
+                    <img src="${pageContext.request.contextPath}${b.imagePath}" class="card-img-top" alt="${b.name}" style="height:200px; object-fit:contain;">
+                  </c:when>
+                  <c:when test="${not empty b.imagePath}">
+                    <img src="${b.imagePath}" class="card-img-top" alt="${b.name}" style="height:200px; object-fit:contain;">
+                  </c:when>
+                  <c:otherwise>
+                    <img src="${pageContext.request.contextPath}/image/noimage.png" class="card-img-top" alt="이미지 없음" style="height:200px; object-fit:contain;">
+                  </c:otherwise>
+                </c:choose>
+
+                <div class="card-body text-start">
+                  <h5 class="card-title mt-2">${b.name}</h5>
+                  <span class="badge patty-badge ${b.pattyType}"> ${b.pattyType} </span>
+                  <div class="d-flex justify-content-between align-items-center mt-3">
+                    <span class="price fw-bold text-warning">${b.price}원</span>
+                    <span class="rating">⭐</span>
+                  </div>
+                </div>
+              </a>
             </div>
-                </a>
-              </div>
-            </div>
-          </c:forEach>
-        </div>
-      </c:otherwise>
-    </c:choose>
-  </div>
+          </div>
+        </c:forEach>
+      </div>
+    </c:otherwise>
+  </c:choose>
+</div>
 
 <%@ include file="/include/footer.jsp" %>
 <script src="${pageContext.request.contextPath}/resources/js/filter.js"></script>
-  
-  
 </body>
 </html>
