@@ -103,7 +103,22 @@ public class ReviewDAO {
 	    return new ArrayList<>(reviewMap.values());
 	}
 	
-	public void deleteReview() {
+	public int deleteReview(int burgerId, int reviewId) {
+		Connection conn = DBUtil.getConnection();
+	    PreparedStatement pstmt = null;
+	    int result = 0;
+	    
+	    try {
+	    	String sql = "DELETE FROM review WHERE burger_id = ? AND id = ?;";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, burgerId);
+			pstmt.setInt(2, reviewId);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 		
 	}
 }

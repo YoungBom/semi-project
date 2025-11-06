@@ -6,6 +6,9 @@
   boolean loggedIn = (uidObj != null);
 %>
 
+<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
+
+<div id="site-header">
 <nav class="navbar navbar-expand-lg shadow-sm py-3" style="background:#fff8e6;">
   <div class="container">
 
@@ -19,6 +22,8 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navMenu">
+
+      <!-- ⛔ 아래 메뉴는 요청대로 수정하지 않음 -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-semibold">
         <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/menu.jsp">메뉴</a></li>
         <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/event.jsp">이벤트</a></li>
@@ -26,6 +31,7 @@
         <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/findStore.jsp">매장찾기</a></li>
       </ul>
 
+      <!-- 검색 폼 -->
       <form action="<%=ctx%>/search" method="post" class="d-flex me-3">
         <input class="form-control me-2 rounded-3" style="border:1px solid #f4c430;" type="text" name="keyword" placeholder="버거 검색...">
         <button class="btn" type="submit" style="background:#ffc300; border:none;">
@@ -33,13 +39,13 @@
         </button>
       </form>
 
+      
       <div class="d-flex align-items-center gap-2">
         <% if (!loggedIn) { %>
          
-          <a href="<%=ctx%>/login" class="btn me-1 rounded-3" style="background:#4caf50; color:white;">로그인</a>
-          
-
+          <a href="<%=ctx%>/user/login.jsp" class="btn me-1 rounded-3" style="background:#4caf50; color:white;">로그인</a>
           <a href="<%=ctx%>/user/register.jsp" class="btn me-1 rounded-3 btn-primary">회원가입</a>
+          
           <a href="<%=ctx%>/burger/list" class="btn rounded-3" style="background:#ff8d00; color:white;">버거 리스트</a>
         <% } else { %>
           <span class="me-2">안녕하세요, <%= (userName == null ? "회원" : userName) %>님</span>
@@ -53,3 +59,4 @@
     </div>
   </div>
 </nav>
+</div>
