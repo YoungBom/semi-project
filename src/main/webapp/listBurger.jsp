@@ -44,7 +44,6 @@
     }
 
     .btn-primary {
-      background-color: #ff922b;
       border: none;
       transition: all 0.25s ease-in-out;
     }

@@ -3,9 +3,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>부거 등록</title>
-	<link rel="stylesheet"
-      href="<%=request.getContextPath()%>/resources/css/header.css?v=<%=System.currentTimeMillis()%>">
+  <title>버거 등록</title>
 
   <!-- ✅ Bootstrap & Google Fonts -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -14,79 +12,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
   <!-- ✅ main.css -->
+  
+  <link href="${pageContext.request.contextPath}/resources/css/addBurger.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
-
-  <style>
-    body {
-      background-color: #f8f9fa;
-      font-family: 'Poppins', sans-serif;
-      color: #444;
-    }
-
-    .page-header {
-      background: linear-gradient(135deg, #ff922b, #ffa94d);
-      color: #fff;
-      text-align: center;
-      padding: 2rem 0;
-      border-radius: 0 0 18px 18px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      margin-bottom: 3rem;
-    }
-
-    .page-header h2 {
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-    }
-
-    .form-container {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      padding: 2rem 2.5rem;
-    }
-
-    h5 {
-      color: #ff922b;
-      font-weight: 600;
-      margin-top: 1.5rem;
-    }
-
-    label.form-label {
-      font-weight: 500;
-      color: #555;
-    }
-
-    .form-control,
-    .form-select {
-      border-radius: 6px;
-      border-color: #dee2e6;
-    }
-
-    .form-select:focus {
-      border-color: #ff922b;
-      box-shadow: 0 0 0 0.2rem rgba(255,146,43,0.25);
-    }
-
-    .btn-submit {
-      background-color: #ff922b;
-      border: none;
-      width: 100%;
-      font-weight: 600;
-    }
-
-    .btn-submit:hover {
-      background-color: #f08c00;
-    }
-
-    .form-check-label {
-      color: #555;
-    }
-
-    hr {
-      margin: 1.5rem 0;
-      border-top: 1px solid #e9ecef;
-    }
-  </style>
 </head>
 
 <body>

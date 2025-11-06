@@ -140,26 +140,41 @@
               <h5 class="card-title mt-2">${b.name}</h5>
               <p class="card-text text-secondary">${b.pattyType}</p>
 
-              <div class="d-flex justify-content-between align-items-center mt-3">
+             <div class="d-flex justify-content-between align-items-center mt-3">
                 <span class="price fw-bold text-warning">${b.price}원</span>
               
-                <!-- ⭐ 평균 별점 -->
-                <span class="rating text-warning">
-                  <!-- 정수부(=채워진 별 개수) 계산 -->
-                  <fmt:parseNumber value="${b.avgRating}" integerOnly="true" var="starFull" />
+                <!-- ⭐ Bootstrap 아이콘 별점 -->
+                <span class="rating d-inline-flex align-items-center" style="font-size:16px;">
+                  <fmt:parseNumber value="${b.avgRating}" integerOnly="true" var="fullStars" />
+                  <c:set var="decimalPart" value="${b.avgRating - fullStars}" />
+              
                   <!-- 채워진 별 -->
-                  <c:forEach begin="1" end="${starFull}" var="i">★</c:forEach>
-                  <!-- 빈 별 -->
-                  <c:forEach begin="1" end="${5 - starFull}" var="i">☆</c:forEach>
-                  <!-- 소수 한 자리 표기 -->
-                  <small>(<fmt:formatNumber value="${b.avgRating}" maxFractionDigits="1" />)</small>
+                  <c:forEach begin="1" end="${fullStars}" var="i">
+                    <i class="bi bi-star-fill text-warning"></i>
+                  </c:forEach>
+              
+                  <!-- 소수점 반영 (0.25~0.75 사이면 반쪽, 0.75 이상이면 꽉찬 별) -->
+                  <c:if test="${decimalPart >= 0.25 && decimalPart < 0.75}">
+                    <i class="bi bi-star-half text-warning"></i>
+                  </c:if>
+                  <c:if test="${decimalPart >= 0.75}">
+                    <i class="bi bi-star-fill text-warning"></i>
+                  </c:if>
+              
+                  <!-- 남은 빈 별 -->
+                  <c:set var="filled" value="${fullStars + (decimalPart >= 0.25 ? 1 : 0)}" />
+                  <c:forEach begin="${filled + 1}" end="5" var="i">
+                    <i class="bi bi-star text-warning"></i>
+                  </c:forEach>
+              
+                  <!-- 소수점 표시 -->
+                  <small class="ms-1 text-secondary">
+                    (<fmt:formatNumber value="${b.avgRating}" maxFractionDigits="1" />)
+                  </small>
                 </span>
               </div>
-
-
             </div>
           </a>
-
         </div>
       </div>
     </c:forEach>
