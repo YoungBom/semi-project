@@ -52,9 +52,23 @@
   border-radius: 8px;
   flex-shrink: 0; /* 줄바꿈 방지 */
 }
+
+.me-5 { margin-right: 5rem !important; }
 </style>
 
 </head>
+
+<script>
+	function updateReview(event) {
+		event.preventDefault();
+		boolean result = confirm('이 리뷰를 수정하시겠습니까?');
+		if(result = true) {
+			
+		} else{
+			return false;
+		}	
+	}
+</script>
 <body 
   class="${burger.brand eq '맥도날드' ? 'mcdonalds' : (burger.brand eq '버거킹' ? 'burgerking' : (burger.brand eq '롯데리아' ? 'lotteria' : ''))}"
 >
@@ -214,14 +228,14 @@
                   </div>
           
                   <!-- 수정 버튼 -->
-                  <%-- <a href="${pageContext.request.contextPath}/review/update?burgerId=${burger.id}&reviewId=131"
-                     class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 m-3"
-                     onclick="return confirm('이 리뷰를 수정하시겠습니까?');">
-                    <i class="bi bi-trash"></i> 수정
-                  </a> --%>
+                  <a href="#"
+					  class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 my-1 me-0"
+					  onclick="openUpdateModal(event, ${record.id}, '${fn:escapeXml(record.content)}', ${record.rating}, '${burger.id}')">
+					  <i class="bi bi-pencil"></i> 수정
+				  </a> 
                   <!-- 삭제 버튼 -->
                   <a href="${pageContext.request.contextPath}/review/delete?burgerId=${burger.id}&reviewId=${record.id}"
-					  class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 m-3 delete-btn"
+					  class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 my-1 me-5"
 					  onclick="return confirm('이 리뷰를 삭제하시겠습니까?');">
    				  <i class="bi bi-trash"></i> 삭제
    				  </a>
@@ -230,7 +244,6 @@
 
                 <!-- 리뷰 내용 -->
               <p class="mb-2">${record.content}</p>
-              <p class="mb-2">${record.id}</p>
 
               <!-- 리뷰 이미지 (있을 때만) -->
               <c:if test="${not empty record.imageList}">
@@ -252,23 +265,59 @@
 </main>
 
 <script>
-	/* document.addEventListener("DOMContentLoaded", () => {
-	  const deleteButtons = document.querySelectorAll(".delete-btn");
+	function openUpdateModal(event, reviewId, content, rating, burgerId) {
+	  event.preventDefault();
+	
+	  // 모달 요소
+	  const modalEl = document.getElementById('reviewModal');
+	  const modal = new bootstrap.Modal(modalEl);
+	
+	  // 폼 요소
+	  const form = document.querySelector('.comment-form');
+	  const title = document.getElementById('reviewModalLabel');
+	  const submitBtn = form.querySelector('button[type="submit"]');
+	
+	  // 기존 내용 채우기
+	  document.getElementById('content').value = content;
+	  document.getElementById('rating').value = rating;
+	
+	  // 제목 및 버튼 변경
+	  title.textContent = "리뷰 수정";
+	  submitBtn.textContent = "수정 완료";
+	
+	  // form action 변경 (수정용)
+	  form.action = `${pageContext.request.contextPath}/review/update`;
+	  
+	  // 기존 reviewId hidden이 있다면 제거 후 다시 추가 (중복 방지)
+	  const oldHidden = form.querySelector('input[name="reviewId"]');
+	  if (oldHidden) oldHidden.remove();
 
-	  deleteButtons.forEach(btn => {
-	    btn.addEventListener("click", event => {
-	      event.preventDefault();
-
-	      const reviewId = btn.dataset.reviewId; // 클릭한 버튼의 리뷰 ID만 읽음
-	      const burgerId = "${burger.id}"; // JSP에서 치환됨
-
-	      if (confirm("이 리뷰를 삭제하시겠습니까?")) {
-	        window.location.href = `${pageContext.request.contextPath}/review/delete?burgerId="${burgerId}"&reviewId="${reviewId}"`;
-	      }
-	    });
+	  // 새로운 reviewId hidden input 추가
+	  const hiddenInput = document.createElement('input');
+	  hiddenInput.type = 'hidden';
+	  hiddenInput.name = 'reviewId';
+	  hiddenInput.value = reviewId;
+	  form.appendChild(hiddenInput);
+	
+	  // 모달 표시
+	  modal.show();
+	}
+	
+	// ✅ 모달 닫힐 때 등록 모드로 초기화
+	document.addEventListener('DOMContentLoaded', () => {
+	  const reviewModal = document.getElementById('reviewModal');
+	  reviewModal.addEventListener('hidden.bs.modal', () => {
+	    const form = document.querySelector('.comment-form');
+	    form.reset();
+	    form.action = `${pageContext.request.contextPath}/ReviewAddProcess?userId=1`;
+	    document.getElementById('reviewId').value = "";
+	    document.getElementById('reviewModalLabel').textContent = "리뷰 등록";
+	    form.querySelector('button[type="submit"]').textContent = "등록";
 	  });
-	}); */
+	});
 </script>
+
+
 <!-- ✅ 푸터 -->
 <%@ include file="/include/footer.jsp" %>
 

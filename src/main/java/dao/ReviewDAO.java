@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,8 +19,6 @@ import dto.UserDTO;
 import util.DBUtil;
 
 public class ReviewDAO {
-	
-	ReviewDTO review = new ReviewDTO();
 	
 	public int addReview(ReviewDTO rv) {
 		Connection conn = DBUtil.getConnection();
@@ -120,5 +119,31 @@ public class ReviewDAO {
 		
 		return result;
 		
+	}
+	
+	public int updateReview(ReviewDTO review) {	
+		Connection conn = DBUtil.getConnection();
+	    PreparedStatement pstmt = null;
+	    int result = 0;
+	    
+	    String sql = "";
+	    try {    	
+	    	sql ="UPDATE review "
+	    			+ "SET content= ?, "
+	    			+ "rating = ? "
+	    			+ "WHERE burger_id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, review.getContent());
+			pstmt.setDouble(2, review.getRating());
+			pstmt.setInt(3, review.getBurgerId());
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+	        DBUtil.close(pstmt, conn);
+	    }
+		
+		return result;
 	}
 }
