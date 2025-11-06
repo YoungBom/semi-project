@@ -197,7 +197,7 @@ public class BurgerDAO {
 	}
 	
 	public List<BurgerDTO> searchBurgers(String keyword) {
-		List<BurgerDTO> burgerList = new ArrayList<BurgerDTO>();
+		List<BurgerDTO> list = new ArrayList<BurgerDTO>();
 		String sql = "SELECT * FROM burger "
 					+"WHERE name LIKE ? OR brand LIKE ? ORDER BY brand , name";
 		
@@ -210,19 +210,21 @@ public class BurgerDAO {
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				BurgerDTO b = new BurgerDTO();
-				b.setId(rs.getInt("id"));
-				b.setName(rs.getString("name"));
-				b.setBrand(rs.getString("brand"));
-				b.setPrice(rs.getInt("price"));
-				b.setPattyType(rs.getString("patty_type"));
-				b.setImagePath(rs.getString("image_path"));
-				burgerList.add(b);
+				BurgerDTO burger = new BurgerDTO();
+				burger.setId(rs.getInt("id"));
+	            burger.setName(rs.getString("name"));
+	            burger.setPrice(rs.getInt("price"));
+	            burger.setBrand(rs.getString("brand"));
+	            burger.setImagePath(rs.getString("image_path"));
+	            burger.setNewBurger(rs.getBoolean("is_new"));
+	            burger.setPattyType(rs.getString("patty_type"));
+	            burger.setAvgRating(rs.getDouble("avg_rating"));
+	            list.add(burger);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return burgerList;
+		return list;
 		
 	}
 	
@@ -237,15 +239,15 @@ public class BurgerDAO {
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				BurgerDTO b = new BurgerDTO();
-				b.setId(rs.getInt("id"));
-			    b.setUserId(rs.getInt("user_id"));
-			    b.setName(rs.getString("name"));
-			    b.setPrice(rs.getInt("price"));
-			    b.setImagePath(rs.getString("image_path"));
-			    b.setBrand(rs.getString("brand"));
-			    b.setPattyType(rs.getString("patty_type"));
-				list.add(b);
+				BurgerDTO burger = new BurgerDTO();
+				burger.setId(rs.getInt("id"));
+				burger.setUserId(rs.getInt("user_id"));
+				burger.setName(rs.getString("name"));
+				burger.setPrice(rs.getInt("price"));
+				burger.setImagePath(rs.getString("image_path"));
+				burger.setBrand(rs.getString("brand"));
+				burger.setPattyType(rs.getString("patty_type"));
+				list.add(burger);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

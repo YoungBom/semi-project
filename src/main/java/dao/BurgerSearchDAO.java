@@ -16,7 +16,7 @@ public class BurgerSearchDAO {
 	ResultSet rs = null;
 	// 전체 버거 조회 메소드
 	public List<BurgerDTO> getAllburger() {
-		List<BurgerDTO> burgerList = new ArrayList<BurgerDTO>();
+		List<BurgerDTO> list= new ArrayList<BurgerDTO>();
 		String sql = "SELECT * FROM burger ORDER BY brand , name";
 		try {
 			conn = DBUtil.getConnection();
@@ -24,14 +24,16 @@ public class BurgerSearchDAO {
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				BurgerDTO b = new BurgerDTO();
-				b.setId(rs.getInt("id"));
-				b.setName(rs.getString("name"));
-				b.setBrand(rs.getString("brand"));
-				b.setPattyType(rs.getString("patty_type"));
-				b.setPrice(rs.getInt("price"));
-				b.setImagePath(rs.getString("image_path"));
-				burgerList.add(b);
+				BurgerDTO burger = new BurgerDTO();
+				burger.setId(rs.getInt("id"));
+	            burger.setName(rs.getString("name"));
+	            burger.setPrice(rs.getInt("price"));
+	            burger.setBrand(rs.getString("brand"));
+	            burger.setImagePath(rs.getString("image_path"));
+	            burger.setNewBurger(rs.getBoolean("is_new"));
+	            burger.setPattyType(rs.getString("patty_type"));
+	            burger.setAvgRating(rs.getDouble("avg_rating"));
+				list.add(burger);
 			}
 			
 		} catch (Exception e) {
@@ -40,7 +42,7 @@ public class BurgerSearchDAO {
 			DBUtil.close(conn , pstmt , rs);
 		}
 		
-		return burgerList;
+		return list;
 	}
 	
 
