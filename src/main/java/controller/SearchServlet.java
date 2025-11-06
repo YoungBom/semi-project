@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-import dao.BurgerSearchDAO;
+import dao.BurgerDAO;
 import dto.BurgerDTO;
 
 /**
@@ -17,7 +17,7 @@ import dto.BurgerDTO;
 @WebServlet("/search")
 public class SearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private BurgerSearchDAO burgerDAO = new BurgerSearchDAO();
+	private BurgerDAO burgerDAO = new BurgerDAO();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -45,7 +45,7 @@ public class SearchServlet extends HttpServlet {
 		List<BurgerDTO> burgers;
 		
 		if (keyword == null || keyword.trim().isEmpty()) {
-			burgers = burgerDAO.getAllburger();
+			burgers = burgerDAO.getAllBurgers();
 		} else {
 			burgers = burgerDAO.searchBurgers(keyword.trim());
 		}
