@@ -252,4 +252,86 @@ public class BurgerDAO {
 		}
 		return list;
 	}
+	
+	// ⭐ 평점 상위 4개 버거 가져오기
+	public List<BurgerDTO> getTopRatedBurgers() {
+	    List<BurgerDTO> list = new ArrayList<>();
+	    String sql = """
+	        SELECT b.*, IFNULL(ROUND(AVG(r.rating), 1), 0) AS avg_rating
+	        FROM burger b
+	        LEFT JOIN review r ON b.id = r.burger_id
+	        GROUP BY b.id
+	        ORDER BY avg_rating DESC, b.name ASC
+	        LIMIT 4
+	    """;
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql);
+	         ResultSet rs = pstmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            BurgerDTO burger = new BurgerDTO();
+	            burger.setId(rs.getInt("id"));
+	            burger.setName(rs.getString("name"));
+	            burger.setPrice(rs.getInt("price"));
+	            burger.setBrand(rs.getString("brand"));
+	            burger.setImagePath(rs.getString("image_path"));
+	            burger.setPattyType(rs.getString("patty_type"));
+	            burger.setAvgRating(rs.getDouble("avg_rating"));
+	            burger.setNewBurger(rs.getBoolean("is_new"));
+	            list.add(burger);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
+
+	// 🆕 신메뉴 가져오기 (is_new = true)
+	public List<BurgerDTO> getNewBurgers() {
+	    List<BurgerDTO> list = new ArrayList<>();
+	    String sql = """
+	        SELECT b.*, IFNULL(ROUND(AVG(r.rating), 1), 0) AS avg_rating
+	        FROM burger b
+	        LEFT JOIN review r ON b.id = r.burger_id
+	        WHERE b.is_new = true
+	        GROUP BY b.id
+	        ORDER BY b.id DESC
+	        LIMIT 4
+	    """;
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql);
+	         ResultSet rs = pstmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            BurgerDTO burger = new BurgerDTO();
+	            burger.setId(rs.getInt("id"));
+	            burger.setName(rs.getString("name"));
+	            burger.setPrice(rs.getInt("price"));
+	            burger.setBrand(rs.getString("brand"));
+	            burger.setImagePath(rs.getString("image_path"));
+	            burger.setPattyType(rs.getString("patty_type"));
+	            burger.setAvgRating(rs.getDouble("avg_rating"));
+	            burger.setNewBurger(rs.getBoolean("is_new"));
+	            list.add(burger);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

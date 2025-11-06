@@ -13,7 +13,7 @@
   <div class="container">
 
     <!-- 브랜드 링크: 필요 시 /main.jsp 유지 -->
-    <a class="navbar-brand fw-bold fs-3 text-brown" href="<%=ctx%>/main.jsp" style="color:#b35a00;">
+    <a class="navbar-brand fw-bold fs-3 text-brown" href="<%=ctx%>/main" style="color:#b35a00;">
       🍔 BurgerHub
     </a>
 
