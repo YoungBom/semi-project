@@ -1,7 +1,6 @@
 package controller;
 
 import dao.UserDAO;
-import model.User; // ✅ User 사용하므로 import 필요
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;

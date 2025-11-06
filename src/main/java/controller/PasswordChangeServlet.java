@@ -1,7 +1,5 @@
 package controller;
-
 import dao.UserDAO;
-import model.User;
 import util.PasswordUtil;
 
 import jakarta.servlet.ServletException;

@@ -1,67 +1,60 @@
+// controller/AuthLoginServlet.java
 package controller;
 
 import dao.UserDAO;
-import model.User;
+import dto.UserDTO;
 import util.PasswordUtil;
+import util.SessionKeys;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
-import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 @WebServlet("/login")
 public class AuthLoginServlet extends HttpServlet {
-    private final UserDAO userDao = new UserDAO();
+	private final UserDAO userDao = new UserDAO();
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.getRequestDispatcher("/user/login.jsp").forward(req, resp);
+	}
 
-        req.setCharacterEncoding("UTF-8");
-        String id = req.getParameter("user_id");
-        String pw = req.getParameter("user_pw");
-        String nextParam = req.getParameter("next");
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		String id = req.getParameter("user_id");
+		String pw = req.getParameter("user_pw");
+		String remember = req.getParameter("remember_me");
 
-        if (id != null) id = id.trim();
-        if (pw != null) pw = pw.trim();
+		UserDTO u = userDao.findByLoginId(id);
+		boolean ok = (u != null) && PasswordUtil.verify(pw, u.getPasswordHash());
+		if (!ok) {
+			req.setAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
+			req.getRequestDispatcher("/user/login.jsp").forward(req, resp);
+			return;
+		}
 
-        try {
-            User u = userDao.findByLoginId(id);
-            boolean ok = (u != null) && PasswordUtil.verify(pw, u.getUser_pw());
+		// 세션 재발급
+		HttpSession old = req.getSession(false);
+		if (old != null)
+			old.invalidate();
+		HttpSession s = req.getSession(true);
+		s.setAttribute(SessionKeys.LOGIN_UID, u.getId());
+		s.setAttribute(SessionKeys.LOGIN_NAME, u.getNickname() != null ? u.getNickname() : u.getName());
+		s.setAttribute(SessionKeys.LOGIN_ROLE, u.getRole() != null ? u.getRole() : "USER");
 
-            if (!ok) {
-                req.setAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
-                req.setAttribute("next", nextParam); // 실패 시에도 next 유지
-                req.getRequestDispatcher("/user/login.jsp").forward(req, resp);
-                return;
-            }
+		// 선택: remember_me 쿠키
+		if ("1".equals(remember)) {
+			Cookie c = new Cookie("remember_user", URLEncoder.encode(u.getUserId(), StandardCharsets.UTF_8));
+			c.setHttpOnly(true);
+			c.setPath(req.getContextPath().isEmpty() ? "/" : req.getContextPath());
+			c.setMaxAge(60 * 60 * 24 * 14); // 14일
+			resp.addCookie(c);
+		}
 
-            // 세션 고정화 방지: 기존 세션을 재사용하며 ID만 교체
-            HttpSession s = req.getSession(true);
-            req.changeSessionId();
-
-            s.setAttribute("LOGIN_UID", u.getId());
-            s.setAttribute("LOGIN_NAME", u.getName());
-
-            String next = (nextParam == null || nextParam.isBlank())
-                    ? null
-                    : URLDecoder.decode(nextParam, StandardCharsets.UTF_8);
-
-            if (next != null && !next.isBlank()) {
-                resp.sendRedirect(next);
-            } else {
-                resp.sendRedirect(req.getContextPath() + "/");
-            }
-        } catch (Exception e) {
-            throw new ServletException(e);
-        }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        resp.sendRedirect(req.getContextPath() + "/user/login.jsp");
-    }
+		resp.sendRedirect(req.getContextPath() + "/main.jsp");
+	}
 }

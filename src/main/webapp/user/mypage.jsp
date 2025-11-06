@@ -20,7 +20,7 @@
   <h1>마이페이지</h1>
 
   <div class="card">
-    <p><strong>아이디</strong>   : <c:out value="${me.user_id}" /></p>
+    <p><strong>아이디</strong>   : <c:out value="${me.user.id}" /></p>
     <p><strong>이름</strong>     : <c:out value="${me.name}" /></p>
     <p><strong>닉네임</strong>   : <c:out value="${me.nickname}" /></p>
     <p><strong>이메일</strong>   : <c:out value="${me.email}" /></p>
