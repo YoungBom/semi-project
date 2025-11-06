@@ -7,15 +7,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%
-    request.setCharacterEncoding("UTF-8");
-    List<BurgerDTO> burgers = (List<BurgerDTO>) request.getAttribute("burgers");
-    if (burgers == null) {
-        BurgerDAO dao = new BurgerDAO();
-        burgers = dao.getAllBurgers();
-        request.setAttribute("burgers", burgers);
-    }
-%>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -32,8 +23,8 @@
 </head>
 
 <body>
-    <%@ include file="/include/header.jsp" %>
 
+    <%@ include file="/include/header.jsp" %>
     <div class="container mt-5 text-center">
 
         <!-- ✅ 제목 영역 -->
@@ -58,7 +49,7 @@
 
         <!-- ✅ 메뉴 목록 -->
         <c:choose>
-            <c:when test="${empty burgers}">
+            <c:when test="${empty burgerList}">
                 <div class="text-center my-5">
                     <p class="text-muted fs-5">🍔 검색된 버거가 없습니다 😢</p>
                 </div>
@@ -67,7 +58,7 @@
             <c:otherwise>
                 <div class="row g-4">
 
-                    <c:forEach var="b" items="${burgers}">
+                    <c:forEach var="b" items="${burgerList}">
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                             <div class="card burger-card shadow-sm position-relative">
 

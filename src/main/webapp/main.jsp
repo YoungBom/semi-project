@@ -51,115 +51,93 @@
 <div class="container my-5">
   <h2 class="fw-bold mb-4 text-center">🔥 새로운 버거</h2>
   <div class="row justify-content-center">
-    <c:choose>
-      <c:when test="${empty newBurgerList}">
-        <p class="text-muted text-center">새로운 버거가 없습니다 😢</p>
-      </c:when>
-      <c:otherwise>
-        <c:forEach var="b" items="${newBurgerList}" varStatus="loop">
-          <c:if test="${loop.index < 4}">
-            <div class="col-md-3 col-sm-6 mb-4">
-              <div class="card burger-card shadow-sm position-relative">
-                
-                <!-- ✅ 브랜드 로고 -->
-                <div class="brand-flag">
-                  <img src="${pageContext.request.contextPath}/img/${b.brand eq '맥도날드' ? 'mcdonalds_logo.png' : (b.brand eq '버거킹' ? 'burgerking_logo.png' : (b.brand eq '롯데리아' ? 'lotteria_logo.png' : 'default_logo.png'))}"
-                       alt="${b.brand} 로고">
-                </div>
-
-                <!-- ✅ 클릭 시 상세보기 -->
-                <a href="${pageContext.request.contextPath}/burger/details?id=${b.id}" class="text-decoration-none text-dark">
-                  
-                  <!-- ✅ 이미지 -->
-                  <c:choose>
-                    <c:when test="${fn:startsWith(b.imagePath, '/')}">
-                      <img src="${pageContext.request.contextPath}${b.imagePath}" class="card-img-top" alt="${b.name}" style="height:200px; object-fit:contain;">
-                    </c:when>
-                    <c:otherwise>
-                      <img src="${b.imagePath}" class="card-img-top" alt="${b.name}" style="height:200px; object-fit:contain;">
-                    </c:otherwise>
-                  </c:choose>
-
-                  <!-- ✅ 카드 본문 -->
-                  <div class="card-body text-start">
-                    <span class="badge bg-danger text-light">NEW</span>
-                    <h5 class="card-title mt-2">${b.name}</h5>
-                    <span class="badge patty-badge ${b.pattyType}">${b.pattyType}</span>
-
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                      <span class="price fw-bold text-warning">${b.price}원</span>
-                      <!-- ⭐ 평점 -->
-                      <span class="rating text-warning">
-                        <fmt:parseNumber value="${b.avgRating}" integerOnly="true" var="starFull" />
-                        <c:forEach begin="1" end="${starFull}" var="i">★</c:forEach>
-                        <c:forEach begin="1" end="${5 - starFull}" var="i">☆</c:forEach>
-                        <small>(<fmt:formatNumber value="${b.avgRating}" maxFractionDigits="1" />)</small>
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              </div>
+    <c:set var="shown" value="0" />
+    <c:forEach var="b" items="${newBurgerList}">
+      <c:if test="${b.newBurger and shown < 4}">
+        <div class="col-md-3 col-sm-6 mb-4">
+          <div class="card burger-card shadow-sm position-relative">
+            
+            <!-- ✅ 책갈피 브랜드 로고 -->
+            <div class="brand-flag">
+              <img src="${pageContext.request.contextPath}/img/${b.brand eq '맥도날드' ? 'mcdonalds_logo.png' : (b.brand eq '버거킹' ? 'burgerking_logo.png' : (b.brand eq '롯데리아' ? 'lotteria_logo.png' : 'default_logo.png'))}"
+                   alt="${b.brand} 로고">
             </div>
-          </c:if>
-        </c:forEach>
-      </c:otherwise>
-    </c:choose>
+
+            <a href="${pageContext.request.contextPath}/burger/details?id=${b.id}" class="text-decoration-none text-dark">
+              <c:choose>
+                <c:when test="${fn:startsWith(b.imagePath, '/')}">
+                  <img src="${pageContext.request.contextPath}${b.imagePath}" class="card-img-top" alt="${b.name}" style="height:200px; object-fit:contain;">
+                </c:when>
+                <c:otherwise>
+                  <img src="${b.imagePath}" class="card-img-top" alt="${b.name}" style="height:200px; object-fit:contain;">
+                </c:otherwise>
+              </c:choose>
+              <div class="card-body text-start">
+                <span class="badge bg-danger text-light">NEW</span>
+                <h5 class="card-title mt-2">${b.name}</h5>
+                <span class="badge patty-badge ${b.pattyType}"> ${b.pattyType} </span>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <span class="price fw-bold text-warning">${b.price}원</span>
+                  <!-- ⭐ 평균 별점 표시 -->
+                  <span class="rating text-warning">
+                    <fmt:parseNumber value="${b.avgRating}" integerOnly="true" var="starFull" />
+                    <c:forEach begin="1" end="${starFull}" var="i">★</c:forEach>
+                    <c:forEach begin="1" end="${5 - starFull}" var="i">☆</c:forEach>
+                    <small>(<fmt:formatNumber value="${b.avgRating}" maxFractionDigits="1" />)</small>
+                  </span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <c:set var="shown" value="${shown + 1}" />
+      </c:if>
+    </c:forEach>
   </div>
 </div>
 
-
-<!-- ✅ 인기 버거 메뉴 섹션 -->
+<!-- ✅ 인기 버거 메뉴 -->
 <div class="container mt-5">
   <h2 class="fw-bold mb-4 text-center">🔥 인기 버거 메뉴</h2>
   <div class="row justify-content-center">
-    <c:choose>
-      <c:when test="${empty topRatedList}">
-        <p class="text-muted text-center">인기 버거 데이터가 없습니다 😢</p>
-      </c:when>
-      <c:otherwise>
-        <c:forEach var="b" items="${topRatedList}">
-          <div class="col-md-3 col-sm-6 mb-4">
-            <div class="card burger-card shadow-sm position-relative">
-              
-              <!-- ✅ 브랜드 로고 -->
-              <div class="brand-flag">
-                <img src="${pageContext.request.contextPath}/img/${b.brand eq '맥도날드' ? 'mcdonalds_logo.png' : (b.brand eq '버거킹' ? 'burgerking_logo.png' : (b.brand eq '롯데리아' ? 'lotteria_logo.png' : 'default_logo.png'))}"
-                     alt="${b.brand} 로고">
-              </div>
-
-              <a href="${pageContext.request.contextPath}/burger/details?id=${b.id}" class="text-decoration-none text-dark">
-                <c:choose>
-                  <c:when test="${fn:startsWith(b.imagePath, '/')}">
-                    <img src="${pageContext.request.contextPath}${b.imagePath}" class="card-img-top" alt="${b.name}" style="height:200px; object-fit:contain;">
-                  </c:when>
-                  <c:otherwise>
-                    <img src="${b.imagePath}" class="card-img-top" alt="${b.name}" style="height:200px; object-fit:contain;">
-                  </c:otherwise>
-                </c:choose>
-
-                <div class="card-body text-start">
-                  <h5 class="card-title mt-2">${b.name}</h5>
-                  <span class="badge patty-badge ${b.pattyType}">${b.pattyType}</span>
-
-                  <div class="d-flex justify-content-between align-items-center mt-3">
-                    <span class="price fw-bold text-warning">${b.price}원</span>
-                    <span class="rating text-warning">
-                      <fmt:parseNumber value="${b.avgRating}" integerOnly="true" var="starFull" />
-                      <c:forEach begin="1" end="${starFull}" var="i">★</c:forEach>
-                      <c:forEach begin="1" end="${5 - starFull}" var="i">☆</c:forEach>
-                      <small>(<fmt:formatNumber value="${b.avgRating}" maxFractionDigits="1" />)</small>
-                    </span>
-                  </div>
-                </div>
-              </a>
-            </div>
+    <c:forEach var="b" items="${topRatedList}">
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card burger-card shadow-sm position-relative">
+          
+          <!-- ✅ 책갈피 브랜드 로고 -->
+          <div class="brand-flag">
+            <img src="${pageContext.request.contextPath}/img/${b.brand eq '맥도날드' ? 'mcdonalds_logo.png' : (b.brand eq '버거킹' ? 'burgerking_logo.png' : (b.brand eq '롯데리아' ? 'lotteria_logo.png' : 'default_logo.png'))}"
+                 alt="${b.brand} 로고">
           </div>
-        </c:forEach>
-      </c:otherwise>
-    </c:choose>
+
+          <a href="${pageContext.request.contextPath}/burger/details?id=${b.id}" class="text-decoration-none text-dark">
+            <c:choose>
+              <c:when test="${fn:startsWith(b.imagePath, '/')}">
+                <img src="${pageContext.request.contextPath}${b.imagePath}" class="card-img-top" alt="${b.name}" style="height:200px; object-fit:contain;">
+              </c:when>
+              <c:otherwise>
+                <img src="${b.imagePath}" class="card-img-top" alt="${b.name}" style="height:200px; object-fit:contain;">
+              </c:otherwise>
+            </c:choose>
+            <div class="card-body text-start">
+              <h5 class="card-title mt-2">${b.name}</h5>
+              <span class="badge patty-badge ${b.pattyType}"> ${b.pattyType} </span>
+              <div class="d-flex justify-content-between align-items-center mt-3">
+                <span class="price fw-bold text-warning">${b.price}원</span>
+                <span class="rating text-warning">
+                  <fmt:parseNumber value="${b.avgRating}" integerOnly="true" var="starFull" />
+                  <c:forEach begin="1" end="${starFull}" var="i">★</c:forEach>
+                  <c:forEach begin="1" end="${5 - starFull}" var="i">☆</c:forEach>
+                  <small>(<fmt:formatNumber value="${b.avgRating}" maxFractionDigits="1" />)</small>
+                </span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </c:forEach>
   </div>
 </div>
-
 
 <%@ include file="/include/footer.jsp" %>
 </body>

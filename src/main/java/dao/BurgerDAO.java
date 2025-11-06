@@ -197,36 +197,44 @@ public class BurgerDAO {
 	}
 	
 	public List<BurgerDTO> searchBurgers(String keyword) {
-		List<BurgerDTO> list = new ArrayList<BurgerDTO>();
-		String sql = "SELECT * FROM burger "
-					+"WHERE name LIKE ? OR brand LIKE ? ORDER BY brand , name";
-		
-		
+	    List<BurgerDTO> list = new ArrayList<>();
+	    String sql = """
+	        SELECT b.*, IFNULL(ROUND(AVG(r.rating), 1), 0) AS avg_rating
+	        FROM burger b
+	        LEFT JOIN review r ON b.id = r.burger_id
+	        WHERE (b.name LIKE CONCAT('%', ?, '%') OR b.brand LIKE CONCAT('%', ?, '%'))
+	        GROUP BY b.id
+	        ORDER BY b.brand, b.name
+	    """;
+
 	    try (Connection conn = DBUtil.getConnection();
-		         PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setString(1, "%" + keyword + "%");
-			pstmt.setString(2, "%" + keyword + "%");
-			ResultSet rs = null;
-			rs = pstmt.executeQuery();
-			
-			while (rs.next()) {
-				BurgerDTO burger = new BurgerDTO();
-				burger.setId(rs.getInt("id"));
-	            burger.setName(rs.getString("name"));
-	            burger.setPrice(rs.getInt("price"));
-	            burger.setBrand(rs.getString("brand"));
-	            burger.setImagePath(rs.getString("image_path"));
-	            burger.setNewBurger(rs.getBoolean("is_new"));
-	            burger.setPattyType(rs.getString("patty_type"));
-	            burger.setAvgRating(rs.getDouble("avg_rating"));
-	            list.add(burger);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return list;
-		
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+	        pstmt.setString(1, keyword);
+	        pstmt.setString(2, keyword);
+
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            while (rs.next()) {
+	                BurgerDTO burger = new BurgerDTO();
+	                burger.setId(rs.getInt("id"));
+	                burger.setName(rs.getString("name"));
+	                burger.setPrice(rs.getInt("price"));
+	                burger.setBrand(rs.getString("brand"));
+	                burger.setImagePath(rs.getString("image_path"));
+	                burger.setPattyType(rs.getString("patty_type"));
+	                burger.setAvgRating(rs.getDouble("avg_rating"));
+	                list.add(burger);
+	            }
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    System.out.println("🔍 검색된 버거 개수: " + list.size());
+	    return list;
 	}
+
 	
 	public List<BurgerDTO> getBurgerByPatty(String pattyType) {
 		List<BurgerDTO> list = new ArrayList<BurgerDTO>();
@@ -326,13 +334,6 @@ public class BurgerDAO {
 	    return list;
 	}
 
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
