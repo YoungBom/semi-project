@@ -9,7 +9,8 @@ public class BurgerDTO {
     private String brand;
     private String pattyType;   // ENUM('치킨','비프','기타')
     private boolean newBurger;
-
+    private double avgRating;
+    
     private BurgerDetailsDTO details;
     
     public BurgerDTO() {}
@@ -51,5 +52,10 @@ public class BurgerDTO {
     
     public boolean isNewBurger() { return newBurger; }
     public void setNewBurger(boolean newBurger) { this.newBurger  = newBurger; }
+    
+    public double getAvgRating() { return avgRating; }
+    public void setAvgRating(double avgRating) { this.avgRating = avgRating; }
+    
+    
     
 }
