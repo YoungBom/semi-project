@@ -149,7 +149,7 @@
               </div>
 
 		      <div class="modal-body">
-                <form action="${pageContext.request.contextPath}/ReviewAddProcess"
+                <form action="${pageContext.request.contextPath}/ReviewAddProcess?userId=1"
 		              method="post"
 		              enctype="multipart/form-data"
 		              class="comment-form">
@@ -206,19 +206,25 @@
                       <fmt:formatDate value="${record.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
                     </small>
           
-                    <!-- ⭐ 별점 -->
-                    <div class="rating text-warning" style="font-size: 15px;">
+                   	<!-- ⭐ 별점 -->
+                   	<div class="rating text-warning" style="font-size: 15px;">
                       <c:forEach begin="1" end="${record.rating}" var="i">★</c:forEach>
                       <c:forEach begin="1" end="${5 - record.rating}" var="i">☆</c:forEach>
                     </div>
                   </div>
           
-                  <!-- 삭제 버튼 -->
-                  <a href="${pageContext.request.contextPath}/review/delete?id=${record.id}"
+                  <!-- 수정 버튼 -->
+                  <%-- <a href="${pageContext.request.contextPath}/review/update?burgerId=${burger.id}&reviewId=131"
                      class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 m-3"
-                     onclick="return confirm('이 리뷰를 삭제하시겠습니까?');">
-                    <i class="bi bi-trash"></i> 삭제
-                  </a>
+                     onclick="return confirm('이 리뷰를 수정하시겠습니까?');">
+                    <i class="bi bi-trash"></i> 수정
+                  </a> --%>
+                  <!-- 삭제 버튼 -->
+                  <a href="${pageContext.request.contextPath}/review/delete?burgerId=${burger.id}&reviewId=131"
+					  class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 m-3 delete-btn"
+					  onclick="return confirm('이 리뷰를 삭제하시겠습니까?');">
+   				  <i class="bi bi-trash"></i> 삭제
+   				  </a>
                 </div>
               </div>
 
@@ -244,6 +250,24 @@
   </div>
 </main>
 
+<script>
+	/* document.addEventListener("DOMContentLoaded", () => {
+	  const deleteButtons = document.querySelectorAll(".delete-btn");
+
+	  deleteButtons.forEach(btn => {
+	    btn.addEventListener("click", event => {
+	      event.preventDefault();
+
+	      const reviewId = btn.dataset.reviewId; // 클릭한 버튼의 리뷰 ID만 읽음
+	      const burgerId = "${burger.id}"; // JSP에서 치환됨
+
+	      if (confirm("이 리뷰를 삭제하시겠습니까?")) {
+	        window.location.href = `${pageContext.request.contextPath}/review/delete?burgerId="${burgerId}"&reviewId="${reviewId}"`;
+	      }
+	    });
+	  });
+	}); */
+</script>
 <!-- ✅ 푸터 -->
 <%@ include file="/include/footer.jsp" %>
 
