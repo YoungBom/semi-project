@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%
     if (request.getAttribute("burgerList") == null) {
@@ -141,8 +142,21 @@
 
               <div class="d-flex justify-content-between align-items-center mt-3">
                 <span class="price fw-bold text-warning">${b.price}원</span>
-                <span class="rating">⭐</span>
+              
+                <!-- ⭐ 평균 별점 -->
+                <span class="rating text-warning">
+                  <!-- 정수부(=채워진 별 개수) 계산 -->
+                  <fmt:parseNumber value="${b.avgRating}" integerOnly="true" var="starFull" />
+                  <!-- 채워진 별 -->
+                  <c:forEach begin="1" end="${starFull}" var="i">★</c:forEach>
+                  <!-- 빈 별 -->
+                  <c:forEach begin="1" end="${5 - starFull}" var="i">☆</c:forEach>
+                  <!-- 소수 한 자리 표기 -->
+                  <small>(<fmt:formatNumber value="${b.avgRating}" maxFractionDigits="1" />)</small>
+                </span>
               </div>
+
+
             </div>
           </a>
 

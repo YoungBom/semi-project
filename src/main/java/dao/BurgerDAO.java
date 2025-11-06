@@ -136,7 +136,11 @@ public class BurgerDAO {
 	// 모든 버거 조회
 	public List<BurgerDTO> getAllBurgers() {
 		List<BurgerDTO> list = new ArrayList<>();
-		String sql = "SELECT * FROM burger ORDER BY id DESC";
+		String sql = "SELECT b.*, IFNULL(ROUND(AVG(r.rating), 1), 0) AS avg_rating " +
+	            "FROM burger b " +
+	            "LEFT JOIN review r ON b.id = r.burger_id " +
+	            "GROUP BY b.id " +
+	            "ORDER BY b.brand, b.name";
 		
 		try (Connection conn = DBUtil.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -151,6 +155,7 @@ public class BurgerDAO {
 	            burger.setImagePath(rs.getString("image_path"));
 	            burger.setNewBurger(rs.getBoolean("is_new"));
 	            burger.setPattyType(rs.getString("patty_type"));
+	            burger.setAvgRating(rs.getDouble("avg_rating"));
 	            list.add(burger);
 	        }
 			
