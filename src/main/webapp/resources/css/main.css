@@ -377,7 +377,3 @@ body {
   }
 }
 
-
-#site-header * {
-  all: revert !important;
-}
