@@ -1,18 +1,15 @@
 package dao;
 
-import model.User;
-import util.DBUtil;
+import dto.UserDTO;
 
 import java.sql.*;
 
 public class PasswordForgotDAO {
 
-	// 이메일로 사용자 조회 //
-	public User findUserByEmail(String email) throws SQLException {
+	// 이메일로 사용자 조회
+	public UserDTO findUserByEmail(String email) throws SQLException {
 		String sql = "SELECT * FROM `user` WHERE email = ?";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			if (con == null)
-				throw new SQLException("DB connection is null");
+		try (Connection con = DataSourceProvider.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, email);
 			try (ResultSet rs = ps.executeQuery()) {
 				return rs.next() ? map(rs) : null;
@@ -20,12 +17,10 @@ public class PasswordForgotDAO {
 		}
 	}
 
-	// 로그인 아이디로 사용자 조회 //
-	public User findUserByLoginId(String loginId) throws SQLException {
+	// 로그인 아이디로 사용자 조회
+	public UserDTO findUserByLoginId(String loginId) throws SQLException {
 		String sql = "SELECT * FROM `user` WHERE user_id = ?";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			if (con == null)
-				throw new SQLException("DB connection is null");
+		try (Connection con = DataSourceProvider.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, loginId);
 			try (ResultSet rs = ps.executeQuery()) {
 				return rs.next() ? map(rs) : null;
@@ -33,16 +28,14 @@ public class PasswordForgotDAO {
 		}
 	}
 
-	// 요청 로그 적재(선택 기능) — 로그 테이블 없으면 호출하지 마세요 //
-	public void insertRequestLog(Integer userId, String email, String loginId, String clientIp) throws SQLException {
+	// 요청 로그 적재(옵션) — 테이블이 있을 때만 사용
+	public void insertRequestLog(Long userId, String email, String loginId, String clientIp) throws SQLException {
 		String sql = "INSERT INTO password_forgot_log(user_id, email, login_id, client_ip) VALUES (?,?,?,?)";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			if (con == null)
-				throw new SQLException("DB connection is null");
+		try (Connection con = DataSourceProvider.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			if (userId == null)
-				ps.setNull(1, Types.INTEGER);
+				ps.setNull(1, Types.BIGINT);
 			else
-				ps.setInt(1, userId);
+				ps.setLong(1, userId);
 			ps.setString(2, email);
 			ps.setString(3, loginId);
 			ps.setString(4, clientIp);
@@ -50,12 +43,12 @@ public class PasswordForgotDAO {
 		}
 	}
 
-	// --- ResultSet -> User 매핑 (UserDao의 map과 동일 규칙) ---
-	private User map(ResultSet rs) throws SQLException {
-		User u = new User();
-		u.setId(rs.getInt("id"));
-		u.setUser_id(rs.getString("user_id"));
-		u.setUser_pw(rs.getString("user_pw"));
+	// --- ResultSet -> UserDTO 매핑 ---
+	private UserDTO map(ResultSet rs) throws SQLException {
+		UserDTO u = new UserDTO();
+		u.setId(rs.getLong("id"));
+		u.setUserId(rs.getString("user_id"));
+		u.setPasswordHash(rs.getString("pw_hash")); // 해시 컬럼명 주의
 		u.setEmail(rs.getString("email"));
 		u.setPhone(rs.getString("phone"));
 		u.setBirth(rs.getString("birth"));
@@ -63,6 +56,13 @@ public class PasswordForgotDAO {
 		u.setName(rs.getString("name"));
 		u.setNickname(rs.getString("nickname"));
 		u.setAddress(rs.getString("address"));
+		Timestamp c = rs.getTimestamp("created_at");
+		Timestamp m = rs.getTimestamp("updated_at");
+		if (c != null)
+			u.setCreatedAt(c.toLocalDateTime());
+		if (m != null)
+			u.setUpdatedAt(m.toLocalDateTime());
+		u.setRole(rs.getString("role"));
 		return u;
 	}
 }

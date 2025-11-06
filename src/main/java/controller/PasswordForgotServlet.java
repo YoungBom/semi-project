@@ -1,50 +1,39 @@
 package controller;
-
-import dao.PasswordResetDAO;
 import dao.UserDAO;
-import model.User;
+import dto.UserDTO;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.time.Instant;
+import java.sql.SQLException;
 import java.util.Base64;
 
-@WebServlet("/password/forgot")
+@WebServlet("/user/password-forgot")
 public class PasswordForgotServlet extends HttpServlet {
-	private final PasswordResetDAO resetDao = new PasswordResetDAO();
 	private final UserDAO userDao = new UserDAO();
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getRequestDispatcher("/user/password_forgot.jsp").forward(req, resp);
-	}
-
-	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
 		String email = req.getParameter("email");
-
 		try {
-			User u = userDao.findByEmail(email);
+			UserDTO u = userDao.findByEmail(email);
+			// 실제 운영에선 토큰을 DB에 저장하고 이메일 발송
 			if (u != null) {
 				String token = generateToken();
-				resetDao.createToken(u.getId(), token, Instant.now().plusSeconds(60 * 30)); // 30분
-				// 실제로는 이메일 발송. 여기서는 화면에 안내만.
-				req.setAttribute("debug_token", token);
+				req.setAttribute("debug_token", token); // 데모 표시
 			}
-			req.setAttribute("msg", "비밀번호 재설정 안내가 전송되었습니다.");
+			req.setAttribute("msg", "비밀번호 재설정 안내를 이메일로 전송했습니다.");
 			req.getRequestDispatcher("/user/password_forgot.jsp").forward(req, resp);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new ServletException(e);
 		}
 	}
 
 	private String generateToken() {
-		byte[] b = new byte[32];
-		new SecureRandom().nextBytes(b);
-		return Base64.getUrlEncoder().withoutPadding().encodeToString(b);
+		byte[] buf = new byte[24];
+		new SecureRandom().nextBytes(buf);
+		return Base64.getUrlEncoder().withoutPadding().encodeToString(buf);
 	}
 }

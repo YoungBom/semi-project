@@ -21,7 +21,7 @@
     <c:out value="${requestScope.msg}" />
   </div>
 
-  <form method="post" action="${ctx}/register" autocomplete="off">
+  <form method="post" action="${pageContext.request.contextPath}/user/signup" autocomplete="off">
     <label> 아이디(*) 
       <input type="text" name="user_id" required maxlength="255" placeholder="로그인에 쓸 아이디" autocomplete="username">
     </label>
