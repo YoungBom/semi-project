@@ -61,6 +61,7 @@ public class UserDAO {
         }
         return null;
     }
+    
 
     public boolean existsByEmail(String email) throws SQLException {
         String sql = "SELECT 1 FROM user WHERE email = ?";

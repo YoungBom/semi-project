@@ -21,35 +21,33 @@ public class MyPageServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession s = req.getSession(false);
-        Long uidObj = (s == null) ? null : toLong(s.getAttribute(SessionKeys.LOGIN_UID));
-
+        Object uidObj = (s == null) ? null : s.getAttribute(SessionKeys.LOGIN_UID);
         if (uidObj == null) {
             String next = URLEncoder.encode(req.getRequestURI(), StandardCharsets.UTF_8);
             resp.sendRedirect(req.getContextPath() + "/login?next=" + next);
             return;
         }
 
-        long uid = uidObj.longValue();
+        long uid = (uidObj instanceof Number)
+                ? ((Number) uidObj).longValue()
+                : Long.parseLong(uidObj.toString());
+
         try {
-            UserDTO user = userDao.findById(uid); // findById가 없다면 findByPk로 바꾸고 DAO에 맞춰주세요.
+            UserDTO user = userDao.findById(uid);
             if (user == null) {
                 s.invalidate();
                 String next = URLEncoder.encode(req.getRequestURI(), StandardCharsets.UTF_8);
                 resp.sendRedirect(req.getContextPath() + "/login?next=" + next);
                 return;
             }
+
+            // JSP에서 어떤 이름을 쓰든 보이도록 둘 다 세팅
             req.setAttribute("user", user);
-            req.getRequestDispatcher("/resources/user/mypage.jsp").forward(req, resp);
+            req.setAttribute("me", user);
+
+            req.getRequestDispatcher("/user/mypage.jsp").forward(req, resp);
         } catch (SQLException e) {
             throw new ServletException(e);
         }
-    }
-
-    private Long toLong(Object o) {
-        if (o == null) return null;
-        if (o instanceof Long) return (Long) o;
-        if (o instanceof Integer) return ((Integer) o).longValue();
-        if (o instanceof Number) return ((Number) o).longValue();
-        try { return Long.parseLong(o.toString()); } catch (Exception ignore) { return null; }
     }
 }

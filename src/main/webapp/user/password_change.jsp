@@ -4,7 +4,9 @@
 
 <!DOCTYPE html>
 <html lang="ko">
-<head><meta charset="UTF-8"><title>비밀번호 변경</title></head>
+<head><meta charset="UTF-8"><title>비밀번호 변경</title>
+<link rel="stylesheet" href="${ctx}/resources/css/user.css">
+</head>
 <body>
 <h1>비밀번호 변경</h1>
 
