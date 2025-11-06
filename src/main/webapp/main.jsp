@@ -110,7 +110,7 @@
   </div>
 </div>
 <!-- ✅ 버거 리스트 섹션 -->
-<div class="container mt-5 text-center">
+<div class="container mt-5">
   <h2 class="fw-bold mb-4 text-center">🔥 인기 버거 메뉴</h2>
   <div class="row justify-content-center">
     <c:forEach var="b" items="${burgerList}">
