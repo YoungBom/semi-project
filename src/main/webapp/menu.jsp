@@ -106,6 +106,9 @@
             <div class="card-body text-start">
               <span class="badge badge-brand">${b.brand}</span>
               <h5 class="card-title mt-2">${b.name}</h5>
+              <!-- 테스트 -->
+              <h5 class="card-title mt-2">${b.avgRating}</h5>
+              <!-- 테스트 -->
               <p class="card-text text-secondary">${b.pattyType}</p>
 
               <div class="d-flex justify-content-between align-items-center mt-3">

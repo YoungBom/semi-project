@@ -11,7 +11,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import dao.BurgerSearchDAO;
+import dao.BurgerDAO;
 import dto.BurgerDTO;
 
 /**
@@ -46,11 +46,11 @@ public class FilterServlet extends HttpServlet {
 		response.setContentType("application/json; charset=UTF-8");
 		
 		String patty = request.getParameter("patty");
-		BurgerSearchDAO dao = new BurgerSearchDAO();
+		BurgerDAO dao = new BurgerDAO();
 		List<BurgerDTO> burgers;
 		
 		if (patty == null || patty.equals("all")) {
-			burgers = dao.getAllburger();
+			burgers = dao.getAllBurgers();
 		} else {
 			burgers = dao.getBurgerByPatty(patty);
 		}

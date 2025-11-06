@@ -220,7 +220,7 @@
                     <i class="bi bi-trash"></i> 수정
                   </a> --%>
                   <!-- 삭제 버튼 -->
-                  <a href="${pageContext.request.contextPath}/review/delete?burgerId=${burger.id}&reviewId=131"
+                  <a href="${pageContext.request.contextPath}/review/delete?burgerId=${burger.id}&reviewId=${record.id}"
 					  class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 m-3 delete-btn"
 					  onclick="return confirm('이 리뷰를 삭제하시겠습니까?');">
    				  <i class="bi bi-trash"></i> 삭제
@@ -230,6 +230,7 @@
 
                 <!-- 리뷰 내용 -->
               <p class="mb-2">${record.content}</p>
+              <p class="mb-2">${record.id}</p>
 
               <!-- 리뷰 이미지 (있을 때만) -->
               <c:if test="${not empty record.imageList}">
