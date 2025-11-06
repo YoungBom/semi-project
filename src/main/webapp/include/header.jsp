@@ -6,6 +6,8 @@
   boolean loggedIn = (uidObj != null);
 %>
 
+<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
+
 <div id="site-header">
 <nav class="navbar navbar-expand-lg shadow-sm py-3" style="background:#fff8e6;">
   <div class="container">
