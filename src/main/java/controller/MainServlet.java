@@ -19,10 +19,14 @@ public class MainServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+    	
+        List<BurgerDTO> newBurgerList = burgerDAO.getNewBurgers();
 
-        List<BurgerDTO> burgerList = burgerDAO.getAllBurgers();
+        List<BurgerDTO> topRatedList = burgerDAO.getTopRatedBurgers();
 
-        req.setAttribute("burgerList", burgerList);
+        req.setAttribute("newBurgerList", newBurgerList);
+        req.setAttribute("topRatedList", topRatedList);
+
         req.getRequestDispatcher("/main.jsp").forward(req, resp);
     }
 }
