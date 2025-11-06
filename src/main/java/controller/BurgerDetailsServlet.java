@@ -21,10 +21,26 @@ public class BurgerDetailsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-    	int id = Integer.parseInt(req.getParameter("id"));
-    	int userId = 1;
+        // id 파라미터 유효성 검사
+        String idParam = req.getParameter("id");
+        if (idParam == null || !idParam.matches("\\d+")) {
+            // 숫자가 아니거나 아예 없는 경우 메인으로 리다이렉트
+            resp.sendRedirect(req.getContextPath() + "/main");
+            return;
+        }
+
+        int id = Integer.parseInt(idParam);
+        int userId = 1;
+        
+        // burgerDAO에서 버거 정보 가져오기
         BurgerDTO burger = burgerDAO.getBurgerById(id);
 
+        // 존재하지 않는 버거 ID일 경우 main 페이지로 이동
+        if (burger == null) {
+            resp.sendRedirect(req.getContextPath() + "/main");
+            return;
+        }
+        
         req.setAttribute("burger", burger);
         
 //      리뷰 목록 불러오기
