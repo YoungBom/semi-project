@@ -217,7 +217,16 @@
                   <!-- 날짜 + 별점 -->
                   <div class="d-flex align-items-center gap-2">
                     <small class="text-muted">
-                      <fmt:formatDate value="${record.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                      <c:choose>
+                      	<c:when test="${record.updatedAt ne record.createdAt}">
+                      		<fmt:formatDate value="${record.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/>  
+                      		<span class="text-secondary">(수정됨)</span>                    	
+                      	</c:when>
+                      	<c:otherwise>
+                      		<fmt:formatDate value="${record.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                      	</c:otherwise>
+                      </c:choose>
+                      	
                     </small>
           
                    	<!-- ⭐ 별점 -->
