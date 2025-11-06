@@ -69,7 +69,7 @@ public class ReviewAddServlet extends HttpServlet {
 		 */
 		
 		// 추후 로그인되면 userId 값 가져오기
-		int userId = 1;
+		int userId = Integer.parseInt(req.getParameter("userId"));
 		String content = req.getParameter("content");
 		String unitRating = req.getParameter("rating");
 		
