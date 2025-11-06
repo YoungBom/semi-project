@@ -10,21 +10,15 @@
 	--surface-muted: #F8F8F8;
 }
 
-* {
-	box-sizing: border-box
-}
+* { box-sizing: border-box }
 
-html, body {
-	margin: 0;
-	padding: 0
-}
+html, body { margin: 0; padding: 0 }
 
 body {
 	font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans,
 		"Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
 	line-height: 1.5;
-	background: linear-gradient(180deg, #fff 0%, #fff 55%, var(--brand-cream)
-		100%);
+	background: linear-gradient(180deg, #fff 0%, #fff 55%, var(--brand-cream) 100%);
 	color: var(--ink);
 }
 
@@ -41,7 +35,6 @@ h1 {
 	color: var(--surface);
 	text-shadow: 0 2px 12px rgba(0, 0, 0, .35);
 }
-
 h1::before {
 	content: "🍔";
 	border-radius: 50%;
@@ -79,52 +72,26 @@ input, select {
 	background: #fff;
 	border: 1.5px solid var(--line);
 }
-
-input::placeholder {
-	color: #9aa0a6
-}
-
+input::placeholder { color: #9aa0a6 }
 input:focus, select:focus {
 	outline: none;
 	border-color: var(--brand-orange);
 	box-shadow: 0 0 0 4px rgba(255, 122, 34, 0.18);
 }
 
-.row {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 16px;
-}
-
-@media ( max-width :640px) {
-	.row {
-		grid-template-columns: 1fr;
-	}
-}
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width:640px){ .row { grid-template-columns: 1fr; } }
 
 p {
 	max-width: 720px;
 	margin: 8px auto;
 	padding: 0 16px
 }
+p:nth-of-type(1){ color: #C62828; font-weight: 700 }
+p:nth-of-type(2){ color: #1B5E20; font-weight: 700 }
 
-p:nth-of-type(1) {
-	color: #C62828;
-	font-weight: 700
-}
-
-p:nth-of-type(2) {
-	color: #1B5E20;
-	font-weight: 700
-}
-
-.actions {
-	margin-top: 20px;
-	display: flex;
-	gap: 12px;
-}
-
-.actions button {
+.actions { margin-top: 20px; display: flex; gap: 12px; }
+.actions button{
 	cursor: pointer;
 	border: 0;
 	border-radius: 999px;
@@ -132,42 +99,28 @@ p:nth-of-type(2) {
 	font-size: 16px;
 	font-weight: 900;
 	letter-spacing: .2px;
-	background: linear-gradient(180deg, var(--brand-orange),
-		var(--brand-orange-dk));
+	background: linear-gradient(180deg, var(--brand-orange), var(--brand-orange-dk));
 	color: #fff;
-	box-shadow: 0 6px 16px rgba(255, 122, 34, 0.25), 0 2px 0
-		rgba(0, 0, 0, 0.06) inset;
+	box-shadow: 0 6px 16px rgba(255, 122, 34, 0.25), 0 2px 0 rgba(0, 0, 0, 0.06) inset;
 	transition: transform .06s ease, box-shadow .15s ease, filter .15s ease;
 }
-
-.actions button:hover {
+.actions button:hover{
 	filter: saturate(1.05) brightness(1.02);
-	box-shadow: 0 8px 20px rgba(255, 122, 34, 0.35), 0 2px 0
-		rgba(0, 0, 0, 0.08) inset;
+	box-shadow: 0 8px 20px rgba(255, 122, 34, 0.35), 0 2px 0 rgba(0, 0, 0, 0.08) inset;
 }
+.actions button:active{ transform: translateY(1px) }
 
-.actions button:active {
-	transform: translateY(1px)
-}
-
-a {
+a{
 	color: var(--brand-orange);
 	text-decoration: none;
 	border-bottom: 2px solid transparent;
 	transition: border-color .15s ease, color .15s ease;
 }
+a:hover{ color: var(--brand-orange-dk); border-color: rgba(255, 122, 34, 0.25); }
 
-a:hover {
-	color: var(--brand-orange-dk);
-	border-color: rgba(255, 122, 34, 0.25);
-}
+body>p:last-of-type{ margin-top: 16px; text-align: center }
 
-body>p:last-of-type {
-	margin-top: 16px;
-	text-align: center
-}
-
-form::after {
+form::after{
 	content: "";
 	display: block;
 	height: 6px;
@@ -176,7 +129,7 @@ form::after {
 	background: linear-gradient(90deg, var(--brand-orange) 0%, #FF9B57 100%);
 }
 
-
+/* --- 모달 (1세트만 유지) --- */
 .modal-backdrop {
 	position: fixed;
 	inset: 0;
@@ -186,13 +139,10 @@ form::after {
 	transition: opacity .15s ease;
 	z-index: 1500;
 }
-
 .modal-backdrop.show {
 	opacity: 1;
 	pointer-events: auto;
 }
-
-
 .modal {
 	position: fixed;
 	inset: 0;
@@ -203,13 +153,8 @@ form::after {
 	z-index: 1510;
 	transition: opacity .15s ease, transform .15s ease;
 }
-
-.modal.show {
-	opacity: 1;
-	pointer-events: auto;
-}
-
-.modal-card {
+.modal.show { opacity: 1; pointer-events: auto; }
+.modal-card{
 	width: min(520px, 92vw);
 	background: #fff;
 	border-radius: 14px;
@@ -217,116 +162,51 @@ form::after {
 	padding: 22px 22px 18px;
 	position: relative;
 }
+.modal-card h3{ margin: 0 0 8px; font-size: 20px; }
+.modal-card p{ margin: 0 0 16px; color: #444; }
+.modal-actions{ display: flex; justify-content: flex-end; gap: 8px; }
 
-.modal-card h3 {
-	margin: 0 0 8px;
-	font-size: 20px;
+.btn{ border: 1px solid #ff7a1a; background: #fff; color: #ff7a1a; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
+.btn.primary{ background: #ff7a1a; color: #fff; }
+.btn:hover{ opacity: .92; }
+
+.modal-close{
+	position: absolute; right: 10px; top: 6px;
+	border: 0; background: transparent; font-size: 22px; cursor: pointer; color: #888;
 }
-
-.modal-card p {
-	margin: 0 0 16px;
-	color: #444;
-}
-
-.modal-actions {
-	display: flex;
-	justify-content: flex-end;
-	gap: 8px;
-}
-
-
-.btn {
-	border: 1px solid #ff7a1a;
-	background: #fff;
-	color: #ff7a1a;
-	padding: 8px 14px;
-	border-radius: 8px;
-	cursor: pointer;
-}
-
-.btn.primary {
-	background: #ff7a1a;
-	color: #fff;
-}
-
-.btn:hover {
-	opacity: .92;
-}
-
-
-.modal-close {
-	position: absolute;
-	right: 10px;
-	top: 6px;
-	border: 0;
-	background: transparent;
-	font-size: 22px;
-	cursor: pointer;
-	color: #888;
-}
-
-.modal-close:hover {
-	color: #333;
-}
+.modal-close:hover{ color: #333; }
 
 /* 로그인 버튼 - 컴팩트 버전 */
-.btn-login {
+.btn-login{
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: .5rem;
-
-  /* 크기 ↓ */
   padding: 10px 16px;
   font-size: 15px;
   font-weight: 600;
   line-height: 1;
-  min-width: 140px;          /* 고정폭 싫으면 이 줄 지워도 됨 */
-
-  color: #fff;               /* 글자 흰색 */
+  min-width: 140px;
+  color: #fff;
   background: linear-gradient(180deg, var(--brand-orange) 0%, var(--brand-orange-dk) 100%);
   border: 1px solid var(--brand-orange-dk);
-
-  border-radius: 10px;       /* 둥글게(필요하면 12~14px로 더 둥글게) */
+  border-radius: 10px;
   box-shadow: 0 3px 10px rgba(255, 122, 34, .28);
-
   cursor: pointer;
   transition: transform .06s ease, box-shadow .2s ease, background-color .2s ease, filter .2s ease;
 }
+.btn-login:hover{ filter: brightness(1.03); box-shadow: 0 5px 14px rgba(255, 122, 34, .32); }
+.btn-login:active{ transform: translateY(1px); box-shadow: 0 2px 8px rgba(255, 122, 34, .26); }
+.btn-login:focus-visible{ outline: 3px solid rgba(255,122,34,.25); outline-offset: 2px; }
+.btn-login:disabled{ opacity: .6; cursor: not-allowed; box-shadow: none; }
+@media (max-width: 480px){ .btn-login { min-width: 100%; } }
 
-.btn-login:hover {
-  filter: brightness(1.03);
-  box-shadow: 0 5px 14px rgba(255, 122, 34, .32);
-}
-
-.btn-login:active {
-  transform: translateY(1px);
-  box-shadow: 0 2px 8px rgba(255, 122, 34, .26);
-}
-
-.btn-login:focus-visible {
-  outline: 3px solid rgba(255,122,34,.25);
-  outline-offset: 2px;
-}
-
-.btn-login:disabled {
-  opacity: .6;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-
-@media (max-width: 480px) {
-  .btn-login { min-width: 100%; }
-}
 .logout-form { display:flex; justify-content:center; }
-
 .btn-logout{
   --bg: var(--brand-orange);
   --bg-dk: var(--brand-orange-dk);
   --text: #fff;
   --ring: rgba(255,122,34,.35);
-
   display:inline-flex; align-items:center; gap:.6rem;
   padding:.9rem 1.25rem;
   border:none; border-radius:9999px;
@@ -339,11 +219,7 @@ form::after {
 .btn-logout .ico{ opacity:.95; }
 .btn-logout:hover{ filter:saturate(1.05) brightness(1.02); box-shadow:0 10px 22px rgba(255,122,34,.32); }
 .btn-logout:active{ transform: translateY(1px) scale(.995); }
-.btn-logout:focus-visible{
-  outline:0;
-  box-shadow:0 10px 22px rgba(255,122,34,.32), 0 0 0 4px var(--ring);
-}
-
+.btn-logout:focus-visible{ outline:0; box-shadow:0 10px 22px rgba(255,122,34,.32), 0 0 0 4px var(--ring); }
 .btn-logout .spinner{
   width:16px; height:16px; border-radius:50%;
   border:2px solid rgba(255,255,255,.45);
@@ -354,11 +230,11 @@ form::after {
 .btn-logout.loading .label{ opacity:.85; }
 .btn-logout.loading .spinner{ display:inline-block; }
 .btn-logout.loading{ pointer-events:none; filter:grayscale(.1) brightness(.98); }
-
 @media (prefers-reduced-motion: reduce){
   .btn-logout{ transition:none; }
   .btn-logout:active{ transform:none; }
 }
+
 /* 로그인 폼 버튼 가운데 정렬 */
 .actions.center{
   display:flex;
@@ -372,7 +248,6 @@ form::after {
   --bg: var(--brand-orange);
   --bg-dk: var(--brand-orange-dk);
   --text: #fff;
-
   display:inline-flex; justify-content:center; align-items:center;
   min-width: 160px; height: 44px;
   padding: 0 18px;
@@ -386,33 +261,128 @@ form::after {
 .btn-primary:active{ transform: translateY(1px) scale(.995); }
 .btn-primary:focus-visible{ outline:0; box-shadow:0 0 0 4px rgba(255,122,34,.35); }
 
-/* ===== 모달 ===== */
-.modal{ position:fixed; inset:0; display:none; }
-.modal.show{ display:block; }
-.modal-backdrop{
-  position:absolute; inset:0; background:rgba(0,0,0,.35); backdrop-filter: blur(2px);
+/* ===== 회원가입 유도문구(중복 정리 후 최종) ===== */
+form .auth-switch{
+  padding: 0 !important;   /* 공통 p 패딩 제거 */
+  margin-top: 8px;         /* 버튼과 간격 타이트 */
+  margin-bottom: 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink-weak);
 }
-.modal-panel{
-  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-  width:min(520px, 90vw); background:var(--surface,#fff);
-  border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,.25);
-  overflow:hidden;
+.auth-switch.tight-center{ margin-top: 8px; margin-bottom: 0; }
+.auth-switch .link-accent{
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--brand-orange);
 }
-.modal-header{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:16px 18px; background:linear-gradient(180deg,#fff 0%, #FEFAF0 100%);
-  border-bottom:1px solid var(--line,#ededed);
-}
-.modal-header h3{ margin:0; font-size:18px; color:var(--ink-strong,#1f1f1f); }
-.modal-close{
-  border:0; background:transparent; font-size:24px; line-height:1; cursor:pointer; color:#999;
-}
-.modal-body{ padding:18px; color:var(--ink,#333); }
-.modal-footer{ padding:14px 18px; display:flex; justify-content:flex-end; gap:8px; border-top:1px solid var(--line,#ededed); }
-
-/* 모션 감소 선호 */
-@media (prefers-reduced-motion: reduce){
-  .btn-primary{ transition:none; }
-}
+.auth-switch .link-accent:hover{ text-decoration: underline; }
 
 
+/* 뷰포트 전체를 배경으로 채우기 */
+html, body { height: 100%; }
+body { min-height: 100vh; }
+
+/* 로그인 카드 수직·수평 정중앙 배치 */
+.auth-wrap{
+  min-height: 100vh;          /* 화면 높이 전체 */
+  display: grid;
+  place-items: center;         /* 가로·세로 중앙 */
+  padding: 24px 0;             /* 상하 숨 쉬기 */
+}
+
+/* form 자체 여백은 수평 가운데 유지 */
+.login-form{ margin: 0 auto; } /* 이미 있음이면 그대로 OK */
+
+/* 하단 회원가입 문구가 버튼 중앙선과 정확히 맞도록 */
+.auth-wrap form .auth-switch{
+  padding: 0 !important;  /* 전역 p 패딩 무력화 */
+  margin-top: 8px;
+  margin-bottom: 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink-weak);
+}
+/* 뷰포트 꽉 채우고 중앙 정렬 */
+:root{ --header-h: 0px; }         /* 상단 고정 헤더가 있으면 그 높이(px)로 바꿔줘 */
+
+html, body { height: 100%; }
+body { min-height: 100vh; }
+
+/* 최신 브라우저에서 주소창 높이 보정 */
+.auth-viewport{
+  min-height: calc(100svh - var(--header-h));
+  display: flex;
+  align-items: center;      /* 세로 중앙 */
+  justify-content: center;  /* 가로 중앙 */
+  padding-block: clamp(16px, 2vh, 32px);  /* 상하 여백(작은 화면 보호) */
+}
+
+/* 지원되면 100dvh로 더 정확하게 */
+@supports (height: 100dvh){
+  .auth-viewport{ min-height: calc(100dvh - var(--header-h)); }
+}
+
+/* 시각적 보정: 아주 살짝 위로 올리고 싶으면 주석 해제(큰 화면에서만 적용) */
+@media (min-height: 700px){
+  .auth-viewport .login-form{ transform: translateY(-2vh); } /* -1~ -3vh로 조절 */
+}
+
+/* 전역 p 패딩 때문에 좌우가 밀리지 않도록 유지 */
+.auth-viewport .auth-switch{ padding: 0 !important; }
+
+/* 페이지 전용: 뷰포트 꽉 채우고 가로·세로 정중앙 */
+html, body { height: 100%; }
+.login-page{
+  min-height: 100svh;       /* 모바일 주소창 변동 고려 */
+  display: grid;
+  place-items: center;      /* 가로·세로 중앙 정렬 */
+  padding: 24px 0;          /* 상하 여백(작은 화면 보호) */
+}
+
+/* 지원되면 더 정확한 높이 사용 */
+@supports (height: 100dvh){
+  .login-page{ min-height: 100dvh; }
+}
+
+/* 전역 p 패딩 때문에 회원가입 문구가 밀리지 않도록 */
+.login-page .auth-switch{
+  padding: 0 !important;
+  margin-top: 8px;
+  margin-bottom: 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink-weak);
+}
+
+/* === 로그인 카드 사이즈 키우기 (예전 크기 느낌) === */
+.login-form{
+  /* 화면에 따라 유연하지만 상한 720px */
+  width: clamp(560px, 60vw, 720px);   /* 필요하면 600~680로 첫 값을 조절 */
+  padding: 28px 32px;                 /* 카드 내부 여백 조금 넉넉하게 */
+  border-radius: 16px;
+}
+
+/* 인풋·셀렉트·텍스트에어리어 폭 꽉 채우기 + 높이 키우기 */
+.login-form input,
+.login-form select,
+.login-form textarea{
+  width: 100%;
+  height: 46px;       /* 44~50px 사이 취향대로 */
+  font-size: 16px;
+}
+
+/* 레이블/필드 간격 약간 넉넉하게 */
+.login-form label{
+  gap: 10px;
+  margin: 14px 0;
+}
+
+/* 버튼도 폼 폭과 비율 맞춰서 살짝 키우기 */
+.login-form .btn-primary{
+  min-width: 200px;   /* 220~240으로 더 키워도 OK */
+  height: 46px;
+  font-size: 16px;
+}
+
+/* 하단 구분선과 문구도 폼 폭에 맞도록 기본 유지 (이미 OK) */
