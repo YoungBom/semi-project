@@ -8,6 +8,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%
+    // JSP가 단독 실행될 때 burger가 없으면 메인으로 이동 (burgerDetails.jsp를 실행하면 main으로 이동하게 바꿈), 근데 굳이 필요한가 싶기도하고
+    Object burgerObj = request.getAttribute("burger");
+    if (burgerObj == null) {
+        response.sendRedirect(request.getContextPath() + "/main");
+        return;
+    }
+%>
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
