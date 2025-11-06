@@ -61,7 +61,7 @@ public class ReviewDAO {
 
 	    try {
 	        String sql =
-	            "SELECT r.id AS review_id, r.rating, r.content, r.created_at, u.nickname, ri.image_path " +
+	            "SELECT r.id AS review_id, r.rating, r.content, r.created_at, r.updated_at, u.nickname, ri.image_path " +
 	            "FROM review r " +
 	            "LEFT JOIN review_image ri ON r.id = ri.review_id " +
 	            "JOIN user u ON r.user_id = u.id " +
@@ -82,6 +82,7 @@ public class ReviewDAO {
 	                review.setNickname(rs.getString("nickname"));
 	                review.setContent(rs.getString("content"));
 	                review.setCreatedAt(rs.getTimestamp("created_at"));
+	                review.setUpdatedAt(rs.getTimestamp("updated_at"));
 	                review.setRating(rs.getInt("rating"));
 	                review.setImageList(new ArrayList<>());
 	                reviewMap.put(reviewId, review);
