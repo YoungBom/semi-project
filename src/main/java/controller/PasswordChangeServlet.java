@@ -1,74 +1,46 @@
 package controller;
+
 import dao.UserDAO;
+import dto.UserDTO;
 import util.PasswordUtil;
+import util.SessionKeys;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-
 import java.io.IOException;
+import java.sql.SQLException;
 
-@WebServlet("/password/change")
+@WebServlet("/user/password-change")
 public class PasswordChangeServlet extends HttpServlet {
-    private final UserDAO userDao = new UserDAO();
+	private final UserDAO userDao = new UserDAO();
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        HttpSession s = req.getSession(false);
-        if (s == null || s.getAttribute("LOGIN_UID") == null) {
-            req.getSession(true).setAttribute("AFTER_LOGIN_REDIRECT", req.getRequestURI());
-            resp.sendRedirect(req.getContextPath() + "/user/login.jsp");
-            return;
-        }
-        req.getRequestDispatcher("/user/password_change.jsp").forward(req, resp);
-    }
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession s = req.getSession(false);
+		if (s == null || s.getAttribute(SessionKeys.LOGIN_UID) == null) {
+			resp.sendRedirect(req.getContextPath() + "/login");
+			return;
+		}
+		long uid = (long) s.getAttribute(SessionKeys.LOGIN_UID);
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
+		String currentPw = req.getParameter("current_pw");
+		String newPw = req.getParameter("new_pw");
 
-        HttpSession s = req.getSession(false);
-        if (s == null || s.getAttribute("LOGIN_UID") == null) {
-            resp.sendRedirect(req.getContextPath() + "/user/login.jsp");
-            return;
-        }
+		try {
+			UserDTO me = userDao.findByPk(uid);
+			if (me == null || !PasswordUtil.verify(currentPw, me.getPasswordHash())) {
+				req.setAttribute("error", "현재 비밀번호가 일치하지 않습니다.");
+				req.getRequestDispatcher("/user/password_change.jsp").forward(req, resp);
+				return;
+			}
+			String newHash = PasswordUtil.hash(newPw);
+			userDao.updatePassword(uid, newHash);
 
-        int uid = (int) s.getAttribute("LOGIN_UID");
-        String cur = req.getParameter("current_pw");
-        String npw = req.getParameter("new_pw");
-        String npw2 = req.getParameter("new_pw2");
-
-        try {
-            if (npw == null || !npw.equals(npw2)) {
-                req.setAttribute("error", "새 비밀번호가 일치하지 않습니다.");
-                req.getRequestDispatcher("/user/password_change.jsp").forward(req, resp);
-                return;
-            }
-
-            User me = userDao.findByPk(uid);
-            if (me == null) {
-                resp.sendRedirect(req.getContextPath() + "/user/login.jsp");
-                return;
-            }
-
-            
-            boolean ok = PasswordUtil.verify(cur, me.getUser_pw());
-            if (!ok) {
-                req.setAttribute("error", "현재 비밀번호가 올바르지 않습니다.");
-                req.getRequestDispatcher("/user/password_change.jsp").forward(req, resp);
-                return;
-            }
-
-           
-            String hashed = PasswordUtil.hash(npw);
-            userDao.updatePassword(uid, hashed);
-
-            s.setAttribute("FLASH", "비밀번호가 변경되었습니다.");
-            resp.sendRedirect(req.getContextPath() + "/user/mypage");
-        } catch (Exception e) {
-            throw new ServletException(e);
-        }
-    }
+			req.setAttribute("msg", "비밀번호가 변경되었습니다.");
+			req.getRequestDispatcher("/user/password_change.jsp").forward(req, resp);
+		} catch (SQLException e) {
+			throw new ServletException(e);
+		}
+	}
 }

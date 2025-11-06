@@ -1,6 +1,7 @@
 package dao;
 
 import dto.UserDTO;
+
 import java.sql.*;
 
 public class UserDAO {
@@ -25,10 +26,9 @@ public class UserDAO {
         return u;
     }
 
-    // (1) 이메일로 사용자 조회  ← IdLookupServlet, PasswordForgotServlet에서 요구
     public UserDTO findByEmail(String email) throws SQLException {
         String sql = "SELECT * FROM user WHERE email = ?";
-        try (Connection con = DataSourceProvider.get().getConnection();
+        try (Connection con = DataSourceProvider.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
@@ -38,10 +38,9 @@ public class UserDAO {
         return null;
     }
 
-    // (2) PK로 조회  ← UserEditServlet, PasswordChangeServlet 등에서 요구 (findByPk)
     public UserDTO findByPk(long id) throws SQLException {
         String sql = "SELECT * FROM user WHERE id = ?";
-        try (Connection con = DataSourceProvider.get().getConnection();
+        try (Connection con = DataSourceProvider.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setLong(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -51,10 +50,9 @@ public class UserDAO {
         return null;
     }
 
-    // (3) 로그인 ID로 조회  ← AuthLoginServlet 등
     public UserDTO findByLoginId(String userId) throws SQLException {
         String sql = "SELECT * FROM user WHERE user_id = ?";
-        try (Connection con = DataSourceProvider.get().getConnection();
+        try (Connection con = DataSourceProvider.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -64,10 +62,9 @@ public class UserDAO {
         return null;
     }
 
-    // (4) 이메일 중복 체크  ← SignupServlet에서 사용
     public boolean existsByEmail(String email) throws SQLException {
         String sql = "SELECT 1 FROM user WHERE email = ?";
-        try (Connection con = DataSourceProvider.get().getConnection();
+        try (Connection con = DataSourceProvider.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
@@ -76,14 +73,13 @@ public class UserDAO {
         }
     }
 
-    // (5) 회원 생성  ← SignupServlet
     public long create(UserDTO u) throws SQLException {
         String sql = """
             INSERT INTO user
             (user_id, email, name, nickname, phone, address, gender, birth, pw_hash, role, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
             """;
-        try (Connection con = DataSourceProvider.get().getConnection();
+        try (Connection con = DataSourceProvider.getConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             int i=1;
             ps.setString(i++, u.getUserId());
@@ -104,7 +100,6 @@ public class UserDAO {
         return 0L;
     }
 
-    // (6) 프로필 업데이트 (서블릿이 파라미터 개별 전달) ← UserEditServlet의 updateProfile(uid, ...)
     public int updateProfile(long id, String email, String nickname, String phone,
                              String birth, String gender, String address) throws SQLException {
         String sql = """
@@ -112,7 +107,7 @@ public class UserDAO {
                SET email=?, nickname=?, phone=?, birth=?, gender=?, address=?, updated_at=NOW()
              WHERE id=?
             """;
-        try (Connection con = DataSourceProvider.get().getConnection();
+        try (Connection con = DataSourceProvider.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             int i=1;
             ps.setString(i++, email);
@@ -126,14 +121,27 @@ public class UserDAO {
         }
     }
 
-    // (7) 비밀번호 변경  ← PasswordChangeServlet
     public int updatePassword(long id, String newHash) throws SQLException {
         String sql = "UPDATE user SET pw_hash=?, updated_at=NOW() WHERE id=?";
-        try (Connection con = DataSourceProvider.get().getConnection();
+        try (Connection con = DataSourceProvider.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, newHash);
             ps.setLong(2, id);
             return ps.executeUpdate();
         }
     }
+ 
+    public UserDTO findById(long id) throws java.sql.SQLException {
+        final String sql = "SELECT * FROM `user` WHERE id = ?";
+        try (java.sql.Connection con = DataSourceProvider.getConnection();
+             java.sql.PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            try (java.sql.ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapRow(rs);  // 이미 있는 mapRow(ResultSet) 재사용
+            }
+        }
+        return null;
+    }
+
+
 }

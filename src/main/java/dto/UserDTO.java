@@ -12,13 +12,12 @@ public class UserDTO implements Serializable {
 	private String phone;
 	private String address;
 	private String gender;
-	private String birth; // yyyy-MM-dd 문자열로 보관 중이면 String, DB가 DATE면 바꿔도 됨
-	private String passwordHash; // PBKDF2 등 해시문자열
+	private String birth; // yyyy-MM-dd 등
+	private String passwordHash;
 	private String role; // USER/ADMIN
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
-	// ---- getters/setters ----
 	public Long getId() {
 		return id;
 	}

@@ -1,18 +1,24 @@
+package dao;
 
-package util;
-
-import javax.sql.DataSource;
-import org.apache.commons.dbcp2.BasicDataSource;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DataSourceProvider {
-    private static final BasicDataSource ds = new BasicDataSource();
+    private static final String URL  =
+        "jdbc:mysql://localhost:3306/semi_project?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8";
+    private static final String USER = "root";
+    private static final String PASS = "1234";
+
     static {
-        ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        ds.setUrl("jdbc:mysql://localhost:3306/burgerhub?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8");
-        ds.setUsername("root");
-        ds.setPassword("비밀번호");
-        ds.setInitialSize(5);
-        ds.setMaxTotal(20);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver"); // MySQL 8.x
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("MySQL Driver not found", e);
+        }
     }
-    public static DataSource get() { return ds; }
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASS);
+    }
 }
