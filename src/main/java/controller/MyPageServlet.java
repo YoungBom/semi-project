@@ -1,48 +1,53 @@
 package controller;
 
 import dao.UserDAO;
-import model.User;
+import dto.UserDTO;
+import util.SessionKeys;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 @WebServlet("/user/mypage")
 public class MyPageServlet extends HttpServlet {
-	private final UserDAO userDao = new UserDAO();
+    private final UserDAO userDao = new UserDAO();
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-		HttpSession session = req.getSession(false);
-		Object uidObj = (session == null) ? null : session.getAttribute("LOGIN_UID");
-		if (uidObj == null) {
-			resp.sendRedirect(req.getContextPath() + "/user/login.jsp");
-			return;
-		}
+        HttpSession s = req.getSession(false);
+        Object uidObj = (s == null) ? null : s.getAttribute(SessionKeys.LOGIN_UID);
+        if (uidObj == null) {
+            String next = URLEncoder.encode(req.getRequestURI(), StandardCharsets.UTF_8);
+            resp.sendRedirect(req.getContextPath() + "/login?next=" + next);
+            return;
+        }
 
-		int uid;
-		try {
-			uid = (uidObj instanceof Integer) ? (Integer) uidObj : Integer.parseInt(uidObj.toString());
-		} catch (Exception e) {
-			resp.sendRedirect(req.getContextPath() + "/user/login.jsp");
-			return;
-		}
+        long uid = (uidObj instanceof Number)
+                ? ((Number) uidObj).longValue()
+                : Long.parseLong(uidObj.toString());
 
-		try {
-			User me = userDao.findByPk(uid);
-			if (me == null) {
-				// 세션은 있는데 사용자가 DB에 없음 → 안전하게 로그아웃 처리
-				session.invalidate();
-				resp.sendRedirect(req.getContextPath() + "/user/login.jsp");
-				return;
-			}
-			req.setAttribute("me", me);
-			req.getRequestDispatcher("/user/mypage.jsp").forward(req, resp);
-		} catch (SQLException e) {
-			throw new ServletException(e);
-		}
-	}
+        try {
+            UserDTO user = userDao.findById(uid);
+            if (user == null) {
+                s.invalidate();
+                String next = URLEncoder.encode(req.getRequestURI(), StandardCharsets.UTF_8);
+                resp.sendRedirect(req.getContextPath() + "/login?next=" + next);
+                return;
+            }
+
+            // JSP에서 어떤 이름을 쓰든 보이도록 둘 다 세팅
+            req.setAttribute("user", user);
+            req.setAttribute("me", user);
+
+            req.getRequestDispatcher("/user/mypage.jsp").forward(req, resp);
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+    }
 }

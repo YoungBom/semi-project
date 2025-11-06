@@ -377,3 +377,68 @@ body {
   }
 }
 
+/* ======================================= */
+/* ✅ 브랜드 로고 책갈피 스타일 */
+/* ======================================= */
+.burger-card {
+  position: relative;
+  overflow: visible; /* 로고가 카드 밖으로 나오게 */
+}
+
+.brand-flag {
+  position: absolute;
+  top: -25px;         /* 카드보다 위로 살짝 올라오게 */
+  left: -10px;        /* 카드 왼쪽 모서리에 맞게 */
+  background: #fff;
+  padding: 5px 6px 3px 6px;
+  border-radius: 6px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  z-index: 20;
+
+  /* 아래쪽 뾰족한 책갈피 모양 */
+  clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%);
+}
+
+/* 브랜드 로고 이미지 */
+.brand-flag img {
+  height: 48px;   /* ✅ 크기 키움 */
+  width: auto;
+  display: block;
+}
+
+/* hover 효과 */
+.burger-card:hover .brand-flag {
+  transform: translateY(-4px);
+  transition: all 0.2s ease;
+}
+
+
+/* ======================================= */
+/* ✅ 패티 타입 뱃지 스타일 */
+/* ======================================= */
+.patty-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+  margin-top: 5px;
+}
+
+/* 비프 (빨강 계열) */
+.patty-badge.비프 {
+  background-color: #e74c3c;
+}
+
+/* 치킨 (주황 계열) */
+.patty-badge.치킨 {
+  background-color: #f39c12;
+}
+
+/* 기타 (초록 계열) */
+.patty-badge.기타 {
+  background-color: #27ae60;
+}
+
+
