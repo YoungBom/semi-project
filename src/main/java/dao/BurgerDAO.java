@@ -197,7 +197,7 @@ public class BurgerDAO {
 	}
 	
 	public List<BurgerDTO> searchBurgers(String keyword) {
-		List<BurgerDTO> burgerList = new ArrayList<BurgerDTO>();
+		List<BurgerDTO> list = new ArrayList<BurgerDTO>();
 		String sql = "SELECT * FROM burger "
 					+"WHERE name LIKE ? OR brand LIKE ? ORDER BY brand , name";
 		
@@ -210,19 +210,21 @@ public class BurgerDAO {
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				BurgerDTO b = new BurgerDTO();
-				b.setId(rs.getInt("id"));
-				b.setName(rs.getString("name"));
-				b.setBrand(rs.getString("brand"));
-				b.setPrice(rs.getInt("price"));
-				b.setPattyType(rs.getString("patty_type"));
-				b.setImagePath(rs.getString("image_path"));
-				burgerList.add(b);
+				BurgerDTO burger = new BurgerDTO();
+				burger.setId(rs.getInt("id"));
+	            burger.setName(rs.getString("name"));
+	            burger.setPrice(rs.getInt("price"));
+	            burger.setBrand(rs.getString("brand"));
+	            burger.setImagePath(rs.getString("image_path"));
+	            burger.setNewBurger(rs.getBoolean("is_new"));
+	            burger.setPattyType(rs.getString("patty_type"));
+	            burger.setAvgRating(rs.getDouble("avg_rating"));
+	            list.add(burger);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return burgerList;
+		return list;
 		
 	}
 	
@@ -237,19 +239,101 @@ public class BurgerDAO {
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				BurgerDTO b = new BurgerDTO();
-				b.setId(rs.getInt("id"));
-			    b.setUserId(rs.getInt("user_id"));
-			    b.setName(rs.getString("name"));
-			    b.setPrice(rs.getInt("price"));
-			    b.setImagePath(rs.getString("image_path"));
-			    b.setBrand(rs.getString("brand"));
-			    b.setPattyType(rs.getString("patty_type"));
-				list.add(b);
+				BurgerDTO burger = new BurgerDTO();
+				burger.setId(rs.getInt("id"));
+				burger.setUserId(rs.getInt("user_id"));
+				burger.setName(rs.getString("name"));
+				burger.setPrice(rs.getInt("price"));
+				burger.setImagePath(rs.getString("image_path"));
+				burger.setBrand(rs.getString("brand"));
+				burger.setPattyType(rs.getString("patty_type"));
+				list.add(burger);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return list;
 	}
+	
+	// ⭐ 평점 상위 4개 버거 가져오기
+	public List<BurgerDTO> getTopRatedBurgers() {
+	    List<BurgerDTO> list = new ArrayList<>();
+	    String sql = """
+	        SELECT b.*, IFNULL(ROUND(AVG(r.rating), 1), 0) AS avg_rating
+	        FROM burger b
+	        LEFT JOIN review r ON b.id = r.burger_id
+	        GROUP BY b.id
+	        ORDER BY avg_rating DESC, b.name ASC
+	        LIMIT 4
+	    """;
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql);
+	         ResultSet rs = pstmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            BurgerDTO burger = new BurgerDTO();
+	            burger.setId(rs.getInt("id"));
+	            burger.setName(rs.getString("name"));
+	            burger.setPrice(rs.getInt("price"));
+	            burger.setBrand(rs.getString("brand"));
+	            burger.setImagePath(rs.getString("image_path"));
+	            burger.setPattyType(rs.getString("patty_type"));
+	            burger.setAvgRating(rs.getDouble("avg_rating"));
+	            burger.setNewBurger(rs.getBoolean("is_new"));
+	            list.add(burger);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
+
+	// 🆕 신메뉴 가져오기 (is_new = true)
+	public List<BurgerDTO> getNewBurgers() {
+	    List<BurgerDTO> list = new ArrayList<>();
+	    String sql = """
+	        SELECT b.*, IFNULL(ROUND(AVG(r.rating), 1), 0) AS avg_rating
+	        FROM burger b
+	        LEFT JOIN review r ON b.id = r.burger_id
+	        WHERE b.is_new = true
+	        GROUP BY b.id
+	        ORDER BY b.id DESC
+	        LIMIT 4
+	    """;
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql);
+	         ResultSet rs = pstmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            BurgerDTO burger = new BurgerDTO();
+	            burger.setId(rs.getInt("id"));
+	            burger.setName(rs.getString("name"));
+	            burger.setPrice(rs.getInt("price"));
+	            burger.setBrand(rs.getString("brand"));
+	            burger.setImagePath(rs.getString("image_path"));
+	            burger.setPattyType(rs.getString("patty_type"));
+	            burger.setAvgRating(rs.getDouble("avg_rating"));
+	            burger.setNewBurger(rs.getBoolean("is_new"));
+	            list.add(burger);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
