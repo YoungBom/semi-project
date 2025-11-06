@@ -1,7 +1,6 @@
 package controller;
 
 import dao.UserDAO;                    // ✅ 실제 파일명/클래스명과 일치
-import model.User;
 import util.PasswordUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

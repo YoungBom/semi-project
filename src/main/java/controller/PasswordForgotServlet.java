@@ -2,7 +2,6 @@ package controller;
 
 import dao.PasswordResetDAO;
 import dao.UserDAO;
-import model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -28,7 +27,7 @@ public class PasswordForgotServlet extends HttpServlet {
 		String email = req.getParameter("email");
 
 		try {
-			User u = userDao.findByEmail(email);
+			UserDTO u = userDao.findByEmail(email);
 			if (u != null) {
 				String token = generateToken();
 				resetDao.createToken(u.getId(), token, Instant.now().plusSeconds(60 * 30)); // 30분

@@ -25,8 +25,8 @@ public class IdLookupServlet extends HttpServlet {
 			if (u == null) {
 				req.setAttribute("msg", "해당 이메일로 가입된 아이디 안내를 전송했습니다.");
 			} else {
-				// 실제 운영은 이메일 전송. 여기서는 마스킹 표기
-				req.setAttribute("result", "아이디: " + mask(u.getUser_id()));
+				
+				req.setAttribute("result", "아이디: " + mask(u.getUserId()));
 			}
 			req.getRequestDispatcher("/user/id_lookup.jsp").forward(req, resp);
 		} catch (Exception e) {
