@@ -1,6 +1,7 @@
 package dto;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class ReviewDTO {
     private int id;
@@ -12,7 +13,7 @@ public class ReviewDTO {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private String imagePath;
-
+    private List<String> imageList;
 
 	public ReviewDTO() {}
 
@@ -44,5 +45,9 @@ public class ReviewDTO {
     
     public String getNickname() { return nickname; }
     public void setNickname(String nickname) { this.nickname = nickname; }
+    
+    public List<String> getImageList() { return imageList; }
+    public void setImageList(List<String> imageList) { this.imageList = imageList; }
+    
     
 }

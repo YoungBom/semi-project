@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import dto.BurgerDTO;
 import dto.ReviewDTO;
@@ -52,37 +54,53 @@ public class ReviewDAO {
 	}
 	
 	// 유저, 버거 조인 필요
-	public List<ReviewDTO> getReview(int burgerId, int userId) {		
-		List<ReviewDTO> recordList = new ArrayList<ReviewDTO>();
-		Connection conn = DBUtil.getConnection();
-		PreparedStatement pstmt = null; 
-		ResultSet rs = null;
-		
-		try {
-			String sql = "SELECT r.id as review_id, b.id as burger_id, u.id as user_id, rating, content, created_at, updated_at, ri.image_path as image_path, nickname "
-					+ "FROM review r RIGHT JOIN review_image ri ON r.id = ri.review_id JOIN burger b ON b.id = ? JOIN user u ON u.id = ?";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, burgerId);
-			pstmt.setInt(2, userId);
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				ReviewDTO review = new ReviewDTO();
-				// 리뷰아이디 추가하기(리뷰아이디 즉 게시물등록한id)가 똑같으면 사진을 list로 배열
-				review.setNickname(rs.getString("nickname"));
-				review.setContent(rs.getString("content"));
-				review.setCreatedAt(rs.getTimestamp("created_at"));
-				review.setImagePath(rs.getString("image_path"));
-				
-				recordList.add(review);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		
-		return recordList;
+	public List<ReviewDTO> getReview(int burgerId) {
+	    Map<Integer, ReviewDTO> reviewMap = new LinkedHashMap<>();
+	    Connection conn = DBUtil.getConnection();
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+
+	    try {
+	        String sql =
+	            "SELECT r.id AS review_id, r.rating, r.content, r.created_at, u.nickname, ri.image_path " +
+	            "FROM review r " +
+	            "LEFT JOIN review_image ri ON r.id = ri.review_id " +
+	            "JOIN user u ON r.user_id = u.id " +
+	            "WHERE r.burger_id = ? " +
+	            "ORDER BY r.created_at DESC";
+
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, burgerId);
+	        rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            int reviewId = rs.getInt("review_id");
+	            ReviewDTO review = reviewMap.get(reviewId);
+
+	            if (review == null) {
+	                review = new ReviewDTO();
+	                review.setId(reviewId);
+	                review.setNickname(rs.getString("nickname"));
+	                review.setContent(rs.getString("content"));
+	                review.setCreatedAt(rs.getTimestamp("created_at"));
+	                review.setRating(rs.getInt("rating"));
+	                review.setImageList(new ArrayList<>());
+	                reviewMap.put(reviewId, review);
+	            }
+
+	            // ✅ 이미지 최대 3장까지만 저장
+	            String imagePath = rs.getString("image_path");
+	            if (imagePath != null && review.getImageList().size() < 3) {
+	                review.getImageList().add(imagePath);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        DBUtil.close(rs, pstmt, conn);
+	    }
+
+	    return new ArrayList<>(reviewMap.values());
 	}
 	
 	public void deleteReview() {

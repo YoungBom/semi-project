@@ -25,6 +25,24 @@
 <!-- JS 연결 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/details.js"></script>
+
+<style>
+.review-images {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap; /* 한 줄로만 표시 */
+  overflow-x: auto; /* 이미지 많을 경우 가로 스크롤 */
+}
+
+.review-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0; /* 줄바꿈 방지 */
+}
+</style>
+
 </head>
 <body 
   class="${burger.brand eq '맥도날드' ? 'mcdonalds' : (burger.brand eq '버거킹' ? 'burgerking' : (burger.brand eq '롯데리아' ? 'lotteria' : ''))}"
@@ -159,40 +177,53 @@
         <div class="border-0 rounded-0 bg-white shadow-0">
           <div class="review">
               <!-- 리뷰 리스트 반복 출력 -->
-            <c:forEach var="record" items="${reviewList}">
-              <div class="card-body px-4 py-4 border-bottom">
-                <!-- 프로필 영역 -->
-                <div class="d-flex align-items-center mb-3">
-                  <div class="me-3">
-                    <i class="bi bi-person-circle profileIcon" style="font-size: 30px;"></i>
-                  </div>
-                  <div>
-                    <strong class="d-block">${record.nickname}</strong>
+          <c:forEach var="record" items="${reviewList}">
+            <div class="card-body px-4 py-4 border-bottom">
+    
+               <!-- 프로필 영역 -->
+              <div class="d-flex align-items-center mb-3 position-relative">
+                <div class="me-3">
+                  <i class="bi bi-person-circle profileIcon" style="font-size: 30px;"></i>
+                </div>
+          
+                <div>
+                  <strong class="d-block">${record.nickname}</strong>
+                  
+                  <!-- 날짜 + 별점 -->
+                  <div class="d-flex align-items-center gap-2">
                     <small class="text-muted">
                       <fmt:formatDate value="${record.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
                     </small>
-                    <a href="${pageContext.request.contextPath}/review/delete?id=${record.id}"
-		             class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 m-3"
-		             onclick="return confirm('이 리뷰를 삭제하시겠습니까?');">
-		             <i class="bi bi-trash"></i> 삭제
-		          	 </a>
-                  </div>
-                </div>
           
-                <!-- 본문 영역 -->
-                <div class="mb-2">
-                  <c:if test="${not empty record.imagePath}">
-                    <div class="mb-2">
-                      <img 
-                        alt="이미지"
-                        src="${pageContext.request.contextPath}/image/${record.imagePath}"
-                        style="width:100px; height:100px; display:inline-block; background-color:#fffef8;">
+                    <!-- ⭐ 별점 -->
+                    <div class="rating text-warning" style="font-size: 15px;">
+                      <c:forEach begin="1" end="${record.rating}" var="i">★</c:forEach>
+                      <c:forEach begin="1" end="${5 - record.rating}" var="i">☆</c:forEach>
                     </div>
-                  </c:if>
-                  <p class="mb-0">
-                    ${record.content}
-                  </p>
+                  </div>
+          
+                  <!-- 삭제 버튼 -->
+                  <a href="${pageContext.request.contextPath}/review/delete?id=${record.id}"
+                     class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 m-3"
+                     onclick="return confirm('이 리뷰를 삭제하시겠습니까?');">
+                    <i class="bi bi-trash"></i> 삭제
+                  </a>
                 </div>
+              </div>
+
+                <!-- 리뷰 내용 -->
+              <p class="mb-2">${record.content}</p>
+
+              <!-- 리뷰 이미지 (있을 때만) -->
+              <c:if test="${not empty record.imageList}">
+                <div class="review-images mt-2">
+                  <c:forEach var="img" items="${record.imageList}">
+                      <img src="${pageContext.request.contextPath}/image/${img}" alt="리뷰 이미지" class="review-img">
+                  </c:forEach>
+                </div>
+              </c:if>
+
+
               </div>
             </c:forEach>
           </div>

@@ -29,7 +29,7 @@ public class BurgerDetailsServlet extends HttpServlet {
         
 //      리뷰 목록 불러오기
         ReviewDAO reviewDAO = new ReviewDAO();
-        List<ReviewDTO> reviewList = reviewDAO.getReview(id,userId);
+        List<ReviewDTO> reviewList = reviewDAO.getReview(id);
         req.setAttribute("reviewList", reviewList);
         
         req.getRequestDispatcher("/burgerDetails.jsp?id="+id).forward(req, resp);
