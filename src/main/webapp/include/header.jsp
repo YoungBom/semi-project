@@ -6,6 +6,7 @@
   boolean loggedIn = (uidObj != null);
 %>
 
+<div id="site-header">
 <nav class="navbar navbar-expand-lg shadow-sm py-3" style="background:#fff8e6;">
   <div class="container">
 
@@ -56,3 +57,4 @@
     </div>
   </div>
 </nav>
+</div>
