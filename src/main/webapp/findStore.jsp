@@ -14,8 +14,8 @@
 
 
 <!-- ✅ main.css -->
-<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/findStore.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
 
 <!-- ✅ 카카오 지도 SDK -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2890edbb91db82862429679da4bd158c&libraries=services"></script>
@@ -23,7 +23,7 @@
 <body>
 <%@ include file="/include/header.jsp" %>
 
-<h2 class="page-title text-center my-4">
+<h2 class="page-title text-center" id="maptitle">
   <i class="bi bi-geo-alt-fill text-danger"></i>
   <span class="fw-bold" style="color:#ff6600;">BurgerHub</span>
   <span class="text-dark"> — 내 주변 패스트푸드 매장</span>
