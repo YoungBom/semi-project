@@ -76,7 +76,7 @@ public class ReviewAddServlet extends HttpServlet {
 		String unitRating = req.getParameter("rating");
 		
 		Double rating = 0.0;
-		if (unitRating != null || !unitRating.isEmpty()) {
+		if (unitRating != null && !unitRating.isEmpty()) {
 			rating = Double.parseDouble(unitRating);
 		}
 		
