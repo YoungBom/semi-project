@@ -41,31 +41,19 @@
 
       
       <div class="d-flex align-items-center gap-2">
-		  <% if (!loggedIn) { %>
-		    <a href="<%=ctx%>/user/login.jsp" class="btn rounded-3 px-3 fw-semibold" style="background:#4caf50; color:white;">
-		      로그인
-		    </a>
-		    <a href="<%=ctx%>/user/register.jsp" class="btn rounded-3 px-3 fw-semibold btn-primary">
-		      회원가입
-		    </a>
-		    <a href="<%=ctx%>/burger/list" class="btn rounded-3 px-3 fw-semibold" style="background:#ff8d00; color:white;">
-		      버거 리스트
-		    </a>
-		<% } else { %>
-		  <div class="auth-compact d-flex align-items-center gap-1">
-		    <span class="fw-semibold" style="color:#333; font-size:0.865rem; margin-right:4px;">
-		      안녕하세요, <%= (userName == null ? "회원" : userName) %>님
-		    </span>
-		    <a href="<%=ctx%>/user/mypage" class="btn btn-outline-secondary btn-sm fw-semibold px-2 py-1">
-		      마이페이지
-		    </a>
-		    <form method="post" action="<%=ctx%>/logout" class="d-inline m-0 p-0">
-		      <button type="submit" class="btn btn-dark btn-sm fw-semibold px-2 py-1">
-		        로그아웃
-		      </button>
-		    </form>
-		  </div>
-		<% } %>
+        <% if (!loggedIn) { %>
+         
+          <a href="<%=ctx%>/user/login.jsp" class="btn me-1 rounded-3" style="background:#4caf50; color:white;">로그인</a>
+          <a href="<%=ctx%>/user/register.jsp" class="btn me-1 rounded-3 btn-primary">회원가입</a>
+          
+          <a href="<%=ctx%>/burger/list" class="btn rounded-3" style="background:#ff8d00; color:white;">버거 리스트</a>
+        <% } else { %>
+          <span class="me-2">안녕하세요, <%= (userName == null ? "회원" : userName) %>님</span>
+          <a href="<%=ctx%>/user/mypage" class="btn btn-outline-secondary rounded-3 me-1">마이페이지</a>
+          <form method="post" action="<%=ctx%>/logout" class="d-inline m-0 p-0">
+            <button type="submit" class="btn btn-outline-dark rounded-3">로그아웃</button>
+          </form>
+        <% } %>
       </div>
 
     </div>

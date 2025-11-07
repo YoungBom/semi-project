@@ -63,7 +63,6 @@
 
 <!-- ✅ 헤더 -->
 <%@ include file="/include/header.jsp" %>
-
 <!-- ✅ 버거 상세 -->
 <main class="my-5 py-5">
   <div class="burger-card row align-items-center g-5">
@@ -131,7 +130,6 @@
       </div>
     </div>
   </div>
-
   <div class="my-5 py-5">
     <div class="card shadow-sm">
       <div class="text-end mb-3">
@@ -151,10 +149,11 @@
               </div>
 
 		      <div class="modal-body">
-                <form action="${pageContext.request.contextPath}/ReviewAddProcess?"
+                <form action="${pageContext.request.contextPath}/review/add?"
 		              method="post"
 		              enctype="multipart/form-data"
-		              class="comment-form">
+		              class="comment-form"
+		              name="reviewForm">
 			          <input type="hidden" name="burgerId" value="${burger.id}">
 			
 			          <div class="mb-3">
@@ -178,7 +177,7 @@
 			          </div>
 			
 			          <div class="text-end">
-			            <button type="submit" class="btn btn-warning rounded-3">등록</button>
+			            <button type="submit" class="btn btn-warning rounded-3" onclick="return checkForm(event)">등록</button>
 			          </div>
 		        </form>
               </div>
@@ -190,67 +189,69 @@
         <div class="border-0 rounded-0 bg-white shadow-0">
           <div class="review">
               <!-- 리뷰 리스트 반복 출력 -->
-          <c:forEach var="record" items="${reviewList}">
-            <div class="card-body px-4 py-4 border-bottom">
-    
-               <!-- 프로필 영역 -->
-              <div class="d-flex align-items-center mb-3 position-relative">
-                <div class="me-3">
-                  <i class="bi bi-person-circle profileIcon" style="font-size: 30px;"></i>
-                </div>
-          
-                <div>
-                  <strong class="d-block">${record.nickname}</strong>
-                  
-                  <!-- 날짜 + 별점 -->
-                  <div class="d-flex align-items-center gap-2">
-                    <small class="text-muted">
-                      <c:choose>
-                      	<c:when test="${record.updatedAt ne record.createdAt}">
-                      		<fmt:formatDate value="${record.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/>  
-                      		<span class="text-secondary">(수정됨)</span>                    	
-                      	</c:when>
-                      	<c:otherwise>
-                      		<fmt:formatDate value="${record.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
-                      	</c:otherwise>
-                      </c:choose>
-                      	
-                    </small>
-          
-                   	<!-- ⭐ 별점 -->
-                   	<div class="rating text-warning" style="font-size: 15px;">
-                      <c:forEach begin="1" end="${record.rating}" var="i">★</c:forEach>
-                      <c:forEach begin="1" end="${5 - record.rating}" var="i">☆</c:forEach>
-                    </div>
+            <c:forEach var="record" items="${reviewList}">
+              <div class="card-body px-4 py-4 border-bottom">
+            
+                <!-- 프로필 영역 -->
+                <div class="d-flex align-items-center mb-3 position-relative">
+                  <div class="me-3">
+                    <i class="bi bi-person-circle profileIcon" style="font-size: 30px;"></i>
                   </div>
-          
-                  <!-- 수정 버튼 -->
-                  <a href="#"
-					  class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 my-1 me-0"
-					  onclick="openUpdateModal(event, ${record.id}, '${fn:escapeXml(record.content)}', ${record.rating}, '${burger.id}')">
-					  <i class="bi bi-pencil"></i> 수정
-				  </a> 
-                  <!-- 삭제 버튼 -->
-                  <a href="${pageContext.request.contextPath}/review/delete?burgerId=${burger.id}&reviewId=${record.id}"
-					  class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 my-1 me-5"
-					  onclick="return confirm('이 리뷰를 삭제하시겠습니까?');">
-   				  <i class="bi bi-trash"></i> 삭제
-   				  </a>
+            
+                  <div>
+                    <strong class="d-block">${record.nickname}</strong>
+            
+                    <!-- 날짜 + 별점 -->
+                    <div class="d-flex align-items-center gap-2">
+                      <small class="text-muted">
+                        <c:choose>
+                          <c:when test="${record.updatedAt ne record.createdAt}">
+                            <fmt:formatDate value="${record.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/>  
+                            <span class="text-secondary">(수정됨)</span>                    	
+                          </c:when>
+                          <c:otherwise>
+                            <fmt:formatDate value="${record.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                          </c:otherwise>
+                        </c:choose>
+                      </small>
+                      <!-- ⭐ 별점 -->
+                      <div class="rating text-warning" style="font-size: 15px;">
+                        <c:forEach begin="1" end="${record.rating}" var="i">★</c:forEach>
+                        <c:forEach begin="1" end="${5 - record.rating}" var="i">☆</c:forEach>
+                      </div>
+                    </div>
+                    <!-- ✅ 본인 리뷰일 때만 수정/삭제 버튼 노출 -->
+                    <c:if test="${sessionScope.LOGIN_UID eq record.userId}">
+                      <!-- 수정 버튼 -->
+                      <a href="#"
+                         class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 my-1 me-0"
+                         onclick="openUpdateModal(event, ${record.id}, '${fn:escapeXml(record.content)}', ${record.rating}, '${burger.id}')">
+                         <i class="bi bi-pencil"></i> 수정
+                      </a> 
+                
+                      <!-- 삭제 버튼 -->
+                      <a href="${pageContext.request.contextPath}/review/delete?burgerId=${burger.id}&reviewId=${record.id}"
+                         class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 my-1 me-5"
+                         onclick="return confirm('이 리뷰를 삭제하시겠습니까?');">
+                         <i class="bi bi-trash"></i> 삭제
+                      </a>
+                    </c:if>
+                  </div>
                 </div>
-              </div>
-
+            
                 <!-- 리뷰 내용 -->
-              <p class="mb-2">${record.content}</p>
-
-              <!-- 리뷰 이미지 (있을 때만) -->
-				<c:forEach var="img" items="${record.imageList}">
-				  <c:if test="${not empty fn:trim(img)}">
-				    <img src="${pageContext.request.contextPath}/image/${img}" 
-				         alt="리뷰 이미지" class="review-img">
-				  </c:if>
-				</c:forEach>
+                <p class="mb-2">${record.content}</p>
+            
+                <!-- 리뷰 이미지 (있을 때만) -->
+                <c:forEach var="img" items="${record.imageList}">
+                  <c:if test="${not empty fn:trim(img)}">
+                    <img src="${pageContext.request.contextPath}/image/${img}" 
+                         alt="리뷰 이미지" class="review-img">
+                  </c:if>
+                </c:forEach>
               </div>
             </c:forEach>
+
           </div>
         </div>
       </div>
@@ -259,6 +260,18 @@
 </main>
 
 <script>
+	function checkForm(e) {
+		const rating = document.reviewForm.rating.value;
+		const ratingValue = parseFloat(rating);
+		if(isNaN(ratingValue) || ratingValue < 0 || ratingValue > 5) {
+			alert("별점은 0~5 값을 입력해주세요");
+			e.preventDefault();
+			document.reviewForm.rating.focus();
+			return false;
+		}
+		return true;
+	}
+	
 	function openUpdateModal(event, reviewId, content, rating, burgerId) {
 	  event.preventDefault();
 	
@@ -303,7 +316,7 @@
 	  reviewModal.addEventListener('hidden.bs.modal', () => {
 	    const form = document.querySelector('.comment-form');
 	    form.reset();
-	    form.action = `${pageContext.request.contextPath}/ReviewAddProcess?userId=1`;
+	    form.action = `${pageContext.request.contextPath}/review/add?userId=1`;
 	    document.getElementById('reviewId').value = "";
 	    document.getElementById('reviewModalLabel').textContent = "리뷰 등록";
 	    form.querySelector('button[type="submit"]').textContent = "등록";

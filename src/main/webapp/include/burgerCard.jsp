@@ -45,12 +45,17 @@
                 <div class="d-flex justify-content-between align-items-center mt-3">
                     <span class="price fw-bold text-warning">${b.price}원</span>
                     
-                    <span class="rating text-warning">
-                        <fmt:parseNumber value="${b.avgRating}" integerOnly="true" var="starFull" />
-                        <c:forEach begin="1" end="${starFull}" var="i">★</c:forEach>
-                        <c:forEach begin="1" end="${5 - starFull}" var="i">☆</c:forEach>
-                        <small>(<fmt:formatNumber value="${b.avgRating}" maxFractionDigits="1" />)</small>
-                    </span>
+                    <span class="rating text-warning d-inline-flex align-items-center">
+                      <fmt:parseNumber value="${b.avgRating}" integerOnly="true" var="starFull" />
+                      <c:forEach begin="1" end="${starFull}" var="i">
+                          <span class="star">★</span>
+                      </c:forEach>
+                      <c:forEach begin="1" end="${5 - starFull}" var="i">
+                          <span class="star">☆</span>
+                      </c:forEach>
+                      <small>(<fmt:formatNumber value="${b.avgRating}" maxFractionDigits="1" />)</small>
+                  </span>
+
                 </div>
             </div>
             <!-- ✅ card-body 끝 -->
