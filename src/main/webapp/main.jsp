@@ -81,8 +81,12 @@
                   <!-- ⭐ 평균 별점 표시 -->
                   <span class="rating text-warning">
                     <fmt:parseNumber value="${b.avgRating}" integerOnly="true" var="starFull" />
-                    <c:forEach begin="1" end="${starFull}" var="i">★</c:forEach>
-                    <c:forEach begin="1" end="${5 - starFull}" var="i">☆</c:forEach>
+                    <c:forEach begin="1" end="${starFull}" var="i">
+                      <span class="star">★</span>
+                    </c:forEach>
+                    <c:forEach begin="1" end="${5 - starFull}" var="i">
+                      <span class="star">☆</span>
+                    </c:forEach>
                     <small>(<fmt:formatNumber value="${b.avgRating}" maxFractionDigits="1" />)</small>
                   </span>
                 </div>
@@ -126,8 +130,12 @@
                 <span class="price fw-bold text-warning">${b.price}원</span>
                 <span class="rating text-warning">
                   <fmt:parseNumber value="${b.avgRating}" integerOnly="true" var="starFull" />
-                  <c:forEach begin="1" end="${starFull}" var="i">★</c:forEach>
-                  <c:forEach begin="1" end="${5 - starFull}" var="i">☆</c:forEach>
+                  <c:forEach begin="1" end="${starFull}" var="i">
+                    <span class="star">★</span>
+                  </c:forEach>
+                  <c:forEach begin="1" end="${5 - starFull}" var="i">
+                    <span class="star">☆</span>
+                  </c:forEach>
                   <small>(<fmt:formatNumber value="${b.avgRating}" maxFractionDigits="1" />)</small>
                 </span>
               </div>
