@@ -39,13 +39,13 @@ public class AuthLoginServlet extends HttpServlet {
             HttpSession old = req.getSession(false);
             if (old != null) old.invalidate();
             HttpSession s = req.getSession(true);
-            s.setAttribute(SessionKeys.LOGIN_UID,  u.getId());
+            s.setAttribute(SessionKeys.LOGIN_UID,  u.getId().intValue());
             s.setAttribute(SessionKeys.LOGIN_NAME, (u.getNickname()!=null && !u.getNickname().isEmpty()) ? u.getNickname() : u.getName());
             s.setAttribute(SessionKeys.LOGIN_ROLE, (u.getRole()!=null) ? u.getRole() : "USER");
 
             String next = req.getParameter("next");
             if (next != null && !next.isBlank()) resp.sendRedirect(req.getContextPath() + next);
-            else resp.sendRedirect(req.getContextPath() + "/main.jsp");
+            else resp.sendRedirect(req.getContextPath() + "/main");
         } catch (SQLException e) {
             throw new ServletException(e);
         }

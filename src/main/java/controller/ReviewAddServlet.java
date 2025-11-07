@@ -19,6 +19,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 @WebServlet("/ReviewAddProcess")
@@ -39,8 +40,8 @@ public class ReviewAddServlet extends HttpServlet {
 		ReviewDTO rv = new ReviewDTO();
 		ReviewDAO reviewDao = new ReviewDAO();
 		
-		// 버거ID, 유저ID는 추후 전달받은 값으로 처리
-		// 1️⃣ URL에서 버거 ID 파라미터 읽기 (예: ?id=3)
+		// 유저ID는 추후 전달받은 값으로 처리
+		// URL에서 버거 ID 파라미터 읽기 (예: ?id=3)
 		int burgerId = 0;
 
 		// multipart/form-data에서는 getParameter가 안 먹힐 수 있으므로 Part에서 직접 가져오기 시도(특히 hidden, file input 태그))
@@ -68,8 +69,9 @@ public class ReviewAddServlet extends HttpServlet {
          * int burgerId = Integer.parseInt(idParam);
 		 */
 		
-		// 추후 로그인되면 userId 값 가져오기
-		int userId = Integer.parseInt(req.getParameter("userId"));
+		// 로그인 후  userId 값 가져오기
+		HttpSession us = req.getSession();
+		int userId = (int) us.getAttribute("LOGIN_UID");
 		String content = req.getParameter("content");
 		String unitRating = req.getParameter("rating");
 		

@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import dao.BurgerDAO;
 import dao.ReviewDAO;
 import dto.BurgerDTO;
@@ -28,9 +29,9 @@ public class BurgerDetailsServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/main");
             return;
         }
-
+        
         int id = Integer.parseInt(idParam);
-        int userId = 1;
+        
         
         // burgerDAO에서 버거 정보 가져오기
         BurgerDTO burger = burgerDAO.getBurgerById(id);
@@ -40,10 +41,15 @@ public class BurgerDetailsServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/main");
             return;
         }
-        
         req.setAttribute("burger", burger);
         
-//      리뷰 목록 불러오기
+        // 로그인시 사용자 닉네임 정보 가져오기
+        HttpSession us = req.getSession();
+        String nickname = (String) us.getAttribute("LOGIN_NAME");
+        req.setAttribute("nickname", nickname);
+        
+        
+        // 리뷰 목록 불러오기
         ReviewDAO reviewDAO = new ReviewDAO();
         List<ReviewDTO> reviewList = reviewDAO.getReview(id);
         req.setAttribute("reviewList", reviewList);
