@@ -220,6 +220,30 @@ body {
     font-weight: 700;
 }
 
+/* 별점 양식 */
+.rating {
+  display: inline-flex;          
+  align-items: center;          
+  font-size: 1.1rem;            
+  line-height: 1;
+}
+
+.rating small {
+  margin-left: 4px;          
+  color: #ffc107;
+  font-size: 0.9rem;
+}
+
+.rating .star {
+  color: #ffb400;
+  font-size: inherit;
+}
+
+
+
+
+
+
 
 /* 풋터 */
 .footer {

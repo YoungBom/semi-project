@@ -231,7 +231,6 @@ public class BurgerDAO {
 	        e.printStackTrace();
 	    }
 
-	    System.out.println("🔍 검색된 버거 개수: " + list.size());
 	    return list;
 	}
 
