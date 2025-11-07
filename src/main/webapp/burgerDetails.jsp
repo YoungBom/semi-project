@@ -243,15 +243,12 @@
               <p class="mb-2">${record.content}</p>
 
               <!-- 리뷰 이미지 (있을 때만) -->
-              <c:if test="${not empty record.imageList}">
-                <div class="review-images mt-2">
-                  <c:forEach var="img" items="${record.imageList}">
-                      <img src="${pageContext.request.contextPath}/image/${img}" alt="리뷰 이미지" class="review-img">
-                  </c:forEach>
-                </div>
-              </c:if>
-
-
+				<c:forEach var="img" items="${record.imageList}">
+				  <c:if test="${not empty fn:trim(img)}">
+				    <img src="${pageContext.request.contextPath}/image/${img}" 
+				         alt="리뷰 이미지" class="review-img">
+				  </c:if>
+				</c:forEach>
               </div>
             </c:forEach>
           </div>

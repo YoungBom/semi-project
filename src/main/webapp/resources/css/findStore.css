@@ -8,8 +8,8 @@ body {
 }
 .page-title {
   font-size: 1.6rem;
-  margin-top: 20px;
-  margin-bottom: 25px;
+  margin-top: 4.0rem;
+  margin-bottom: 1.6rem;
 }
 
 .card.active {
@@ -17,6 +17,8 @@ body {
   box-shadow: 0 4px 12px rgba(255,102,0,0.4);
   transform: translateY(-3px);
 }
+
+
 
 #myLocationBtn {
   position: fixed;
