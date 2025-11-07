@@ -71,7 +71,7 @@ CREATE TABLE review_image (
 	FOREIGN KEY (review_id) REFERENCES review(id) ON DELETE CASCADE
 );
 
-DROP TABLE review_image;
+
 
 SELECT * FROM user;
 
@@ -173,3 +173,27 @@ VALUES
 (28, 640, 48, 34, 30, 880, 9, '밀, 닭고기'),
 (29, 700, 50, 36, 32, 920, 10, '밀, 우유'),
 (30, 890, 53, 42, 39, 990, 12, '밀, 쇠고기');
+
+SELECT * 
+FROM user;
+SELECT *
+FROM user;
+ALTER TABLE `user`
+  ADD COLUMN `pw_hash` VARCHAR(255) NOT NULL
+  AFTER `user_id`;
+
+  ALTER TABLE `user`
+  MODIFY COLUMN `user_pw` VARCHAR(255) NULL;
+  UPDATE `user` SET `pw_hash` = `user_pw`
+
+  ADD COLUMN `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP AFTER `role`,
+  ADD COLUMN `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE    CURRENT_TIMESTAMP AFTER `created_at`;
+
+CREATE TABLE IF NOT EXISTS remember_me (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  token VARCHAR(64) NOT NULL UNIQUE,
+  expires_at DATETIME NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES `user`(id) ON DELETE CASCADE
+);

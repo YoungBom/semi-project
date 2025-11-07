@@ -1,72 +1,45 @@
 package controller;
 
 import dao.UserDAO;
-import dto.UserDTO;
-import util.PhoneUtil;
+import util.SessionKeys;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.SQLException;
 
-@WebServlet("/user/profile/update")
+@WebServlet("/user/update")
 public class UpdateProfileServlet extends HttpServlet {
     private final UserDAO userDao = new UserDAO();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
         req.setCharacterEncoding("UTF-8");
+
         HttpSession s = req.getSession(false);
-        Integer uid = (s != null) ? (Integer) s.getAttribute("LOGIN_UID") : null;
-        if (uid == null) { resp.sendRedirect(req.getContextPath() + "/login"); return; }
+        Object uidObj = (s != null) ? s.getAttribute(SessionKeys.LOGIN_UID) : null;
+        if (uidObj == null) {
+            resp.sendRedirect(req.getContextPath() + "/login");
+            return;
+        }
+        int uid = (uidObj instanceof Integer) ? (Integer) uidObj : Integer.parseInt(uidObj.toString());
 
-        String email    = req.getParameter("email");
-        String phoneRaw = req.getParameter("phone");
-        String nickname = req.getParameter("nickname");
-        String address  = req.getParameter("address");
+        String email   = req.getParameter("email");
+        String phone   = req.getParameter("phone");
+        String birth   = req.getParameter("birth");   // 현재 DB가 VARCHAR(255)라 문자열로 유지
+        String gender  = req.getParameter("gender");
+        String name    = req.getParameter("name");
+        String nickname= req.getParameter("nickname");
+        String address = req.getParameter("address");
 
-        // 값 보존
-        req.setAttribute("email", email);
-        req.setAttribute("phone", phoneRaw);
-        req.setAttribute("nickname", nickname);
-        req.setAttribute("address", address);
-
-        try {
-            String phone = PhoneUtil.normalize(phoneRaw);
-            if (phone == null) {
-                req.setAttribute("error", "전화번호 형식이 올바르지 않습니다. 예) 010-1234-5678");
-                req.getRequestDispatcher("/user/profile.jsp").forward(req, resp);
-                return;
-            }
-
-            if (userDao.existsByPhone(phone, uid)) {
-                req.setAttribute("error", "이미 사용 중인 전화번호입니다.");
-                req.getRequestDispatcher("/user/profile.jsp").forward(req, resp);
-                return;
-            }
-
-            UserDTO u = new UserDTO();
-            u.setId(uid);
-            u.setEmail(email);
-            u.setPhone(phone);
-            u.setNickname(nickname);
-            u.setAddress(address);
-
-            try {
-                userDao.updateProfile(u);
-            } catch (SQLIntegrityConstraintViolationException ex) {
-                req.setAttribute("error", "이미 사용 중인 전화번호 또는 이메일입니다.");
-                req.getRequestDispatcher("/user/profile.jsp").forward(req, resp);
-                return;
-            }
-
-            s.setAttribute("FLASH_SUCCESS", "프로필이 수정되었습니다.");
-            resp.sendRedirect(req.getContextPath() + "/user/profile");
-        } catch (SQLException e) {
-            throw new ServletException(e);
+        boolean ok = userDao.updateProfile(uid, email, phone, birth, gender, name, nickname, address);
+        if (ok) {
+            resp.sendRedirect(req.getContextPath() + "/user/mypage?msg=updated");
+        } else {
+            req.setAttribute("error", "수정에 실패했습니다.");
+            req.getRequestDispatcher("/user/edit.jsp").forward(req, resp);
         }
     }
 }

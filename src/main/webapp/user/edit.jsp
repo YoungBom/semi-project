@@ -1,62 +1,73 @@
-<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!-- birth 표시값 만들기: form_birth 우선 -->
-<c:set var="birthVal" value=""/>
-<c:choose>
-  <c:when test="${not empty form_birth}">
-    <c:set var="birthVal" value="${form_birth}" />
-  </c:when>
-  <c:when test="${not empty me.birth and fn:length(me.birth) == 8}">
-    <c:set var="birthVal" value="${fn:substring(me.birth,0,4)}-${fn:substring(me.birth,4,6)}-${fn:substring(me.birth,6,8)}" />
-  </c:when>
-  <c:when test="${not empty me.birth and fn:length(me.birth) == 10 and fn:contains(me.birth,'-')}">
-    <c:set var="birthVal" value="${me.birth}" />
-  </c:when>
-</c:choose>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>회원정보 수정</title>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user.css" />
+</head>
+<body>
+  <main class="profile-wrap">
+    <h1 class="page-title with-logo">🍔 회원정보 수정</h1>
 
-<!-- 성별 표시값: form_gender 우선 -->
-<c:set var="g" value="${not empty form_gender ? form_gender : me.gender}" />
+    <c:if test="${not empty error}">
+      <div class="alert error">${error}</div>
+    </c:if>
 
-<form method="post" action="${ctx}/user/edit">
-  <label>이메일
-    <input type="email" name="email"
-           value="${not empty form_email ? form_email : me.email}">
-  </label><br>
+    <form method="post" action="${pageContext.request.contextPath}/user/update" class="form-card">
 
-  <label>닉네임
-    <input name="nickname"
-           value="${not empty form_nickname ? form_nickname : me.nickname}">
-  </label><br>
+      <div class="form-row">
+        <label class="form-label">아이디</label>
+        <input class="input" type="text" value="${user.userId}" disabled />
+      </div>
 
-  <label>휴대폰
-    <input name="phone"
-           value="${not empty form_phone ? form_phone : me.phone}">
-  </label>
-  <c:if test="${not empty error_phone}">
-    <p class="field-error">${error_phone}</p>
-  </c:if>
-  <br>
+      <div class="form-row">
+        <label class="form-label" for="email">이메일</label>
+        <input class="input" id="email" name="email" type="email" value="${user.email}" placeholder="example@domain.com" />
+        <p class="hint" id="emailStatus"></p>
+      </div>
 
-  <label>생년월일
-    <input type="date" name="birth" value="${birthVal}">
-  </label><br>
+      <div class="form-row">
+        <label class="form-label" for="nickname">닉네임</label>
+        <input class="input" id="nickname" name="nickname" type="text" value="${user.nickname}" />
+      </div>
 
-  <label>성별
-    <select name="gender">
-      <option value="" disabled>선택</option>
-      <option value="남" ${g == '남' ? 'selected' : ''}>남성</option>
-      <option value="여" ${g == '여' ? 'selected' : ''}>여성</option>
-    </select>
-  </label><br>
+      <div class="form-row">
+        <label class="form-label" for="phone">휴대폰</label>
+        <input class="input" id="phone" name="phone" type="text" value="${user.phone}" placeholder="01012345678" />
+        <p class="hint bad" id="phoneStatus" style="display:none;">이미 등록된 전화번호입니다.</p>
+      </div>
 
-  <label>주소
-    <input name="address"
-           value="${not empty form_address ? form_address : me.address}">
-  </label><br>
+      <div class="form-row two">
+        <div>
+          <label class="form-label" for="birth">생년월일</label>
+          <input class="input" id="birth" name="birth" type="text" value="${user.birth}" placeholder="YYYY-MM-DD" />
+        </div>
+        <div>
+          <label class="form-label" for="gender">성별</label>
+          <select class="input" id="gender" name="gender">
+            <option value="남" ${user.gender == '남' ? 'selected' : ''}>남성</option>
+            <option value="여" ${user.gender == '여' ? 'selected' : ''}>여성</option>
+          </select>
+        </div>
+      </div>
 
-  <div class="actions">
-    <button type="submit">저장</button>
-    <a href="${ctx}/user/mypage">취소</a>
-  </div>
-</form>
+      <div class="form-row">
+        <label class="form-label" for="name">이름</label>
+        <input class="input" id="name" name="name" type="text" value="${user.name}" />
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="address">주소</label>
+        <input class="input" id="address" name="address" type="text" value="${user.address}" />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn primary">저장</button>
+        <a class="btn ghost" href="${pageContext.request.contextPath}/user/mypage">취소</a>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

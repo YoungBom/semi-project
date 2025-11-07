@@ -1,29 +1,28 @@
 package dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class UserDTO {
-	private int id;
+	private Integer id;
 	private String userId;
 	private String pwHash;
+	private String userPw; // legacy/plain (nullable)
 	private String email;
 	private String phone;
-	private LocalDate birth; // DB가 DATE
-	private String gender; // "남" / "여"
+	private LocalDate birth;
+	private String gender; // "남"|"여"
 	private String name;
 	private String nickname;
 	private String address;
-	private String role; // 기본 USER
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
+	private String role;
 
-	// --- getters & setters ---
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -41,6 +40,14 @@ public class UserDTO {
 
 	public void setPwHash(String pwHash) {
 		this.pwHash = pwHash;
+	}
+
+	public String getUserPw() {
+		return userPw;
+	}
+
+	public void setUserPw(String userPw) {
+		this.userPw = userPw;
 	}
 
 	public String getEmail() {
@@ -107,19 +114,10 @@ public class UserDTO {
 		this.role = role;
 	}
 
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public LocalDateTime getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
+	// helper for DATE <-> LocalDate conversion if needed
+	public static LocalDate toLocalDate(Date date) {
+		if (date == null)
+			return null;
+		return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 }

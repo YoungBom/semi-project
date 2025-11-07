@@ -2,60 +2,60 @@ package controller;
 
 import dao.UserDAO;
 import dto.UserDTO;
+import util.SessionKeys;
 import util.PasswordUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
-import java.sql.SQLException;
+import java.util.Optional;
 
-@WebServlet("/user/change-password")
+@WebServlet("/password/change")
 public class PasswordChangeServlet extends HttpServlet {
-    private final UserDAO userDao = new UserDAO();
+	private final UserDAO userDao = new UserDAO();
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        req.getRequestDispatcher("/user/change_password.jsp").forward(req, resp);
-    }
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        HttpSession s = req.getSession(false);
-        Integer uid = (s != null) ? (Integer) s.getAttribute("LOGIN_UID") : null;
-        String loginId = (s != null) ? (String) s.getAttribute("LOGIN_ID") : null;
+		HttpSession s = req.getSession(false);
+		if (s == null || s.getAttribute(SessionKeys.LOGIN_USERID) == null) {
+			resp.sendRedirect(req.getContextPath() + "/login");
+			return;
+		}
+		String loginUserId = (String) s.getAttribute(SessionKeys.LOGIN_USERID);
 
-        if (uid == null) { resp.sendRedirect(req.getContextPath() + "/login"); return; }
+		String currentPw = req.getParameter("current_pw");
+		String newPw = req.getParameter("new_pw");
+		String newPw2 = req.getParameter("new_pw2");
 
-        String cur = req.getParameter("current_pw");
-        String nw  = req.getParameter("new_pw");
-        String nw2 = req.getParameter("new_pw2");
+		if (newPw == null || newPw.length() < 8 || !newPw.equals(newPw2)) {
+			req.setAttribute("error", "새 비밀번호를 다시 확인하세요.");
+			req.getRequestDispatcher("/user/mypage.jsp").forward(req, resp);
+			return;
+		}
 
-        try {
-            UserDTO u = (loginId != null) ? userDao.findByLoginId(loginId) : userDao.findById(uid);
-            if (u == null) throw new ServletException("user not found");
+		Optional<UserDTO> opt = userDao.findByLoginId(loginUserId);
+		if (opt.isEmpty()) {
+			req.setAttribute("error", "사용자를 찾을 수 없습니다.");
+			req.getRequestDispatcher("/user/mypage.jsp").forward(req, resp);
+			return;
+		}
+		UserDTO me = opt.get();
+		String stored = (me.getPwHash() != null ? me.getPwHash() : me.getUserPw());
+		if (!PasswordUtil.verify(currentPw, stored)) {
+			req.setAttribute("error", "현재 비밀번호가 일치하지 않습니다.");
+			req.getRequestDispatcher("/user/mypage.jsp").forward(req, resp);
+			return;
+		}
 
-            if (!PasswordUtil.verify(cur, u.getPwHash())) {
-                req.setAttribute("error", "현재 비밀번호가 일치하지 않습니다.");
-                req.getRequestDispatcher("/user/change_password.jsp").forward(req, resp);
-                return;
-            }
-            if (nw == null || nw.length() < 8 || !nw.equals(nw2)) {
-                req.setAttribute("error", "새 비밀번호가 규칙에 맞지 않거나 일치하지 않습니다.");
-                req.getRequestDispatcher("/user/change_password.jsp").forward(req, resp);
-                return;
-            }
-
-            String hash = PasswordUtil.hash(nw);
-            userDao.updatePassword(uid, hash);
-
-            s.setAttribute("FLASH_SUCCESS", "비밀번호가 변경되었습니다.");
-            resp.sendRedirect(req.getContextPath() + "/main.jsp"); // 요구사항 반영
-        } catch (SQLException e) {
-            throw new ServletException(e);
-        }
-    }
+		boolean ok = userDao.changePassword(me.getId(), newPw);
+		if (!ok) {
+			req.setAttribute("error", "비밀번호 변경에 실패했습니다.");
+		} else {
+			req.setAttribute("msg", "비밀번호가 변경되었습니다.");
+		}
+		req.getRequestDispatcher("/user/mypage.jsp").forward(req, resp);
+	}
 }

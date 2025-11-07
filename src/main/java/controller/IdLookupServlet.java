@@ -1,38 +1,35 @@
 package controller;
 
 import dao.UserDAO;
-import dto.UserDTO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
-import java.sql.SQLException;
+import java.util.Optional;
 
-@WebServlet("/user/id-lookup")
+@WebServlet("/id/lookup")
 public class IdLookupServlet extends HttpServlet {
     private final UserDAO userDao = new UserDAO();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        String name  = req.getParameter("name");
         String email = req.getParameter("email");
-        try {
-            UserDTO u = userDao.findByEmail(email);
-            if (u == null) {
-                // 보안상 같은 응답 권장
-                req.setAttribute("msg", "해당 이메일로 가입된 아이디 안내를 전송했습니다.");
-            } else {
-                req.setAttribute("result", "아이디: " + mask(u.getUserId()));
-            }
-            req.getRequestDispatcher("/user/id_lookup.jsp").forward(req, resp);
-        } catch (SQLException e) {
-            throw new ServletException(e);
-        }
-    }
 
-    private String mask(String userId) {
-        if (userId == null || userId.length() < 3) return "***";
-        int vis = Math.min(3, userId.length());
-        return userId.substring(0, vis) + "*".repeat(userId.length() - vis);
+        if (name == null || name.isBlank() || email == null || email.isBlank()) {
+            req.setAttribute("error", "이름과 이메일을 입력하세요.");
+            req.getRequestDispatcher("/user/id_lookup.jsp").forward(req, resp);
+            return;
+        }
+
+        Optional<String> loginId = userDao.findLoginIdByNameAndEmail(name.trim(), email.trim());
+        if (loginId.isPresent()) {
+            req.setAttribute("found_user_id", loginId.get());
+        } else {
+            req.setAttribute("error", "일치하는 사용자를 찾을 수 없습니다.");
+        }
+        req.getRequestDispatcher("/user/id_lookup.jsp").forward(req, resp);
     }
 }

@@ -4,107 +4,35 @@ import dao.UserDAO;
 import dto.UserDTO;
 import util.SessionKeys;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-import jakarta.servlet.ServletException;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.regex.Pattern;
+import java.util.Optional;
 
-@WebServlet("/user/edit")
+@WebServlet("/user/edit")  // ★ 마이페이지의 '정보 수정'이 여기로 옴
 public class UserEditServlet extends HttpServlet {
-	private final UserDAO userDao = new UserDAO();
-	private static final Pattern PHONE_PAT = Pattern.compile("^01[016789]-?\\d{3,4}-?\\d{4}$");
+    private final UserDAO userDao = new UserDAO();
 
-	// ✳️ 실제 JSP 위치: /user/edit.jsp
-	private static final String EDIT_JSP = "/user/edit.jsp";
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		HttpSession s = req.getSession(false);
-		if (s == null || s.getAttribute(SessionKeys.LOGIN_UID) == null) {
-			resp.sendRedirect(req.getContextPath() + "/login");
-			return;
-		}
-		long uid = (long) s.getAttribute(SessionKeys.LOGIN_UID);
+        HttpSession s = req.getSession(false);
+        Object uidObj = (s != null) ? s.getAttribute(SessionKeys.LOGIN_UID) : null;
+        if (uidObj == null) {
+            resp.sendRedirect(req.getContextPath() + "/login");
+            return;
+        }
 
-		try {
-			UserDTO me = userDao.findByPk(uid);
-			req.setAttribute("me", me);
-			req.getRequestDispatcher(EDIT_JSP).forward(req, resp); // ✅ edit.jsp
-		} catch (Exception e) {
-			s.setAttribute("flash_error", "편집 화면을 여는 중 오류가 발생했습니다.");
-			// ❗ 경로 수정: /mypage.jsp -> /user/mypage
-			resp.sendRedirect(req.getContextPath() + "/user/mypage");
-		}
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
-
-		HttpSession s = req.getSession(false);
-		if (s == null || s.getAttribute(SessionKeys.LOGIN_UID) == null) {
-			resp.sendRedirect(req.getContextPath() + "/login");
-			return;
-		}
-		long uid = (long) s.getAttribute(SessionKeys.LOGIN_UID);
-
-		String email = req.getParameter("email");
-		String nickname = req.getParameter("nickname");
-		String phoneRaw = req.getParameter("phone");
-		String birth = req.getParameter("birth");
-		String gender = req.getParameter("gender");
-		String address = req.getParameter("address");
-
-		if (phoneRaw == null || !PHONE_PAT.matcher(phoneRaw).matches()) {
-			req.setAttribute("error_phone", "전화번호 형식이 올바르지 않습니다. 예) 010-1234-5678");
-			keepForm(req, email, nickname, phoneRaw, birth, gender, address);
-			req.getRequestDispatcher(EDIT_JSP).forward(req, resp); // ✅ edit.jsp
-			return;
-		}
-
-		String phoneNorm = normalizePhone(phoneRaw);
-
-		try {
-			if (userDao.existsByPhoneExceptUser(phoneNorm, uid)) {
-				req.setAttribute("error_phone", "이미 등록된 전화번호입니다.");
-				keepForm(req, email, nickname, phoneRaw, birth, gender, address);
-				req.getRequestDispatcher(EDIT_JSP).forward(req, resp); // ✅ edit.jsp
-				return;
-			}
-
-			userDao.updateProfile(uid, email, nickname, phoneNorm, birth, gender, address);
-
-			s.setAttribute("flash", "정보가 저장되었습니다.");
-			// ❗ 경로 수정: /mypage.jsp -> /user/mypage
-			resp.sendRedirect(req.getContextPath() + "/user/mypage");
-
-		} catch (SQLIntegrityConstraintViolationException dup) {
-			// 유니크 위반(중복) → 500 방지 & 메시지
-			req.setAttribute("error_phone", "이미 등록된 전화번호입니다.");
-			keepForm(req, email, nickname, phoneRaw, birth, gender, address);
-			req.getRequestDispatcher(EDIT_JSP).forward(req, resp); // ✅ edit.jsp
-
-		} catch (SQLException e) {
-			req.setAttribute("error_phone", "전화번호 저장 중 오류가 발생했습니다.");
-			keepForm(req, email, nickname, phoneRaw, birth, gender, address);
-			req.getRequestDispatcher(EDIT_JSP).forward(req, resp); // ✅ edit.jsp
-		}
-	}
-
-	private String normalizePhone(String s) {
-		return s == null ? null : s.replaceAll("[^0-9]", "");
-	}
-
-	private void keepForm(HttpServletRequest req, String email, String nickname, String phone, String birth,
-			String gender, String address) {
-		req.setAttribute("form_email", email);
-		req.setAttribute("form_nickname", nickname);
-		req.setAttribute("form_phone", phone); // 화면엔 원래 포맷 유지
-		req.setAttribute("form_birth", birth);
-		req.setAttribute("form_gender", gender);
-		req.setAttribute("form_address", address);
-	}
+        int uid = (uidObj instanceof Integer) ? (Integer) uidObj : Integer.parseInt(uidObj.toString());
+        Optional<UserDTO> opt = userDao.findById(uid);
+        if (opt.isEmpty()) {
+            req.setAttribute("error", "사용자 정보를 찾을 수 없습니다.");
+            req.getRequestDispatcher("/user/mypage.jsp").forward(req, resp);
+            return;
+        }
+        req.setAttribute("user", opt.get());
+        req.getRequestDispatcher("/user/edit.jsp").forward(req, resp); // ★ 실제 존재하는 파일명으로
+    }
 }

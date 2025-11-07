@@ -1,72 +1,56 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <title>로그인</title>
-  <link rel="stylesheet"
-      href="${pageContext.request.contextPath}/resources/css/user.css?v=20251106_1">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user.css">
 </head>
-<body class= "login-page">
+<body>
+  <main class="auth-wrap">
+    <h1 class="auth-title">🍔 로그인</h1>
 
-  <!-- 상단 타이틀/레이아웃은 프로젝트 스타일 유지 -->
-  <!-- 뷰포트 중앙 정렬 래퍼 -->
-<main class="auth-viewport">
-  <!-- 기존 폼 그대로 -->
-  <form method="post"
-        action="${pageContext.request.contextPath}/login"
-        autocomplete="on"
-        class="login-form">
+    <c:if test="${not empty error}">
+      <div class="alert error">${error}</div>
+    </c:if>
+    <c:if test="${not empty msg}">
+      <div class="alert success">${msg}</div>
+    </c:if>
 
-    <label>아이디
-      <input type="text" name="user_id" required maxlength="255" autocomplete="username">
-    </label>
+    <form method="post" action="${pageContext.request.contextPath}/login" class="auth-card" autocomplete="on">
+      <label class="field">
+        <span class="label">아이디</span>
+        <input type="text" name="user_id" placeholder="아이디를 입력하세요" required maxlength="255" autocomplete="username">
+      </label>
 
-    <label>비밀번호
-      <input type="password" name="user_pw" required minlength="8" maxlength="255" autocomplete="current-password">
-    </label>
+      <label class="field">
+        <span class="label">비밀번호</span>
+        <input type="password" name="user_pw" placeholder="비밀번호를 입력하세요" required minlength="8" maxlength="255" autocomplete="current-password">
+      </label>
 
-    <input type="hidden" name="next" value="${param.next != null ? param.next : next}" />
+      <label class="checkline">
+        <input type="checkbox" name="remember_me" value="1">
+        <span>로그인 상태 유지(선택)</span>
+      </label>
 
-    <div class="actions center">
-      <button type="submit" class="btn-primary" id="loginBtn">로그인</button>
-    </div>
-
-    <c:url var="registerUrl" value="/user/register.jsp">
-      <c:param name="next" value="${not empty param.next ? param.next : next}" />
-    </c:url>
-
-    <p class="auth-switch tight-center">
-      계정이 없으신가요?
-      <a class="link-accent" href="${registerUrl}">회원가입하기</a>
-    </p>
-  </form>
-</main>
-  <!-- 에러 모달 -->
-  <div class="modal" id="errorModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="errTitle">
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-panel" role="document">
-      <div class="modal-header">
-        <h3 id="errTitle">로그인에 실패했습니다</h3>
-        <button class="modal-close" type="button" title="닫기" aria-label="닫기" data-close>&times;</button>
+      <div class="actions">
+        <button type="submit" class="btn primary">로그인</button>
       </div>
-      <div class="modal-body" id="errMsg"></div>
-      <div class="modal-footer">
-        <button class="btn-primary" type="button" data-close>확인</button>
+
+      <div class="subline">
+        <span class="muted">아이디가 없습니까?</span>
+        <a class="link" href="${pageContext.request.contextPath}/signup">회원가입</a>
       </div>
-    </div>
-  </div>
 
-  <!-- 서버 에러를 JS가 읽도록 숨김 출력 -->
-  <c:if test="${not empty error}">
-    <span id="serverError" data-msg="${fn:escapeXml(error)}" hidden></span>
-  </c:if>
-  <c:if test="${not empty param.error}">
-    <span id="serverErrorParam" data-msg="${fn:escapeXml(param.error)}" hidden></span>
-  </c:if>
+      <hr class="divider"/>
 
-  <script src="${pageContext.request.contextPath}/resources/js/login.js"></script>
+      <div class="assist">
+        <a class="link" href="${pageContext.request.contextPath}/id/lookup">아이디 찾기</a>
+        <span class="dot">•</span>
+        <a class="link" href="${pageContext.request.contextPath}/password/forgot">비밀번호 재설정</a>
+      </div>
+    </form>
+  </main>
 </body>
 </html>

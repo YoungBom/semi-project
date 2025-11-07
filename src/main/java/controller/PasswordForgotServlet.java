@@ -1,39 +1,34 @@
 package controller;
+
 import dao.UserDAO;
-import dto.UserDTO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
-import java.security.SecureRandom;
-import java.sql.SQLException;
-import java.util.Base64;
+import java.util.Optional;
 
-@WebServlet("/user/password-forgot")
+@WebServlet("/password/forgot")
 public class PasswordForgotServlet extends HttpServlet {
 	private final UserDAO userDao = new UserDAO();
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String email = req.getParameter("email");
-		try {
-			UserDTO u = userDao.findByEmail(email);
-			// 실제 운영에선 토큰을 DB에 저장하고 이메일 발송
-			if (u != null) {
-				String token = generateToken();
-				req.setAttribute("debug_token", token); // 데모 표시
-			}
-			req.setAttribute("msg", "비밀번호 재설정 안내를 이메일로 전송했습니다.");
-			req.getRequestDispatcher("/user/password_forgot.jsp").forward(req, resp);
-		} catch (SQLException e) {
-			throw new ServletException(e);
-		}
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.getRequestDispatcher("/user/password_forgot.jsp").forward(req, resp);
 	}
 
-	private String generateToken() {
-		byte[] buf = new byte[24];
-		new SecureRandom().nextBytes(buf);
-		return Base64.getUrlEncoder().withoutPadding().encodeToString(buf);
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		String idOrEmail = req.getParameter("id_or_email");
+		if (idOrEmail == null || idOrEmail.isBlank()) {
+			req.setAttribute("error", "아이디 또는 이메일을 입력하세요.");
+			req.getRequestDispatcher("/user/password_forgot.jsp").forward(req, resp);
+			return;
+		}
+		Optional<String> tokenOpt = userDao.createPasswordResetTokenByLoginIdOrEmail(idOrEmail.trim(), 30);
+		tokenOpt.ifPresent(tok -> req.setAttribute("dev_token", tok)); // 운영에서는 제거하고 메일 발송
+		req.setAttribute("sent", true);
+		req.getRequestDispatcher("/user/password_forgot.jsp").forward(req, resp);
 	}
 }
