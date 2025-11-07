@@ -27,6 +27,24 @@ body {
   padding: 0 30px;
 }
 
+/* ======================================= */
+/* ✅ 네비게이션 메뉴 hover 색상 변경 */
+/* ======================================= */
+
+
+.navbar-nav .nav-link {
+  color: #333; /* 기본 글씨색 유지 */
+  transition: color 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #ff0000 !important; /* 호버 시 빨간색으로 변경 */
+}
+
+
+
+
+
 /* 로고 */
 .logo {
   font-size: 1.6rem;
