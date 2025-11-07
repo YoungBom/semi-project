@@ -1,28 +1,29 @@
 package dto;
 
-import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class UserDTO implements Serializable {
-	private Long id; // PK
-	private String userId; // 로그인 ID
+public class UserDTO {
+	private int id;
+	private String userId;
+	private String pwHash;
 	private String email;
+	private String phone;
+	private LocalDate birth; // DB가 DATE
+	private String gender; // "남" / "여"
 	private String name;
 	private String nickname;
-	private String phone;
 	private String address;
-	private String gender;
-	private String birth; // yyyy-MM-dd 등
-	private String passwordHash;
-	private String role; // USER/ADMIN
+	private String role; // 기본 USER
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
-	public Long getId() {
+	// --- getters & setters ---
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -34,12 +35,44 @@ public class UserDTO implements Serializable {
 		this.userId = userId;
 	}
 
+	public String getPwHash() {
+		return pwHash;
+	}
+
+	public void setPwHash(String pwHash) {
+		this.pwHash = pwHash;
+	}
+
 	public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public LocalDate getBirth() {
+		return birth;
+	}
+
+	public void setBirth(LocalDate birth) {
+		this.birth = birth;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	public String getName() {
@@ -58,44 +91,12 @@ public class UserDTO implements Serializable {
 		this.nickname = nickname;
 	}
 
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
 	public String getAddress() {
 		return address;
 	}
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public String getBirth() {
-		return birth;
-	}
-
-	public void setBirth(String birth) {
-		this.birth = birth;
-	}
-
-	public String getPasswordHash() {
-		return passwordHash;
-	}
-
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
 	}
 
 	public String getRole() {

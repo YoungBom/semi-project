@@ -1,200 +1,145 @@
 package dao;
 
 import dto.UserDTO;
-import util.DBUtil;
 
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 import java.sql.*;
+import java.time.LocalDate;
 
 public class UserDAO {
 
-	private UserDTO mapRow(ResultSet rs) throws SQLException {
-		UserDTO u = new UserDTO();
-		u.setId(rs.getLong("id"));
-		u.setUserId(rs.getString("user_id"));
-		u.setEmail(rs.getString("email"));
-		u.setName(rs.getString("name"));
-		u.setNickname(rs.getString("nickname"));
-		u.setPhone(rs.getString("phone"));
-		u.setAddress(rs.getString("address"));
-		u.setGender(rs.getString("gender"));
-		u.setBirth(rs.getString("birth"));
-		u.setPasswordHash(rs.getString("pw_hash"));
-		u.setRole(rs.getString("role"));
-		Timestamp c = rs.getTimestamp("created_at");
-		Timestamp m = rs.getTimestamp("updated_at");
-		u.setCreatedAt(c != null ? c.toLocalDateTime() : null);
-		u.setUpdatedAt(m != null ? m.toLocalDateTime() : null);
-		return u;
-	}
+    private DataSource ds;
 
-	public UserDTO findByEmail(String email) throws SQLException {
-		final String sql = "SELECT * FROM user WHERE email = ? LIMIT 1";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setString(1, email);
-			try (ResultSet rs = ps.executeQuery()) {
-				if (rs.next())
-					return mapRow(rs);
-			}
-		}
-		return null;
-	}
+    public UserDAO() {
+        try {
+            InitialContext ic = new InitialContext();
+            // context.xml: <Resource name="jdbc/semi" .../>
+            ds = (DataSource) ic.lookup("java:comp/env/jdbc/semi");
+        } catch (Exception e) {
+            throw new RuntimeException("DataSource lookup failed", e);
+        }
+    }
 
-	public UserDTO findByPk(long id) throws SQLException {
-		final String sql = "SELECT * FROM user WHERE id = ? LIMIT 1";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setLong(1, id);
-			try (ResultSet rs = ps.executeQuery()) {
-				if (rs.next())
-					return mapRow(rs);
-			}
-		}
-		return null;
-	}
+    private Connection getConn() throws SQLException {
+        return ds.getConnection();
 
-	public UserDTO findByLoginId(String userId) throws SQLException {
-		final String sql = "SELECT * FROM user WHERE user_id = ? LIMIT 1";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setString(1, userId);
-			try (ResultSet rs = ps.executeQuery()) {
-				if (rs.next())
-					return mapRow(rs);
-			}
-		}
-		return null;
-	}
+        // (대체안) 직접 연결하고 싶다면:
+        // String url = "jdbc:mysql://127.0.0.1:3306/semi_project?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul";
+        // return DriverManager.getConnection(url, "root", "password");
+    }
 
-	public boolean existsByEmail(String email) throws SQLException {
-		final String sql = "SELECT 1 FROM user WHERE email = ? LIMIT 1";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setString(1, email);
-			try (ResultSet rs = ps.executeQuery()) {
-				return rs.next();
-			}
-		}
-	}
+    // --- CREATE ---
+    public int create(UserDTO u, String rawPasswordHashAlready) throws SQLException {
+        // rawPasswordHashAlready 인자는 이미 PasswordUtil.hash()로 해시된 문자열을 받는다고 가정
+        String sql = "INSERT INTO `user`" +
+                "(user_id, pw_hash, email, phone, birth, gender, name, nickname, address, role) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection c = getConn();
+             PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            int i=1;
+            ps.setString(i++, u.getUserId());
+            ps.setString(i++, rawPasswordHashAlready);
+            ps.setString(i++, u.getEmail());
+            ps.setString(i++, u.getPhone());
+            ps.setDate(i++, Date.valueOf(u.getBirth()));
+            ps.setString(i++, u.getGender());
+            ps.setString(i++, u.getName());
+            ps.setString(i++, u.getNickname());
+            ps.setString(i++, u.getAddress());
+            ps.setString(i++, u.getRole() == null ? "USER" : u.getRole());
+            ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
 
-	public long insert(UserDTO u) throws SQLException {
-		final String sql = """
-				INSERT INTO user
-				(user_id, email, name, nickname, phone, address, gender, birth, pw_hash, role, created_at, updated_at)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
-				""";
-		try (Connection con = DBUtil.getConnection();
-				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			int i = 1;
-			ps.setString(i++, u.getUserId());
-			ps.setString(i++, u.getEmail());
-			ps.setString(i++, u.getName());
-			ps.setString(i++, u.getNickname());
-			ps.setString(i++, u.getPhone());
-			ps.setString(i++, u.getAddress());
-			ps.setString(i++, u.getGender());
-			ps.setString(i++, u.getBirth());
-			ps.setString(i++, u.getPasswordHash());
-			ps.setString(i++, u.getRole() != null ? u.getRole() : "USER");
-			ps.executeUpdate();
-			try (ResultSet rs = ps.getGeneratedKeys()) {
-				if (rs.next())
-					return rs.getLong(1);
-			}
-		}
-		return 0L;
-	}
+    // --- READ ---
+    public UserDTO findByLoginId(String userId) throws SQLException {
+        String sql = "SELECT * FROM `user` WHERE user_id=?";
+        try (Connection c = getConn(); PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) return null;
+                return map(rs);
+            }
+        }
+    }
 
-	public int updateProfile(long id, String email, String nickname, String phone, String birth, String gender,
-			String address) throws SQLException {
-		final String sql = """
-				UPDATE user
-				   SET email=?, nickname=?, phone=?, birth=?, gender=?, address=?, updated_at=NOW()
-				 WHERE id=?
-				""";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			int i = 1;
-			ps.setString(i++, email);
-			ps.setString(i++, nickname);
-			ps.setString(i++, phone);
-			ps.setString(i++, birth);
-			ps.setString(i++, gender);
-			ps.setString(i++, address);
-			ps.setLong(i++, id);
-			return ps.executeUpdate();
-		}
-	}
+    public UserDTO findById(int id) throws SQLException {
+        String sql = "SELECT * FROM `user` WHERE id=?";
+        try (Connection c = getConn(); PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) return null;
+                return map(rs);
+            }
+        }
+    }
 
-	public int updatePassword(long id, String newHash) throws SQLException {
-		final String sql = "UPDATE user SET pw_hash=?, updated_at=NOW() WHERE id=?";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setString(1, newHash);
-			ps.setLong(2, id);
-			return ps.executeUpdate();
-		}
-	}
+    // --- UPDATE ---
+    public void updatePassword(int userId, String newHash) throws SQLException {
+        String sql = "UPDATE `user` SET pw_hash=? WHERE id=?";
+        try (Connection c = getConn(); PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, newHash);
+            ps.setInt(2, userId);
+            ps.executeUpdate();
+        }
+    }
 
-	// (호환용) findById - 기존 코드가 사용하는 곳이 있을 수 있어 유지
-	public UserDTO findById(long id) throws SQLException {
-		final String sql = "SELECT * FROM `user` WHERE id = ? LIMIT 1";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setLong(1, id);
-			try (ResultSet rs = ps.executeQuery()) {
-				if (rs.next())
-					return mapRow(rs);
-			}
-		}
-		return null;
-	}
+    public void updateProfile(UserDTO u) throws SQLException {
+        String sql = "UPDATE `user` SET email=?, phone=?, nickname=?, address=? WHERE id=?";
+        try (Connection c = getConn(); PreparedStatement ps = c.prepareStatement(sql)) {
+            int i=1;
+            ps.setString(i++, u.getEmail());
+            ps.setString(i++, u.getPhone());
+            ps.setString(i++, u.getNickname());
+            ps.setString(i++, u.getAddress());
+            ps.setInt(i++, u.getId());
+            ps.executeUpdate();
+        }
+    }
 
-	/** 아이디 중복확인 */
-	public boolean existsByLoginId(String userId) {
-		if (userId == null || userId.isBlank())
-			return false;
-		final String sql = "SELECT 1 FROM `user` WHERE `user_id` = ? LIMIT 1";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setString(1, userId.trim());
-			try (ResultSet rs = ps.executeQuery()) {
-				return rs.next();
-			}
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    // --- EXISTS ---
+    public boolean existsByUserId(String userId) throws SQLException {
+        String sql = "SELECT 1 FROM `user` WHERE user_id=?";
+        try (Connection c = getConn(); PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, userId);
+            try (ResultSet rs = ps.executeQuery()) { return rs.next(); }
+        }
+    }
 
-	// 별칭 메서드(외부 코드 호환 위해 유지)
-	public long create(UserDTO u) throws SQLException {
-		return insert(u);
-	}
+    public boolean existsByPhone(String phone, Integer excludeUserId) throws SQLException {
+        String sql = "SELECT 1 FROM `user` WHERE phone=? " + (excludeUserId != null ? "AND id<>?" : "");
+        try (Connection c = getConn(); PreparedStatement ps = c.prepareStatement(sql)) {
+            int i=1;
+            ps.setString(i++, phone);
+            if (excludeUserId != null) ps.setInt(i++, excludeUserId);
+            try (ResultSet rs = ps.executeQuery()) { return rs.next(); }
+        }
+    }
 
-	/* ===== 전화번호 중복/업데이트 관련 ===== */
-
-	/** 전화번호 존재 여부 */
-	public boolean existsByPhone(String phone) throws SQLException {
-		final String sql = "SELECT 1 FROM user WHERE phone = ? LIMIT 1";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setString(1, phone);
-			try (ResultSet rs = ps.executeQuery()) {
-				return rs.next();
-			}
-		}
-	}
-
-	/** 특정 사용자 제외하고 전화번호 존재 여부 (수정 화면용) */
-	public boolean existsByPhoneExceptUser(String phone, long excludeUserId) throws SQLException {
-		final String sql = "SELECT 1 FROM user WHERE phone = ? AND id <> ? LIMIT 1";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setString(1, phone);
-			ps.setLong(2, excludeUserId);
-			try (ResultSet rs = ps.executeQuery()) {
-				return rs.next();
-			}
-		}
-	}
-
-	/** 전화번호 단일 업데이트 (선택) */
-	public int updatePhone(long id, String phone) throws SQLException {
-		final String sql = "UPDATE user SET phone=?, updated_at=NOW() WHERE id=?";
-		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setString(1, phone);
-			ps.setLong(2, id);
-			return ps.executeUpdate();
-		}
-	}
+    // --- MAPPER ---
+    private UserDTO map(ResultSet rs) throws SQLException {
+        UserDTO u = new UserDTO();
+        u.setId(rs.getInt("id"));
+        u.setUserId(rs.getString("user_id"));
+        u.setPwHash(rs.getString("pw_hash"));
+        u.setEmail(rs.getString("email"));
+        u.setPhone(rs.getString("phone"));
+        Date bd = rs.getDate("birth");
+        if (bd != null) u.setBirth(bd.toLocalDate());
+        u.setGender(rs.getString("gender"));
+        u.setName(rs.getString("name"));
+        u.setNickname(rs.getString("nickname"));
+        u.setAddress(rs.getString("address"));
+        u.setRole(rs.getString("role"));
+        Timestamp ca = rs.getTimestamp("created_at");
+        Timestamp ua = rs.getTimestamp("updated_at");
+        if (ca != null) u.setCreatedAt(ca.toLocalDateTime());
+        if (ua != null) u.setUpdatedAt(ua.toLocalDateTime());
+        return u;
+    }
 }
