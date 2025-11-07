@@ -25,14 +25,14 @@
 
       <!-- ⛔ 아래 메뉴는 요청대로 수정하지 않음 -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-semibold">
-        <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/menu.jsp">메뉴</a></li>
+        <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/burger/menu">메뉴</a></li>
         <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/event.jsp">이벤트</a></li>
         <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/notice.jsp">공지사항</a></li>
         <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/findStore.jsp">매장찾기</a></li>
       </ul>
 
       <!-- 검색 폼 -->
-      <form action="<%=ctx%>/search" method="post" class="d-flex me-3">
+      <form action="<%=ctx%>/burger/menu" method="get" class="d-flex me-3">
         <input class="form-control me-2 rounded-3" style="border:1px solid #f4c430;" type="text" name="keyword" placeholder="버거 검색...">
         <button class="btn" type="submit" style="background:#ffc300; border:none;">
           <i class="bi bi-search" aria-hidden="true"></i><span class="visually-hidden">검색</span>
