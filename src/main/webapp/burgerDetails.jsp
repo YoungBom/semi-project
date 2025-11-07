@@ -261,16 +261,6 @@
 				         alt="리뷰 이미지" class="review-img">
 				  </c:if>
 				</c:forEach>
-				
-				<!-- 디버그 코드 : 추후 삭제하시오 -->
-				<p style="color:#999; font-size:0.85rem;">
-				  imageList 존재 여부:
-				  <c:out value="${record.imageList != null}" /><br>
-				  imageList 크기:
-				  <c:out value="${fn:length(record.imageList)}" />
-				</p>
-				<!-- 디버그 코드 -->
-				
               </div>
             </c:forEach>
           </div>
