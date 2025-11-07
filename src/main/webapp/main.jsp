@@ -16,6 +16,21 @@
 
 <body>
 <%@ include file="/include/header.jsp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<c:if test="${not empty sessionScope.flash}">
+  <div class="toast toast-success">
+    <c:out value="${sessionScope.flash}" />
+  </div>
+  <c:remove var="flash" scope="session" />
+</c:if>
+
+<c:if test="${not empty sessionScope.flash_error}">
+  <div class="toast toast-error">
+    <c:out value="${sessionScope.flash_error}" />
+  </div>
+  <c:remove var="flash_error" scope="session" />
+</c:if>
 
 <!-- ✅ 메인 배너 -->
 <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">

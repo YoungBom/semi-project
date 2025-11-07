@@ -4,89 +4,105 @@ import dao.UserDAO;
 import dto.UserDTO;
 import util.SessionKeys;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import jakarta.servlet.ServletException;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.regex.Pattern;
 
 @WebServlet("/user/edit")
 public class UserEditServlet extends HttpServlet {
     private final UserDAO userDao = new UserDAO();
+    private static final Pattern PHONE_PAT = Pattern.compile("^01[016789]-?\\d{3,4}-?\\d{4}$");
+
+    // ✳️ 실제 JSP 위치: /user/edit.jsp  (만약 WEB-INF 아래면 "/WEB-INF/user/edit.jsp"로 바꾸세요)
+    private static final String EDIT_JSP = "/user/edit.jsp";
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         HttpSession s = req.getSession(false);
-        Long uid = (s == null) ? null : toLong(s.getAttribute(SessionKeys.LOGIN_UID));
-        if (uid == null) {
-            String next = URLEncoder.encode("/user/edit", StandardCharsets.UTF_8);
-            resp.sendRedirect(req.getContextPath() + "/login?next=" + next);
+        if (s == null || s.getAttribute(SessionKeys.LOGIN_UID) == null) {
+            resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
+        long uid = (long) s.getAttribute(SessionKeys.LOGIN_UID);
 
         try {
-            // ★ DAO 표준 메서드명 사용
-            UserDTO me = userDao.findById(uid);
-            if (me == null) {
-                s.invalidate();
-                resp.sendRedirect(req.getContextPath() + "/login");
-                return;
-            }
+            UserDTO me = userDao.findByPk(uid);
             req.setAttribute("me", me);
-            req.setAttribute("user", me); // JSP 호환용 별칭
-            req.getRequestDispatcher("/user/edit.jsp").forward(req, resp);
-        } catch (SQLException e) {
-            throw new ServletException(e);
+            req.getRequestDispatcher(EDIT_JSP).forward(req, resp);  // ✅ edit.jsp
+        } catch (Exception e) {
+            s.setAttribute("flash_error", "편집 화면을 여는 중 오류가 발생했습니다.");
+            resp.sendRedirect(req.getContextPath() + "/mypage.jsp");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
 
-        req.setCharacterEncoding("UTF-8"); // 폼 인코딩
         HttpSession s = req.getSession(false);
-        Long uid = (s == null) ? null : toLong(s.getAttribute(SessionKeys.LOGIN_UID));
-        if (uid == null) {
-            String next = URLEncoder.encode("/user/edit", StandardCharsets.UTF_8);
-            resp.sendRedirect(req.getContextPath() + "/login?next=" + next);
+        if (s == null || s.getAttribute(SessionKeys.LOGIN_UID) == null) {
+            resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
+        long uid = (long) s.getAttribute(SessionKeys.LOGIN_UID);
 
         String email    = req.getParameter("email");
         String nickname = req.getParameter("nickname");
-        String phone    = req.getParameter("phone");
+        String phoneRaw = req.getParameter("phone");
         String birth    = req.getParameter("birth");
         String gender   = req.getParameter("gender");
         String address  = req.getParameter("address");
 
+        if (phoneRaw == null || !PHONE_PAT.matcher(phoneRaw).matches()) {
+            req.setAttribute("error_phone", "전화번호 형식이 올바르지 않습니다. 예) 010-1234-5678");
+            keepForm(req, email, nickname, phoneRaw, birth, gender, address);
+            req.getRequestDispatcher(EDIT_JSP).forward(req, resp);  // ✅ edit.jsp
+            return;
+        }
+
+        String phoneNorm = normalizePhone(phoneRaw);
+
         try {
-            int rows = userDao.updateProfile(uid, email, nickname, phone, birth, gender, address);
-            if (rows == 1) {
-                resp.sendRedirect(req.getContextPath() + "/user/mypage?updated=1");
+            if (userDao.existsByPhoneExceptUser(phoneNorm, uid)) {
+                req.setAttribute("error_phone", "이미 등록된 전화번호입니다.");
+                keepForm(req, email, nickname, phoneRaw, birth, gender, address);
+                req.getRequestDispatcher(EDIT_JSP).forward(req, resp);  // ✅ edit.jsp
                 return;
             }
-            req.setAttribute("error", "수정에 실패했습니다.");
 
-            UserDTO me = userDao.findById(uid);
-            req.setAttribute("me", me);
-            req.setAttribute("user", me);
-            req.getRequestDispatcher("/user/edit.jsp").forward(req, resp);
+            userDao.updateProfile(uid, email, nickname, phoneNorm, birth, gender, address);
+
+            s.setAttribute("flash", "정보가 저장되었습니다.");
+            resp.sendRedirect(req.getContextPath() + "/mypage.jsp");
+
+        } catch (SQLIntegrityConstraintViolationException dup) {
+            req.setAttribute("error_phone", "이미 등록된 전화번호입니다.");
+            keepForm(req, email, nickname, phoneRaw, birth, gender, address);
+            req.getRequestDispatcher(EDIT_JSP).forward(req, resp);  // ✅ edit.jsp
+
         } catch (SQLException e) {
-            throw new ServletException(e);
+            req.setAttribute("error_phone", "전화번호 저장 중 오류가 발생했습니다.");
+            keepForm(req, email, nickname, phoneRaw, birth, gender, address);
+            req.getRequestDispatcher(EDIT_JSP).forward(req, resp);  // ✅ edit.jsp
         }
     }
 
-    // Number/문자열 모두 안전하게 Long으로
-    private Long toLong(Object o) {
-        if (o == null) return null;
-        if (o instanceof Long) return (Long) o;
-        if (o instanceof Integer) return ((Integer) o).longValue();
-        if (o instanceof Number) return ((Number) o).longValue();
-        try { return Long.parseLong(o.toString()); } catch (Exception ignore) { return null; }
+    private String normalizePhone(String s) {
+        return s == null ? null : s.replaceAll("[^0-9]", "");
+    }
+
+    private void keepForm(HttpServletRequest req, String email, String nickname, String phone,
+                          String birth, String gender, String address) {
+        req.setAttribute("form_email", email);
+        req.setAttribute("form_nickname", nickname);
+        req.setAttribute("form_phone", phone);   // 화면엔 원래 포맷 유지
+        req.setAttribute("form_birth", birth);
+        req.setAttribute("form_gender", gender);
+        req.setAttribute("form_address", address);
     }
 }

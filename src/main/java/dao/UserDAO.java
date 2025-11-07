@@ -28,7 +28,7 @@ public class UserDAO {
 	}
 
 	public UserDTO findByEmail(String email) throws SQLException {
-		String sql = "SELECT * FROM user WHERE email = ?";
+		final String sql = "SELECT * FROM user WHERE email = ? LIMIT 1";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, email);
 			try (ResultSet rs = ps.executeQuery()) {
@@ -40,7 +40,7 @@ public class UserDAO {
 	}
 
 	public UserDTO findByPk(long id) throws SQLException {
-		String sql = "SELECT * FROM user WHERE id = ?";
+		final String sql = "SELECT * FROM user WHERE id = ? LIMIT 1";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setLong(1, id);
 			try (ResultSet rs = ps.executeQuery()) {
@@ -52,7 +52,7 @@ public class UserDAO {
 	}
 
 	public UserDTO findByLoginId(String userId) throws SQLException {
-		String sql = "SELECT * FROM user WHERE user_id = ?";
+		final String sql = "SELECT * FROM user WHERE user_id = ? LIMIT 1";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, userId);
 			try (ResultSet rs = ps.executeQuery()) {
@@ -64,7 +64,7 @@ public class UserDAO {
 	}
 
 	public boolean existsByEmail(String email) throws SQLException {
-		String sql = "SELECT 1 FROM user WHERE email = ?";
+		final String sql = "SELECT 1 FROM user WHERE email = ? LIMIT 1";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, email);
 			try (ResultSet rs = ps.executeQuery()) {
@@ -74,7 +74,7 @@ public class UserDAO {
 	}
 
 	public long insert(UserDTO u) throws SQLException {
-		String sql = """
+		final String sql = """
 				INSERT INTO user
 				(user_id, email, name, nickname, phone, address, gender, birth, pw_hash, role, created_at, updated_at)
 				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
@@ -103,7 +103,7 @@ public class UserDAO {
 
 	public int updateProfile(long id, String email, String nickname, String phone, String birth, String gender,
 			String address) throws SQLException {
-		String sql = """
+		final String sql = """
 				UPDATE user
 				   SET email=?, nickname=?, phone=?, birth=?, gender=?, address=?, updated_at=NOW()
 				 WHERE id=?
@@ -122,7 +122,7 @@ public class UserDAO {
 	}
 
 	public int updatePassword(long id, String newHash) throws SQLException {
-		String sql = "UPDATE user SET pw_hash=?, updated_at=NOW() WHERE id=?";
+		final String sql = "UPDATE user SET pw_hash=?, updated_at=NOW() WHERE id=?";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, newHash);
 			ps.setLong(2, id);
@@ -130,8 +130,9 @@ public class UserDAO {
 		}
 	}
 
+	// (호환용) findById - 기존 코드가 사용하는 곳이 있을 수 있어 유지
 	public UserDTO findById(long id) throws SQLException {
-		final String sql = "SELECT * FROM `user` WHERE id = ?";
+		final String sql = "SELECT * FROM `user` WHERE id = ? LIMIT 1";
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setLong(1, id);
 			try (ResultSet rs = ps.executeQuery()) {
@@ -156,10 +157,44 @@ public class UserDAO {
 			throw new RuntimeException(e);
 		}
 	}
-	// UserDAO.java
-	public long create(dto.UserDTO u) throws java.sql.SQLException {
-	    return insert(u);
+
+	// 별칭 메서드(외부 코드 호환 위해 유지)
+	public long create(UserDTO u) throws SQLException {
+		return insert(u);
 	}
 
+	/* ===== 전화번호 중복/업데이트 관련 ===== */
 
+	/** 전화번호 존재 여부 */
+	public boolean existsByPhone(String phone) throws SQLException {
+		final String sql = "SELECT 1 FROM user WHERE phone = ? LIMIT 1";
+		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, phone);
+			try (ResultSet rs = ps.executeQuery()) {
+				return rs.next();
+			}
+		}
+	}
+
+	/** 특정 사용자 제외하고 전화번호 존재 여부 (수정 화면용) */
+	public boolean existsByPhoneExceptUser(String phone, long excludeUserId) throws SQLException {
+		final String sql = "SELECT 1 FROM user WHERE phone = ? AND id <> ? LIMIT 1";
+		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, phone);
+			ps.setLong(2, excludeUserId);
+			try (ResultSet rs = ps.executeQuery()) {
+				return rs.next();
+			}
+		}
+	}
+
+	/** 전화번호 단일 업데이트 (선택) */
+	public int updatePhone(long id, String phone) throws SQLException {
+		final String sql = "UPDATE user SET phone=?, updated_at=NOW() WHERE id=?";
+		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, phone);
+			ps.setLong(2, id);
+			return ps.executeUpdate();
+		}
+	}
 }
