@@ -99,7 +99,6 @@ public class ReviewDAO {
 	    } finally {
 	        DBUtil.close(rs, pstmt, conn);
 	    }
-
 	    return new ArrayList<>(reviewMap.values());
 	}
 	

@@ -255,15 +255,22 @@
               <p class="mb-2">${record.content}</p>
 
               <!-- 리뷰 이미지 (있을 때만) -->
-              <c:if test="${not empty record.imageList}">
-                <div class="review-images mt-2">
-                  <c:forEach var="img" items="${record.imageList}">
-                      <img src="${pageContext.request.contextPath}/image/${img}" alt="리뷰 이미지" class="review-img">
-                  </c:forEach>
-                </div>
-              </c:if>
-
-
+				<c:forEach var="img" items="${record.imageList}">
+				  <c:if test="${not empty fn:trim(img)}">
+				    <img src="${pageContext.request.contextPath}/image/${img}" 
+				         alt="리뷰 이미지" class="review-img">
+				  </c:if>
+				</c:forEach>
+				
+				<!-- 디버그 코드 : 추후 삭제하시오 -->
+				<p style="color:#999; font-size:0.85rem;">
+				  imageList 존재 여부:
+				  <c:out value="${record.imageList != null}" /><br>
+				  imageList 크기:
+				  <c:out value="${fn:length(record.imageList)}" />
+				</p>
+				<!-- 디버그 코드 -->
+				
               </div>
             </c:forEach>
           </div>

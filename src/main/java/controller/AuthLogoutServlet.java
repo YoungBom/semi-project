@@ -14,7 +14,7 @@ public class AuthLogoutServlet extends HttpServlet {
         HttpSession s = req.getSession(false);
         if (s != null) s.invalidate();
         // ★ 여기서 contextPath만 보내지 말고 목적지까지 명시
-        resp.sendRedirect(req.getContextPath() + "/login");   // or "/main.jsp"
+        resp.sendRedirect(req.getContextPath() + "/main");   // or "/main.jsp"
     }
 
     @Override
