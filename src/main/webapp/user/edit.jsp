@@ -12,7 +12,14 @@
 </head>
 <body>
   <h1>회원정보 수정</h1>
-
+  <c:if test="${not empty sessionScope.flash}">
+  <div class="toast toast-success"><c:out value="${sessionScope.flash}" /></div>
+  <c:remove var="flash" scope="session" />
+</c:if>
+<c:if test="${not empty sessionScope.flash_error}">
+  <div class="toast toast-error"><c:out value="${sessionScope.flash_error}" /></div>
+  <c:remove var="flash_error" scope="session" />
+</c:if>
   <!-- birth input용 표시 값 만들기: birthView(서버 포맷) > YYYYMMDD(8자리) > yyyy-MM-dd(이미 포맷) > 공백 -->
   <c:set var="birthVal" value=""/>
   <c:choose>
@@ -38,8 +45,14 @@
     </label><br>
 
     <label>휴대폰
-      <input name="phone" value="<c:out value='${me.phone}'/>">
-    </label><br>
+     <input name="phone"
+         value="${not empty form_phone ? form_phone : me.phone}">
+    </label>
+    <c:if test="${not empty error_phone}">
+    <p class="field-error">${error_phone}</p>
+    </c:if>
+    <br>
+
 
     <label>생년월일
       <input type="date" name="birth" value="${birthVal}">

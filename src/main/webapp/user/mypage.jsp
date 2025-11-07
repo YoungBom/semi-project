@@ -27,7 +27,7 @@
   </div>
 
   <p>
-    <a href="${ctx}/user/edit">정보 수정</a>
+    <a href="${pageContext.request.contextPath}/user/edit">정보 수정</a>
     |
     <a href="${ctx}/user/password_change.jsp">비밀번호 변경</a>
   </p>
