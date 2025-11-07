@@ -22,7 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
-@WebServlet("/ReviewAddProcess")
+@WebServlet("/review/add")
 @MultipartConfig(
 		fileSizeThreshold = 1024 * 1024 * 1,   // 메모리 임시 저장 임계값(1MB) -> 이 크기 초과 시 디스크에 임시 저장
 		maxFileSize = 1024 * 1024 * 10,        // 업로드 최대 파일 크기(10MB)
