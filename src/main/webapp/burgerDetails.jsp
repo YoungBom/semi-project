@@ -57,18 +57,6 @@
 </style>
 
 </head>
-
-<script>
-	function updateReview(event) {
-		event.preventDefault();
-		boolean result = confirm('이 리뷰를 수정하시겠습니까?');
-		if(result = true) {
-			
-		} else{
-			return false;
-		}	
-	}
-</script>
 <body 
   class="${burger.brand eq '맥도날드' ? 'mcdonalds' : (burger.brand eq '버거킹' ? 'burgerking' : (burger.brand eq '롯데리아' ? 'lotteria' : ''))}"
 >
@@ -163,7 +151,7 @@
               </div>
 
 		      <div class="modal-body">
-                <form action="${pageContext.request.contextPath}/ReviewAddProcess?userId=1"
+                <form action="${pageContext.request.contextPath}/ReviewAddProcess?"
 		              method="post"
 		              enctype="multipart/form-data"
 		              class="comment-form">
@@ -171,7 +159,7 @@
 			
 			          <div class="mb-3">
 			            <label class="form-label">닉네임</label>
-			            <input type="text" class="form-control" value="버거왕광팬" readonly>
+			            <input type="text" class="form-control" value="${nickname}" readonly>
 			          </div>
 			
 			          <div class="mb-3">
