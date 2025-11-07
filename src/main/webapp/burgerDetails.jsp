@@ -151,7 +151,7 @@
               </div>
 
 		      <div class="modal-body">
-                <form action="${pageContext.request.contextPath}/ReviewAddProcess?"
+                <form action="${pageContext.request.contextPath}/review/add?"
 		              method="post"
 		              enctype="multipart/form-data"
 		              class="comment-form">
@@ -303,7 +303,7 @@
 	  reviewModal.addEventListener('hidden.bs.modal', () => {
 	    const form = document.querySelector('.comment-form');
 	    form.reset();
-	    form.action = `${pageContext.request.contextPath}/ReviewAddProcess?userId=1`;
+	    form.action = `${pageContext.request.contextPath}/review/add?userId=1`;
 	    document.getElementById('reviewId').value = "";
 	    document.getElementById('reviewModalLabel').textContent = "리뷰 등록";
 	    form.querySelector('button[type="submit"]').textContent = "등록";
