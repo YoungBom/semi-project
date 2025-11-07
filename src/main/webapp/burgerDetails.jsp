@@ -152,7 +152,8 @@
                 <form action="${pageContext.request.contextPath}/review/add?"
 		              method="post"
 		              enctype="multipart/form-data"
-		              class="comment-form">
+		              class="comment-form"
+		              name="reviewForm">
 			          <input type="hidden" name="burgerId" value="${burger.id}">
 			
 			          <div class="mb-3">
@@ -176,7 +177,7 @@
 			          </div>
 			
 			          <div class="text-end">
-			            <button type="submit" class="btn btn-warning rounded-3">등록</button>
+			            <button type="submit" class="btn btn-warning rounded-3" onclick="return checkForm(event)">등록</button>
 			          </div>
 		        </form>
               </div>
@@ -259,6 +260,18 @@
 </main>
 
 <script>
+	function checkForm(e) {
+		const rating = document.reviewForm.rating.value;
+		const ratingValue = parseFloat(rating);
+		if(isNaN(ratingValue) || ratingValue < 0 || ratingValue > 5) {
+			alert("별점은 0~5 값을 입력해주세요");
+			e.preventDefault();
+			document.reviewForm.rating.focus();
+			return false;
+		}
+		return true;
+	}
+	
 	function openUpdateModal(event, reviewId, content, rating, burgerId) {
 	  event.preventDefault();
 	
