@@ -52,7 +52,7 @@ public class ReviewDAO {
 		return reviewId;
 	}
 	
-	// 유저, 버거 조인 필요
+	// 유저 조인 필요
 	public List<ReviewDTO> getReview(int burgerId) {
 	    Map<Integer, ReviewDTO> reviewMap = new LinkedHashMap<>();
 	    Connection conn = DBUtil.getConnection();
