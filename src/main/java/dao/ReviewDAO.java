@@ -60,13 +60,14 @@ public class ReviewDAO {
 	    ResultSet rs = null;
 
 	    try {
-	        String sql =
-	            "SELECT r.id AS review_id, r.rating, r.content, r.created_at, r.updated_at, u.nickname, ri.image_path " +
-	            "FROM review r " +
-	            "LEFT JOIN review_image ri ON r.id = ri.review_id " +
-	            "JOIN user u ON r.user_id = u.id " +
-	            "WHERE r.burger_id = ? " +
-	            "ORDER BY r.created_at DESC";
+	    	String sql =
+	    		    "SELECT r.id AS review_id, r.rating, r.content, r.created_at, r.updated_at, " +
+	    		    "u.id AS user_id, u.nickname, ri.image_path " +
+	    		    "FROM review r " +
+	    		    "LEFT JOIN review_image ri ON r.id = ri.review_id " +
+	    		    "JOIN user u ON r.user_id = u.id " +
+	    		    "WHERE r.burger_id = ? " +
+	    		    "ORDER BY r.created_at DESC";
 
 	        pstmt = conn.prepareStatement(sql);
 	        pstmt.setInt(1, burgerId);
@@ -79,6 +80,7 @@ public class ReviewDAO {
 	            if (review == null) {
 	                review = new ReviewDTO();
 	                review.setId(reviewId);
+	                review.setUserId(rs.getInt("user_id"));
 	                review.setNickname(rs.getString("nickname"));
 	                review.setContent(rs.getString("content"));
 	                review.setCreatedAt(rs.getTimestamp("created_at"));

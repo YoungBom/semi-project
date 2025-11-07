@@ -213,7 +213,6 @@
                           </c:otherwise>
                         </c:choose>
                       </small>
-            
                       <!-- ⭐ 별점 -->
                       <div class="rating text-warning" style="font-size: 15px;">
                         <c:forEach begin="1" end="${record.rating}" var="i">★</c:forEach>
@@ -221,7 +220,7 @@
                       </div>
                     </div>
                     <!-- ✅ 본인 리뷰일 때만 수정/삭제 버튼 노출 -->
-                    <c:if test="${userName eq record.nickname}">
+                    <c:if test="${sessionScope.LOGIN_UID eq record.userId}">
                       <!-- 수정 버튼 -->
                       <a href="#"
                          class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 my-1 me-0"
