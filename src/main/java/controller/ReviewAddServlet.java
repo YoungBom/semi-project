@@ -32,7 +32,8 @@ public class ReviewAddServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	// 외부 저장 경로 지정 (⚠️ 서버 외부 절대경로)
-    private static final String UPLOAD_DIR = "d:\\upload"; 
+    // private static final String UPLOAD_DIR = "d:\\upload"; 
+    private static final String UPLOAD_DIR = "/Users/juan/uploads/review_images/"; 
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

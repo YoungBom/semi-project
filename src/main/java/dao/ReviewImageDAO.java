@@ -36,52 +36,5 @@ public class ReviewImageDAO {
 			try { if(rs != null) rs.close();} catch (SQLException e) {e.printStackTrace(); }
 		}
 	}
-	
-	public void cleanReviewImage(int reviewId) {
-		Connection conn = DBUtil.getConnection();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		int count = 0;
-		
-		try {
-			String sql ="UPDATE review_image"
-					+ "SET image_path = '' "
-					+ "WHERE review_id = ?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, reviewId);
-			rs = pstmt.executeQuery();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try { if(conn != null) conn.close();} catch (SQLException e) {e.printStackTrace(); }
-			try { if(pstmt != null) pstmt.close();} catch (SQLException e) {e.printStackTrace(); }
-			try { if(rs != null) rs.close();} catch (SQLException e) {e.printStackTrace(); }
-		}
-	}
-	
-	public void updateReviewImage(ReviewImageDTO ri) {
-		Connection conn = DBUtil.getConnection();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		int count = 0;
-		
-		// 1. 기존의 image_path를 모두 ""(빈값)으로 설정한다.
-		// 2. 기존의 image_path에 새로운 image_path를 설정한다. 
-		try {			
-			String sql ="UPDATE review_image"
-					+ "SET image_path = ? "
-					+ "WHERE review_id = ?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, ri.getImagePath());
-			pstmt.setInt(2, ri.getReviewId());
-			count = pstmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 }

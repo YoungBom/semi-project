@@ -299,9 +299,6 @@
 	  // 기존 reviewImage 수량도 같이 넘기기
 	  const oldHidden = form.querySelector('input[name="reviewId"]');
 	  if (oldHidden) oldHidden.remove();
-	  const oldHidden1 = form.querySelector('input[name="imageCount"]');
-	  if (oldHidden1) oldHidden.remove();
-	  
 
 	  // 새로운 reviewId hidden input 추가
 	  const hiddenInput = document.createElement('input');
@@ -309,13 +306,6 @@
 	  hiddenInput.name = 'reviewId';
 	  hiddenInput.value = reviewId;
 	  form.appendChild(hiddenInput);
-	  
-	  const hiddenInput1 = document.createElement('input');
-	  hiddenInput1.type = 'hidden';
-	  hiddenInput1.name = 'imageCount';
-	  // 이미지수량 추후 연동 
-	  hiddenInput1.value = 1;
-	  form.appendChild(hiddenInput1);
 	
 	  // 모달 표시
 	  modal.show();

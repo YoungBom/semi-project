@@ -142,6 +142,12 @@ public class ReviewDAO {
 			pstmt.setInt(3, review.getBurgerId());
 			pstmt.setInt(4, review.getId());			
 			result = pstmt.executeUpdate();
+			pstmt.close(); // ⚡ 중요: 닫고 새로 생성
+			
+			sql = "DELETE FROM review_image WHERE review_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, review.getId());
+			result = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
