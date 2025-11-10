@@ -2,16 +2,25 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <title>회원정보 수정</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user.css">
+  	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/css/user.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
 </head>
 <body>
-  <main class="profile-wrap">
-    <h1 class="page-title with-logo"><span class="title-icon" aria-hidden="true">🍔</span> 회원정보 수정</h1>
+	<%@ include file="/include/header.jsp" %>
+  <main class="profile-wrap mt-5">
+    <h1 class="page-title with-logo mt-5"><span class="title-icon" aria-hidden="true">🍔</span> 회원정보 수정</h1>
 
     <c:if test="${not empty error}">
       <div class="alert error">${error}</div>
@@ -28,39 +37,35 @@
      
 	<!-- 아이디: 라벨 + 값(텍스트) + 전송용 hidden -->
 	<div class="form-row inline">
-  	<span class="form-label">아이디:</span>
-  	<span class="plain-text">${user.userId}</span>
+  	<span class="form-label">아이디: ${user.userId}</span>
 	</div>
 
-    <div class="form-row">
-  <label class="form-label" for="emailLocal">이메일</label>
-
-  <div style="display:flex; gap:10px; align-items:center; width:100%;">
-    <!-- 로컬파트 -->
+    <!-- 이메일 -->
+<div class="form-row two">
+  <div>
+    <label class="form-label" for="emailLocal">이메일</label>
     <input id="emailLocal" class="input" type="text" placeholder="example"
-           value="${emailLocal}" style="flex:1 1 0;" autocapitalize="off">
-
-    <span aria-hidden="true">@</span>
-
-    <!-- 도메인 셀렉트 (+ 직접입력) -->
-    <select id="emailDomainSel" class="input" style="width:220px;">
-      
-      <option value="gmail.com"   <c:if test="${emailDomain eq 'gmail.com'}">selected</c:if>>gmail.com</option>
-      <option value="naver.com"   <c:if test="${emailDomain eq 'naver.com'}">selected</c:if>>naver.com</option>
-      <option value="daum.net"    <c:if test="${emailDomain eq 'daum.net'}">selected</c:if>>daum.net</option>
-      <option value="kakao.com"   <c:if test="${emailDomain eq 'kakao.com'}">selected</c:if>>kakao.com</option>
-      <option value="hanmail.net" <c:if test="${emailDomain eq 'hanmail.net'}">selected</c:if>>hanmail.net</option>
-      <option value="nate.com" <c:if test="${emailDomain eq 'hanmail.net'}">selected</c:if>>nate.com</option>
-    </select>
-
-    <!-- 직접입력 도메인 (custom 선택 시에만 활성/표시) -->
-    <input id="emailDomainCustom" class="input" type="text" placeholder="domain.com"
-           style="width:220px; display:none;" value="${emailDomain}" autocapitalize="off">
+           value="${fn:split(user.email,'@')[0]}" autocomplete="off">
   </div>
 
-  <!-- 서버로 제출되는 전체 이메일 -->
-  <input type="hidden" id="emailFull" name="email" value="${user.email}">
+  <div>
+    <label class="form-label" for="emailDomain">도메인</label>
+    <select id="emailDomain" class="input">
+      <c:set var="domain" value="${fn:length(fn:split(user.email,'@'))==2 ? '@' += fn:split(user.email,'@')[1] : '@gmail.com'}"/>
+      <option value="@gmail.com"  ${domain=='@gmail.com'  ? 'selected' : ''}>@gmail.com</option>
+      <option value="@naver.com"  ${domain=='@naver.com'  ? 'selected' : ''}>@naver.com</option>
+      <option value="@daum.net"   ${domain=='@daum.net'   ? 'selected' : ''}>@daum.net</option>
+      <option value="@kakao.com"  ${domain=='@kakao.com'  ? 'selected' : ''}>@kakao.com</option>
+      <option value="@nate.com"   ${domain=='@nate.com'   ? 'selected' : ''}>@nate.com</option>
+    </select>
+  </div>
 </div>
+
+
+
+<!-- 실제 서버로 보내는 값 -->
+<input type="hidden" id="emailHidden" name="email" value="${user.email}">
+
 
 
       <!-- 닉네임 -->
@@ -114,60 +119,7 @@
 
   <!-- 최소 JS: 셀렉트 선택 시 오른쪽 도메인 입력칸은 항상 같은 자리, 직접입력일 때만 활성화.
        제출 시 hidden email 에 (local@domain) 합쳐서 전송 -->
-  <script>
-    (function () {
-      var sel   = document.getElementById('emailDomainSel');
-      var box   = document.getElementById('emailDomainBox'); // 항상 보이는 입력칸
-      var local = document.getElementById('emailLocal');
-      var full  = document.getElementById('emailFull');
+  <script src="${pageContext.request.contextPath}/resources/js/edit.js"></script>
 
-      function syncDomainBox() {
-        if (sel.value === '_custom') {
-          // 직접입력: 칸 활성화(편집 가능)
-          box.removeAttribute('readonly');
-          box.removeAttribute('disabled');
-          box.placeholder = 'domain.com';
-          if (!box.value || box.value.indexOf('.') === -1) {
-            // 기본 안내만 유지
-          }
-        } else {
-          // 사전도메인 선택: 칸 비활성 + 값 고정(자리 고정, 사라지지 않음)
-          box.value = sel.value;
-          box.setAttribute('readonly', 'readonly');
-          box.setAttribute('disabled', 'disabled');
-        }
-      }
-
-      function compose() {
-        var domain = (sel.value === '_custom') ? (box.value || '').trim() : sel.value;
-        var localPart = (local.value || '').trim();
-        if (localPart && domain) {
-          full.value = localPart + '@' + domain;
-        } else {
-          // 비어있으면 기존 값 유지 (서버에서 validation 권장)
-          full.value = localPart ? (localPart + '@' + domain) : '';
-        }
-      }
-
-      sel.addEventListener('change', function () {
-        syncDomainBox();
-        compose();
-      });
-
-      [box, local].forEach(function (el) {
-        el.addEventListener('input', compose);
-      });
-
-      // 초기 상태 반영
-      syncDomainBox();
-      compose();
-
-      // 제출 직전 한 번 더 합치기
-      var form = document.querySelector('form.form-card');
-      if (form) {
-        form.addEventListener('submit', function () { syncDomainBox(); compose(); });
-      }
-    })();
-  </script>
 </body>
 </html>

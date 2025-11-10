@@ -2,7 +2,7 @@
 <%
   String ctx = request.getContextPath();
   Object uidObj = (session == null) ? null : session.getAttribute("LOGIN_UID");
-  String userName = (session == null) ? null : (String) session.getAttribute("LOGIN_NAME");
+  String userNickName = (session == null) ? null : (String) session.getAttribute("LOGIN_NICKNAME");
   boolean loggedIn = (uidObj != null);
 %>
 
@@ -49,9 +49,9 @@
           <a href="<%=ctx%>/burger/list" class="btn rounded-3" style="background:#ff8d00; color:white;">버거 리스트</a>
         <% } else { %>
           <span class="me-2 user-greeting text-nowrap"
-          	 	title="<%= (userName == null ? "회원" : userName) %>님"
+          	 	title="<%= (userNickName == null ? "회원" : userNickName) %>님"
           >
-           <%=(userName == null ? "회원" : userName) %>님</span>
+           <%=(userNickName == null ? "회원" : userNickName) %>님</span>
           <a href="<%=ctx%>/user/mypage" class="btn me-1 rounded-3" style="background:#ff8d00; color:white;">마이페이지</a>
           <form method="post" action="<%=ctx%>/logout" class="d-inline m-0 p-0">
             <button type="submit" class="btn me-1 rounded-3" style="background:#4caf50; color:white;">로그아웃</button>
