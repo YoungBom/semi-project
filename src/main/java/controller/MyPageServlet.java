@@ -10,29 +10,51 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet("/user/mypage") // ✅ 이 매핑만 사용
+@WebServlet("/user/mypage")
 public class MyPageServlet extends HttpServlet {
-    private final UserDAO userDao = new UserDAO();
+	private final UserDAO userDao = new UserDAO();
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        HttpSession s = req.getSession(false);
-        Object uidObj = (s != null) ? s.getAttribute(SessionKeys.LOGIN_UID) : null;
-        if (uidObj == null) {
-            resp.sendRedirect(req.getContextPath() + "/login");
-            return;
-        }
+		HttpSession s = req.getSession(false);
+		if (s == null) {
+			resp.sendRedirect(req.getContextPath() + "/login");
+			return;
+		}
 
-        int uid = (uidObj instanceof Integer) ? (Integer) uidObj : Integer.parseInt(uidObj.toString());
-        Optional<UserDTO> opt = userDao.findById(uid);
-        if (opt.isEmpty()) {
-            req.setAttribute("error", "사용자 정보를 찾을 수 없습니다.");
-            req.getRequestDispatcher("/user/login.jsp").forward(req, resp);
-            return;
-        }
-        req.setAttribute("user", opt.get());
-        req.getRequestDispatcher("/user/mypage.jsp").forward(req, resp);
-    }
+		// 여러 키 대응
+		Object uidObj = s.getAttribute(SessionKeys.LOGIN_UID);
+		if (uidObj == null)
+			uidObj = s.getAttribute("LOGIN_UID");
+		if (uidObj == null)
+			uidObj = s.getAttribute("LOGIN_USER_ID");
+		if (uidObj == null) {
+			resp.sendRedirect(req.getContextPath() + "/login");
+			return;
+		}
+
+		// ✅ int로 안전 변환 (DAO는 findById(int))
+		final int uid;
+		try {
+			if (uidObj instanceof Number) {
+				uid = ((Number) uidObj).intValue();
+			} else {
+				uid = Integer.parseInt(String.valueOf(uidObj));
+			}
+		} catch (NumberFormatException e) {
+			resp.sendRedirect(req.getContextPath() + "/login");
+			return;
+		}
+
+		Optional<UserDTO> opt = userDao.findById(uid); // ✅ int 전달
+		if (opt.isEmpty()) {
+			s.invalidate();
+			resp.sendRedirect(req.getContextPath() + "/login");
+			return;
+		}
+
+		req.setAttribute("user", opt.get());
+		req.getRequestDispatcher("/user/mypage.jsp").forward(req, resp);
+	}
 }
