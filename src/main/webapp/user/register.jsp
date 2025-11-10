@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -91,9 +93,9 @@
 				<label class="label" for="gender">성별(*)</label> <select
 					class="input" id="gender" name="gender" required>
 					<option value="">선택</option>
-					<option value="M">남성</option>
-					<option value="F">여성</option>
-					<option value="O">기타/응답하지 않음</option>
+					<option value="남">남성</option>
+					<option value="여">여성</option>
+					<option value="">기타/응답하지 않음</option>
 				</select>
 			</div>
 
@@ -159,7 +161,6 @@
 			</main>
 
 	<!-- 아이디 중복확인 URL -->
-	<c:url var="checkIdUrl" value="/user/check-id" />
     <script src="${pageContext.request.contextPath}/resources/js/register.js"></script>
 
 
