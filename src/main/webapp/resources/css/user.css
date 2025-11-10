@@ -10,6 +10,12 @@
 	--surface: #FFFFFF;
 	--bg-ivory: #FFF7EC; /* 아이보리 톤 */
 	--shadow: 0 10px 25px rgba(0, 0, 0, .06);
+	/* ▼ 추가된 토큰 (MyPage 하단 스타일에서 사용) */
+	--brand-cream: #FEFAF0;
+	--ink-strong: #1F1F1F;
+	--ink-weak: #666A70;
+	--brand-orange: var(--brand);
+	--brand-orange-dk: var(--brand-dk);
 }
 
 /* 페이지 배경(아이보리 그라데이션) */
@@ -165,7 +171,7 @@ body {
 	border: 1px solid #ccf3c8;
 }
 
-@media ( max-width :480px) {
+@media ( max-width : 480px) {
 	.auth-card {
 		padding: 20px;
 	}
@@ -366,9 +372,8 @@ select.input {
 
 /* 로그인 버튼: 크기 키우고 텍스트 정확히 중앙정렬 */
 .auth-card .actions {
-	justify-content: center; /* 버튼 중앙 정렬 */
-}
-
+	justify-content: center;
+} /* 버튼 중앙 정렬 */
 .auth-card .btn.primary {
 	display: inline-flex; /* 수직/수평 중앙 */
 	align-items: center;
@@ -446,7 +451,7 @@ select.input {
 	display: flex;
 	gap: 12px;
 	align-items: center;
-	justify-content: flex-start; /* 중앙 원하는 경우 center 로 바꿔도 됨 */
+	justify-content: flex-start; /* 중앙 원하면 center */
 	margin-top: 18px;
 }
 
@@ -469,4 +474,172 @@ select.input {
 	border: 1px solid var(--line);
 	border-radius: 20px;
 	box-shadow: var(--shadow);
+}
+
+/* =========================
+   MyPage (scoped) – append only
+   로그인 화면과 톤 매칭 (카드형, 아이보리 배경, 오렌지 버튼)
+   ========================= */
+
+/* 레이아웃 */
+.profile-wrap {
+	max-width: 880px;
+	margin: 40px auto 80px;
+	padding: 0 16px;
+	background: radial-gradient(1200px 300px at 50% -150px, rgba(255, 122, 34, 0.06),
+		transparent 50%),
+		linear-gradient(180deg, #fff 0%, #fff 55%, var(--brand-cream) 100%);
+}
+
+/* 제목 */
+.profile-title {
+	margin: 0 0 20px;
+	font-size: 28px;
+	font-weight: 800;
+	letter-spacing: -0.02em;
+	color: var(--ink-strong);
+}
+
+/* 카드 컨테이너 */
+.profile-card {
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: 18px;
+	box-shadow: 0 20px 40px rgba(255, 122, 34, 0.08), 0 2px 8px
+		rgba(31, 31, 31, 0.04);
+	padding: 18px 20px;
+}
+
+/* 한 줄(라벨-값) 레이아웃 */
+.profile-row {
+	display: grid;
+	grid-template-columns: 140px 1fr;
+	gap: 12px;
+	align-items: center;
+	padding: 14px 6px;
+	border-bottom: 1px dashed var(--line);
+}
+
+.profile-row:last-child {
+	border-bottom: 0;
+}
+
+/* 라벨과 값 */
+.profile-row .k {
+	color: var(--ink-weak);
+	font-size: 14px;
+}
+
+.profile-row .v {
+	color: var(--ink);
+	font-size: 15px;
+	font-weight: 600;
+	word-break: break-word;
+}
+
+/* 액션 영역 */
+.profile-actions {
+	display: flex;
+	gap: 14px;
+	align-items: center;
+	padding: 20px 4px 0;
+}
+
+/* 버튼 (로그인 화면과 톤 일치) */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 42px;
+	padding: 0 22px;
+	border-radius: 24px;
+	font-size: 15px;
+	font-weight: 700;
+	border: 1px solid transparent;
+	cursor: pointer;
+	text-decoration: none;
+	transition: transform .05s ease, box-shadow .2s ease, background-color
+		.15s ease, border-color .15s ease, color .15s ease;
+	user-select: none;
+}
+
+.btn:active {
+	transform: translateY(1px);
+}
+
+/* 주 버튼 (오렌지) */
+.btn.primary {
+	background: var(--brand-orange);
+	color: #fff;
+	box-shadow: 0 8px 18px rgba(255, 122, 34, 0.22);
+}
+
+.btn.primary:hover {
+	background: var(--brand-orange-dk);
+}
+
+/* 보조 버튼 (화이트 칩) */
+.btn.secondary {
+	background: #fff;
+	color: var(--ink);
+	border-color: var(--line);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.btn.secondary:hover {
+	border-color: rgba(255, 122, 34, 0.35);
+	box-shadow: 0 4px 16px rgba(255, 122, 34, 0.10);
+}
+
+/* 에러/알림 */
+.alert.error {
+	margin: 8px 0 14px;
+	padding: 10px 12px;
+	border-radius: 10px;
+	background: #FFF4F4;
+	color: #C0392B;
+	border: 1px solid #F8D7DA;
+	font-size: 14px;
+}
+
+/* 반응형 */
+@media ( max-width : 640px) {
+	.profile-wrap {
+		margin: 24px auto 60px;
+		padding: 0 12px;
+	}
+	.profile-title {
+		font-size: 24px;
+	}
+	.profile-card {
+		border-radius: 16px;
+		padding: 12px;
+	}
+	.profile-row {
+		grid-template-columns: 100px 1fr;
+		padding: 12px 4px;
+	}
+	.btn {
+		height: 40px;
+		padding: 0 18px;
+		font-size: 14px;
+	}
+	.profile-actions {
+		gap: 10px;
+		flex-wrap: wrap;
+	}
+}
+
+/* ===== MyPage 제목 아이콘 (햄버거 로고) ===== */
+.profile-title {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.profile-title .title-icon {
+	font-size: 26px;
+	line-height: 1;
+	transform: translateY(1px);
+	filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
 }
