@@ -32,8 +32,8 @@ public class ReviewAddServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	// 외부 저장 경로 지정 (⚠️ 서버 외부 절대경로)
-    // private static final String UPLOAD_DIR = "d:\\upload"; 
-    private static final String UPLOAD_DIR = "/Users/juan/uploads/review_images/"; 
+    private static final String UPLOAD_DIR = "d:\\upload"; 
+    
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -140,14 +140,8 @@ public class ReviewAddServlet extends HttpServlet {
 		        }
 		    }
 
-		    // ✅ 파일이 완전히 없거나 유효하지 않을 경우 기본값 저장
-		    if (!hasValidImage) {
-		        ReviewImageDTO ri = new ReviewImageDTO();
-		        ri.setReviewId(reviewId);
-		        ri.setImagePath(""); // 빈 경로 저장
-		        reviewImageDao.addReviewImage(ri);
-		    }
-
+		    // ✅ 파일이 완전히 없거나 유효하지 않을경우 DB 저장하지 않음
+		    if (!hasValidImage) { }
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}

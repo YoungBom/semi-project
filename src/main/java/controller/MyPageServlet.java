@@ -8,46 +8,53 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
+import java.util.Optional;
 
 @WebServlet("/user/mypage")
 public class MyPageServlet extends HttpServlet {
-    private final UserDAO userDao = new UserDAO();
+	private final UserDAO userDao = new UserDAO();
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        HttpSession s = req.getSession(false);
-        Object uidObj = (s == null) ? null : s.getAttribute(SessionKeys.LOGIN_UID);
-        if (uidObj == null) {
-            String next = URLEncoder.encode(req.getRequestURI(), StandardCharsets.UTF_8);
-            resp.sendRedirect(req.getContextPath() + "/login?next=" + next);
-            return;
-        }
+		HttpSession s = req.getSession(false);
+		if (s == null) {
+			resp.sendRedirect(req.getContextPath() + "/login");
+			return;
+		}
 
-        long uid = (uidObj instanceof Number)
-                ? ((Number) uidObj).longValue()
-                : Long.parseLong(uidObj.toString());
+		// 여러 키 대응
+		Object uidObj = s.getAttribute(SessionKeys.LOGIN_UID);
+		if (uidObj == null)
+			uidObj = s.getAttribute("LOGIN_UID");
+		if (uidObj == null)
+			uidObj = s.getAttribute("LOGIN_USER_ID");
+		if (uidObj == null) {
+			resp.sendRedirect(req.getContextPath() + "/login");
+			return;
+		}
 
-        try {
-            UserDTO user = userDao.findById(uid);
-            if (user == null) {
-                s.invalidate();
-                String next = URLEncoder.encode(req.getRequestURI(), StandardCharsets.UTF_8);
-                resp.sendRedirect(req.getContextPath() + "/login?next=" + next);
-                return;
-            }
+		// ✅ int로 안전 변환 (DAO는 findById(int))
+		final int uid;
+		try {
+			if (uidObj instanceof Number) {
+				uid = ((Number) uidObj).intValue();
+			} else {
+				uid = Integer.parseInt(String.valueOf(uidObj));
+			}
+		} catch (NumberFormatException e) {
+			resp.sendRedirect(req.getContextPath() + "/login");
+			return;
+		}
 
-            // JSP에서 어떤 이름을 쓰든 보이도록 둘 다 세팅
-            req.setAttribute("user", user);
-            req.setAttribute("me", user);
+		Optional<UserDTO> opt = userDao.findById(uid); // ✅ int 전달
+		if (opt.isEmpty()) {
+			s.invalidate();
+			resp.sendRedirect(req.getContextPath() + "/login");
+			return;
+		}
 
-            req.getRequestDispatcher("/user/mypage.jsp").forward(req, resp);
-        } catch (SQLException e) {
-            throw new ServletException(e);
-        }
-    }
+		req.setAttribute("user", opt.get());
+		req.getRequestDispatcher("/user/mypage.jsp").forward(req, resp);
+	}
 }

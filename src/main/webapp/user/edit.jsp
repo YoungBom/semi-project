@@ -1,66 +1,173 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <title>회원정보 수정</title>
-
-  <c:set var="ctx" value="${pageContext.request.contextPath}" />
-  <link rel="stylesheet" href="${ctx}/resources/css/user.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user.css">
 </head>
 <body>
-  <h1>회원정보 수정</h1>
+  <main class="profile-wrap">
+    <h1 class="page-title with-logo"><span class="title-icon" aria-hidden="true">🍔</span> 회원정보 수정</h1>
 
-  <!-- birth input용 표시 값 만들기: birthView(서버 포맷) > YYYYMMDD(8자리) > yyyy-MM-dd(이미 포맷) > 공백 -->
-  <c:set var="birthVal" value=""/>
-  <c:choose>
-    <c:when test="${not empty birthView}">
-      <c:set var="birthVal" value="${birthView}" />
-    </c:when>
-    <c:when test="${not empty me.birth and fn:length(me.birth) == 8}">
-      <c:set var="birthVal"
-             value="${fn:substring(me.birth,0,4)}-${fn:substring(me.birth,4,6)}-${fn:substring(me.birth,6,8)}" />
-    </c:when>
-    <c:when test="${not empty me.birth and fn:length(me.birth) == 10 and fn:contains(me.birth,'-')}">
-      <c:set var="birthVal" value="${me.birth}" />
-    </c:when>
-  </c:choose>
+    <c:if test="${not empty error}">
+      <div class="alert error">${error}</div>
+    </c:if>
+    <c:if test="${not empty msg}">
+      <div class="alert success">${msg}</div>
+    </c:if>
 
-  <form method="post" action="${ctx}/user/edit">
-    <label>이메일
-      <input type="email" name="email" value="<c:out value='${me.email}'/>" required>
-    </label><br>
+    <!-- 이메일 분해 -->
+    <c:set var="emailLocal" value="${fn:substringBefore(user.email, '@')}" />
+    <c:set var="emailDomain" value="${fn:substringAfter(user.email,  '@')}" />
 
-    <label>닉네임
-      <input name="nickname" value="<c:out value='${me.nickname}'/>" required>
-    </label><br>
+    <form class="form-card" method="post" action="${pageContext.request.contextPath}/user/edit">
+     
+	<!-- 아이디: 라벨 + 값(텍스트) + 전송용 hidden -->
+	<div class="form-row inline">
+  	<span class="form-label">아이디:</span>
+  	<span class="plain-text">${user.userId}</span>
+	</div>
 
-    <label>휴대폰
-      <input name="phone" value="<c:out value='${me.phone}'/>">
-    </label><br>
+    <div class="form-row">
+  <label class="form-label" for="emailLocal">이메일</label>
 
-    <label>생년월일
-      <input type="date" name="birth" value="${birthVal}">
-    </label><br>
+  <div style="display:flex; gap:10px; align-items:center; width:100%;">
+    <!-- 로컬파트 -->
+    <input id="emailLocal" class="input" type="text" placeholder="example"
+           value="${emailLocal}" style="flex:1 1 0;" autocapitalize="off">
 
-    <label>성별
-      <select name="gender">
-        <option value="" disabled>선택</option>
-        <option value="남" ${me.gender == '남' ? 'selected' : ''}>남성</option>
-        <option value="여" ${me.gender == '여' ? 'selected' : ''}>여성</option>
-      </select>
-    </label><br>
+    <span aria-hidden="true">@</span>
 
-    <label>주소
-      <input name="address" value="<c:out value='${me.address}'/>">
-    </label><br>
+    <!-- 도메인 셀렉트 (+ 직접입력) -->
+    <select id="emailDomainSel" class="input" style="width:220px;">
+      
+      <option value="gmail.com"   <c:if test="${emailDomain eq 'gmail.com'}">selected</c:if>>gmail.com</option>
+      <option value="naver.com"   <c:if test="${emailDomain eq 'naver.com'}">selected</c:if>>naver.com</option>
+      <option value="daum.net"    <c:if test="${emailDomain eq 'daum.net'}">selected</c:if>>daum.net</option>
+      <option value="kakao.com"   <c:if test="${emailDomain eq 'kakao.com'}">selected</c:if>>kakao.com</option>
+      <option value="hanmail.net" <c:if test="${emailDomain eq 'hanmail.net'}">selected</c:if>>hanmail.net</option>
+      <option value="nate.com" <c:if test="${emailDomain eq 'hanmail.net'}">selected</c:if>>nate.com</option>
+    </select>
 
-    <div class="actions">
-      <button type="submit">저장</button>
-      <a href="${ctx}/user/mypage">취소</a>
-    </div>
-  </form>
+    <!-- 직접입력 도메인 (custom 선택 시에만 활성/표시) -->
+    <input id="emailDomainCustom" class="input" type="text" placeholder="domain.com"
+           style="width:220px; display:none;" value="${emailDomain}" autocapitalize="off">
+  </div>
+
+  <!-- 서버로 제출되는 전체 이메일 -->
+  <input type="hidden" id="emailFull" name="email" value="${user.email}">
+</div>
+
+
+      <!-- 닉네임 -->
+      <div class="form-row">
+        <label class="form-label" for="nickname">닉네임</label>
+        <input id="nickname" class="input" type="text" name="nickname" value="${user.nickname}">
+      </div>
+
+      <!-- 휴대폰 -->
+      <div class="form-row">
+        <label class="form-label" for="phone">휴대폰</label>
+        <input id="phone" class="input" type="text" name="phone" value="${user.phone}" placeholder="01012345678">
+      </div>
+
+      <!-- 생년월일 + 성별 -->
+      <div class="form-row two">
+        <div>
+          <label class="form-label" for="birth">생년월일</label>
+          <input id="birth" class="input" type="date" name="birth" value="${user.birth}">
+        </div>
+        <div>
+          <label class="form-label" for="gender">성별</label>
+          <select id="gender" class="input" name="gender">
+            <option value="남" <c:if test="${user.gender eq '남'}">selected</c:if>>남성</option>
+            <option value="여" <c:if test="${user.gender eq '여'}">selected</c:if>>여성</option>
+            <option value="선택안함" <c:if test="${user.gender eq '선택안함'}">selected</c:if>>선택안함</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 이름 -->
+      <div class="form-row">
+        <label class="form-label" for="name">이름</label>
+        <input id="name" class="input" type="text" name="name" value="${user.name}">
+      </div>
+
+      <!-- 주소 -->
+      <div class="form-row">
+        <label class="form-label" for="address">주소</label>
+        <input id="address" class="input" type="text" name="address" value="${user.address}">
+      </div>
+
+      <!-- 액션 -->
+      <div class="form-actions">
+        <button type="submit" class="btn primary">저장</button>
+        <a class="btn ghost" href="${pageContext.request.contextPath}/user/mypage">취소</a>
+
+      </div>
+    </form>
+  </main>
+
+  <!-- 최소 JS: 셀렉트 선택 시 오른쪽 도메인 입력칸은 항상 같은 자리, 직접입력일 때만 활성화.
+       제출 시 hidden email 에 (local@domain) 합쳐서 전송 -->
+  <script>
+    (function () {
+      var sel   = document.getElementById('emailDomainSel');
+      var box   = document.getElementById('emailDomainBox'); // 항상 보이는 입력칸
+      var local = document.getElementById('emailLocal');
+      var full  = document.getElementById('emailFull');
+
+      function syncDomainBox() {
+        if (sel.value === '_custom') {
+          // 직접입력: 칸 활성화(편집 가능)
+          box.removeAttribute('readonly');
+          box.removeAttribute('disabled');
+          box.placeholder = 'domain.com';
+          if (!box.value || box.value.indexOf('.') === -1) {
+            // 기본 안내만 유지
+          }
+        } else {
+          // 사전도메인 선택: 칸 비활성 + 값 고정(자리 고정, 사라지지 않음)
+          box.value = sel.value;
+          box.setAttribute('readonly', 'readonly');
+          box.setAttribute('disabled', 'disabled');
+        }
+      }
+
+      function compose() {
+        var domain = (sel.value === '_custom') ? (box.value || '').trim() : sel.value;
+        var localPart = (local.value || '').trim();
+        if (localPart && domain) {
+          full.value = localPart + '@' + domain;
+        } else {
+          // 비어있으면 기존 값 유지 (서버에서 validation 권장)
+          full.value = localPart ? (localPart + '@' + domain) : '';
+        }
+      }
+
+      sel.addEventListener('change', function () {
+        syncDomainBox();
+        compose();
+      });
+
+      [box, local].forEach(function (el) {
+        el.addEventListener('input', compose);
+      });
+
+      // 초기 상태 반영
+      syncDomainBox();
+      compose();
+
+      // 제출 직전 한 번 더 합치기
+      var form = document.querySelector('form.form-card');
+      if (form) {
+        form.addEventListener('submit', function () { syncDomainBox(); compose(); });
+      }
+    })();
+  </script>
 </body>
 </html>

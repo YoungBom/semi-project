@@ -12,8 +12,7 @@ import java.io.*;
  */
 @WebServlet("/image/*")
 public class ImageServlet extends HttpServlet {
-	 // private static final String UPLOAD_DIR = "d:\\upload";
-	 private static final String UPLOAD_DIR = "/Users/juan/uploads/review_images/";
+	 	private static final String UPLOAD_DIR = "d:\\upload";
 
 	    @Override
 	    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
