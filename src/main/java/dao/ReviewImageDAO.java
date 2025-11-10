@@ -18,7 +18,6 @@ public class ReviewImageDAO {
 		PreparedStatement pstmt = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		int rs2 = 0;
 		
 		try {
 			String sql = "INSERT INTO review_image(review_id, image_path) VALUES (?,?)";
@@ -35,6 +34,31 @@ public class ReviewImageDAO {
 			try { if(stmt != null) stmt.close();} catch (SQLException e) {e.printStackTrace(); }
 			try { if(rs != null) rs.close();} catch (SQLException e) {e.printStackTrace(); }
 		}
+	}
+	
+	public List<String> findReviewImage (int reviewId) {
+		Connection conn = DBUtil.getConnection();
+		PreparedStatement pstmt = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		List<String> images = new ArrayList<>();
+		
+		try {
+			String sql = "SELECT image_path FROM review_image WHERE review_id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, reviewId);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				images.add(rs.getString("image_path"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return images;
 	}
 
 }
