@@ -165,7 +165,9 @@
 					  <input type="hidden" name="imageCheck" id="imageCheck" value="false">
 					  <button type="button"
 					    class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-1"
+					    id="oldImageButtonContainer"
 					    data-bs-toggle="button"
+					    style="display:none;"
 					    onclick="checkUploadNewImage()">
 					    기존 이미지 등록
 					  </button>
@@ -258,8 +260,6 @@
     </div>
   </div>
 </main>
-
-
 
 <!-- ✅ 푸터 -->
 <%@ include file="/include/footer.jsp" %>
