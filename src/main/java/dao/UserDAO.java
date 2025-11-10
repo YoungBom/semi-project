@@ -311,4 +311,35 @@ public class UserDAO {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	
+	public boolean existsByUserId(String userId) {
+	    boolean exists = false;
+	    String sql = "SELECT COUNT(*) FROM user WHERE user_id = ?";
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+	        pstmt.setString(1, userId);
+
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                exists = rs.getInt(1) > 0;
+	            }
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return exists;
+	}
 }
+
+
+
+
+
+
+
+
