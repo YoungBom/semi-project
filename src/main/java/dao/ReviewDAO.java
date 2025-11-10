@@ -157,4 +157,8 @@ public class ReviewDAO {
 		
 		return result;
 	}
+	
+	public void listUpReview(int userId) {
+		
+	}
 }
