@@ -40,7 +40,7 @@
 
       <div class="subline">
         <span class="muted">아이디가 없습니까?</span>
-        <a class="link" href="${pageContext.request.contextPath}/signup">회원가입</a>
+        <a class="link" href="${pageContext.request.contextPath}/register">회원가입</a>
       </div>
 
       <hr class="divider"/>
