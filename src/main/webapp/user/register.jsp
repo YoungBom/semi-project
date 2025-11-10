@@ -23,6 +23,17 @@
 			<span class="title-icon" aria-hidden="true">🍔</span> 회원가입
 		</h1>
 
+        <!-- 오류메세지 출력 -->
+        <c:if test="${not empty error}">
+          <div class="alert alert-danger text-center">${error}</div>
+        </c:if>
+        
+        <c:if test="${not empty msg}">
+          <div class="alert alert-success text-center">${msg}</div>
+        </c:if>
+
+
+
 		<form class="auth-card" method="post"
 			action="${pageContext.request.contextPath}/register"
 			autocomplete="off">

@@ -84,14 +84,36 @@ public class RegisterServlet extends HttpServlet {
         u.setAddress(address);
         u.setRole(role);
 
-        int newId = dao.create(u, pw);
-        if (newId <= 0) {
-            req.setAttribute("error", "회원 가입에 실패했습니다.");
-            req.getRequestDispatcher("/user/register.jsp").forward(req, resp);
-            return;
-        }
+        try {
+            int newId = dao.create(u, pw);  // 💡 예외 발생 가능 구간
 
-        req.setAttribute("msg", "회원가입이 완료되었습니다. 로그인해주세요.");
-        req.getRequestDispatcher("/user/login.jsp").forward(req, resp);
+            if (newId <= 0) {
+                req.setAttribute("error", "회원 가입에 실패했습니다.");
+                req.getRequestDispatcher("/user/register.jsp").forward(req, resp);
+                return;
+            }
+
+            req.setAttribute("msg", "회원가입이 완료되었습니다. 로그인해주세요.");
+            req.getRequestDispatcher("/user/login.jsp").forward(req, resp);
+
+        } catch (RuntimeException e) {  // 💡 DAO에서 던진 RuntimeException 처리
+            Throwable cause = e.getCause();  // 실제 SQLException 확인
+            String msg = "서버 오류가 발생했습니다.";
+
+            if (cause != null && cause.getMessage() != null && cause.getMessage().contains("Duplicate entry")) {
+                if (cause.getMessage().contains("phone")) {
+                    msg = "이미 등록된 전화번호입니다.";
+                } else if (cause.getMessage().contains("email")) {
+                    msg = "이미 등록된 이메일입니다.";
+                } else if (cause.getMessage().contains("user_id")) {
+                    msg = "이미 사용 중인 아이디입니다.";
+                } else {
+                    msg = "이미 등록된 정보가 있습니다.";
+                }
+            }
+
+            req.setAttribute("error", msg);
+            req.getRequestDispatcher("/user/register.jsp").forward(req, resp);
+        }
     }
 }
