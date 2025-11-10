@@ -23,8 +23,26 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: nowrap;            /* 줄바꿈 절대 금지 */
   gap: 20px;
   padding: 0 30px;
+}
+
+/* 헤더 닉네임 텍스트 오버플로우 방지 */
+.user-greeting {
+  max-width: 120px;             /* 닉네임 영역 고정폭 */
+  white-space: nowrap;          /* 줄바꿈 금지 */
+  overflow: hidden;             /* 넘치는 부분 숨김 */
+  text-overflow: ellipsis;      /* ... 표시 */
+  display: inline-block;
+  vertical-align: middle;
+  cursor: help; /* 커서 모양 변경 → '도움말' 느낌 */
+}
+
+/* 검색창과 버튼 간격 보정 */
+.navbar .form-control {
+  min-width: 150px;
+  max-width: 200px;
 }
 
 /* ======================================= */
@@ -359,8 +377,8 @@ body {
 /* ✅ 헤더 반응형 확장 - 기존 디자인 유지 버전 */
 /* ======================================= */
 
-/* 1024px 이하 - 간격 조정 */
-@media (max-width: 1024px) {
+/* 1170px 이하 - 간격 조정 */
+@media (max-width: 1170px) {
   .navbar .container {
     flex-wrap: wrap;
     justify-content: center;
