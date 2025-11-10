@@ -41,8 +41,8 @@ public class UserDAO {
 	}
 
 	// ===== 존재 여부 =====
-	public boolean existsByLoginId(String userId) {
-		String sql = "SELECT 1 FROM `user` WHERE user_id=?";
+	public boolean existsByLoginId(String userId) {	
+		String sql = "SELECT 1 FROM `user` WHERE BINARY user_id = ?";
 		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
 			ps.setString(1, userId);
 			try (ResultSet rs = ps.executeQuery()) {
@@ -67,7 +67,7 @@ public class UserDAO {
 
 	// ===== 조회 =====
 	public Optional<UserDTO> findByLoginId(String loginId) {
-		String sql = "SELECT * FROM `user` WHERE user_id=?";
+		 String sql = "SELECT * FROM `user` WHERE BINARY user_id = ?";
 		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
 			ps.setString(1, loginId);
 			try (ResultSet rs = ps.executeQuery()) {
@@ -210,7 +210,7 @@ public class UserDAO {
 
 	public Optional<String> createPasswordResetTokenByLoginIdOrEmail(String loginOrEmail, int ttlMinutes) {
 		Integer uid = null;
-		String find = "SELECT id FROM `user` WHERE user_id=? OR email=?";
+		String find = "SELECT id FROM `user` WHERE BINARY user_id = ? OR email = ?";
 		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(find)) {
 			ps.setString(1, loginOrEmail);
 			ps.setString(2, loginOrEmail);

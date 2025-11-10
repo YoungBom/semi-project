@@ -1,15 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/user.css?v=reg4">
+  	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/css/user.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
 </head>
 <body data-check-id-url="${checkIdUrl}">
+<%@ include file="/include/header.jsp" %>
 	<main class="auth-wrap">
 		<h1 class="auth-title">
 			<span class="title-icon" aria-hidden="true">🍔</span> 회원가입
@@ -65,8 +72,9 @@
 						<option value="gmail.com">gmail.com</option>
 						<option value="naver.com">naver.com</option>
 						<option value="daum.net">daum.net</option>
-						<option value="yahoo.com">yahoo.com</option>
-						<option value="_custom">직접입력</option>
+						<option value="kakao.com">kakao.com</option>
+						<option value="nate.com">nate.com</option>
+						
 					</select>
 
 					<!-- 직접입력 (같은 자리에 토글, 기본 숨김) -->
@@ -90,9 +98,9 @@
 				<label class="label" for="gender">성별(*)</label> <select
 					class="input" id="gender" name="gender" required>
 					<option value="">선택</option>
-					<option value="M">남성</option>
-					<option value="F">여성</option>
-					<option value="O">기타/응답하지 않음</option>
+					<option value="남">남성</option>
+					<option value="여">여성</option>
+					<option value="">기타/응답하지 않음</option>
 				</select>
 			</div>
 
@@ -142,11 +150,48 @@
 				<span class="muted">이미 계정이 있나요?</span> <a class="link"
 					href="${pageContext.request.contextPath}/login">로그인</a>
 			</div>
-		</form>
-	</main>
+			
+			
+			
+			
+			
+			<!-- 역할 값: 기본 USER -->
+			<input type="hidden" name="role" id="role" value="USER"/>
+
+			<div class="actions center">
+  			
+  			<button type="button" id="btnMakeAdmin" class="btn-outline">관리자 계정 만들기</button>
+			</div>
+			</form>
+			</main>
 
 	<!-- 아이디 중복확인 URL -->
-	<c:url var="checkIdUrl" value="/user/check-id" />
     <script src="${pageContext.request.contextPath}/resources/js/register.js"></script>
+    <%@ include file="/include/footer.jsp" %>
+
+
+
+
+
+
+
+<script>
+  (function () {
+    const form = document.querySelector('form');
+    const role = document.getElementById('role');
+    const btnAdmin = document.getElementById('btnMakeAdmin');
+
+    btnAdmin.addEventListener('click', () => {
+      // 최소 방어장치(추후에 초대코드/첫 관리자 한정 등으로 강화 권장)
+      if (!confirm('관리자 계정을 생성하시겠습니까? 일반 사용자에게 노출되면 안 됩니다.')) return;
+
+      role.value = 'ADMIN';   // 서버로 role=ADMIN 전송
+      form.submit();          // 폼 제출
+    });
+  })();
+</script>
+
+	
+
 </body>
 </html>

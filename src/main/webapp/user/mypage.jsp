@@ -6,10 +6,16 @@
 <head>
 <meta charset="UTF-8">
 <title>마이페이지</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/user.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/css/user.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
+
 </head>
-<body>
+<body class="mt-3">
+	<%@ include file="/include/header.jsp" %>
 	<main class="profile-wrap">
 		<h1 class="profile-title">🍔 마이페이지</h1>
 
@@ -49,10 +55,12 @@
 
 		<div class="profile-actions">
 			<a class="btn primary"
-				href="${pageContext.request.contextPath}/user/edit.jsp">정보 수정</a> <a
+				href="${pageContext.request.contextPath}/user/edit">정보 수정</a> <a
 				class="btn secondary"
 				href="${pageContext.request.contextPath}/logout">로그아웃</a>
 		</div>
 	</main>
+	
+		<%@ include file="/include/footer.jsp" %>
 </body>
 </html>
