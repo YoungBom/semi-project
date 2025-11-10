@@ -65,8 +65,9 @@
 						<option value="gmail.com">gmail.com</option>
 						<option value="naver.com">naver.com</option>
 						<option value="daum.net">daum.net</option>
-						<option value="yahoo.com">yahoo.com</option>
-						<option value="_custom">직접입력</option>
+						<option value="kakao.com">kakao.com</option>
+						<option value="nate.com">nate.com</option>
+						
 					</select>
 
 					<!-- 직접입력 (같은 자리에 토글, 기본 숨김) -->
@@ -142,11 +143,48 @@
 				<span class="muted">이미 계정이 있나요?</span> <a class="link"
 					href="${pageContext.request.contextPath}/login">로그인</a>
 			</div>
-		</form>
-	</main>
+			
+			
+			
+			
+			
+			<!-- 역할 값: 기본 USER -->
+			<input type="hidden" name="role" id="role" value="USER"/>
+
+			<div class="actions center">
+  			
+  			<button type="button" id="btnMakeAdmin" class="btn-outline">관리자 계정 만들기</button>
+			</div>
+			</form>
+			</main>
 
 	<!-- 아이디 중복확인 URL -->
 	<c:url var="checkIdUrl" value="/user/check-id" />
     <script src="${pageContext.request.contextPath}/resources/js/register.js"></script>
+
+
+
+
+
+
+
+<script>
+  (function () {
+    const form = document.querySelector('form');
+    const role = document.getElementById('role');
+    const btnAdmin = document.getElementById('btnMakeAdmin');
+
+    btnAdmin.addEventListener('click', () => {
+      // 최소 방어장치(추후에 초대코드/첫 관리자 한정 등으로 강화 권장)
+      if (!confirm('관리자 계정을 생성하시겠습니까? 일반 사용자에게 노출되면 안 됩니다.')) return;
+
+      role.value = 'ADMIN';   // 서버로 role=ADMIN 전송
+      form.submit();          // 폼 제출
+    });
+  })();
+</script>
+
+	
+
 </body>
 </html>
