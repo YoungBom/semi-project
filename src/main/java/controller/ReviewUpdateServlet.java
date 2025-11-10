@@ -25,8 +25,7 @@ public class ReviewUpdateServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	// 외부 저장 경로 지정 (⚠️ 서버 외부 절대경로)
-	// private static final String UPLOAD_DIR = "d:\\upload"; 
-    private static final String UPLOAD_DIR = "/Users/juan/uploads/review_images/";
+	private static final String UPLOAD_DIR = "d:\\upload"; 
     
 	private ReviewDAO reviewDao = new ReviewDAO();
 	private ReviewDTO review = new ReviewDTO();
