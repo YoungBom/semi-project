@@ -65,6 +65,23 @@ public class SignupServlet extends HttpServlet {
         if (birthStr != null && !birthStr.isBlank()) {
             try {
                 birth = LocalDate.parse(birthStr, DF);
+
+                // ✅ 유효성 검사 추가
+                LocalDate today = LocalDate.now();
+                LocalDate minDate = LocalDate.of(1900, 1, 1); // 예: 1900년 1월 1일 이전 금지
+
+                if (birth.isAfter(today)) {
+                    req.setAttribute("error", "생년월일은 오늘 이후일 수 없습니다.");
+                    req.getRequestDispatcher("/user/signup.jsp").forward(req, resp);
+                    return;
+                }
+
+                if (birth.isBefore(minDate)) {
+                    req.setAttribute("error", "생년월일이 너무 오래되었습니다. 다시 확인해주세요.");
+                    req.getRequestDispatcher("/user/signup.jsp").forward(req, resp);
+                    return;
+                }
+
             } catch (Exception e) {
                 req.setAttribute("error", "생년월일 형식이 올바르지 않습니다. 예) 1995-01-01");
                 req.getRequestDispatcher("/user/signup.jsp").forward(req, resp);

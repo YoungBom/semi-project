@@ -57,6 +57,6 @@ public class AuthLoginServlet extends HttpServlet {
 			resp.addCookie(c);
 		}
 
-		resp.sendRedirect(req.getContextPath() + "/main.jsp");
+		resp.sendRedirect(req.getContextPath() + "/main");
 	}
 }

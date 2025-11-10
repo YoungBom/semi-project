@@ -17,7 +17,7 @@ public class AuthLogoutServlet extends HttpServlet {
 
         // 컨텍스트 경로 고려하여 로그인 페이지로 이동
         String ctx = req.getContextPath();
-        resp.sendRedirect(((ctx == null) ? "" : ctx) + "/main.jsp");
+        resp.sendRedirect(((ctx == null) ? "" : ctx) + "/main");
 
     }
 
