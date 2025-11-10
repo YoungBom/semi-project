@@ -19,6 +19,9 @@ function openUpdateModal(event, reviewId, content, rating, burgerId) {
   const form = document.querySelector('.comment-form');
   const title = document.getElementById('reviewModalLabel');
   const submitBtn = form.querySelector('button[type="submit"]');
+  
+  // 기존이미지 기능 버튼 활성화
+  document.getElementById("oldImageButtonContainer").style.display = "block";
 
   // 기존 내용 채우기
   document.getElementById('content').value = content;
@@ -27,12 +30,13 @@ function openUpdateModal(event, reviewId, content, rating, burgerId) {
   // 제목 및 버튼 변경
   title.textContent = "리뷰 수정";
   submitBtn.textContent = "수정 완료";
-
+  
+  // body에서 context path 가져오기(js파일 나누면 기존의 EL태그가 오류나서 body의 data 속성을 이용해 값 전달)
+  const contextPath = document.body.dataset.ctx;
   // form action 변경 (수정용)
-  form.action = `${pageContext.request.contextPath}/review/update`;
+  form.action = `${contextPath}/review/update`;
   
   // 기존 reviewId hidden이 있다면 제거 후 다시 추가 (중복 방지)
-  // 기존 reviewImage 수량도 같이 넘기기
   const oldHidden = form.querySelector('input[name="reviewId"]');
   if (oldHidden) oldHidden.remove();
 
@@ -53,17 +57,20 @@ document.addEventListener('DOMContentLoaded', () => {
   reviewModal.addEventListener('hidden.bs.modal', () => {
     const form = document.querySelector('.comment-form');
     form.reset();
-    form.action = `${pageContext.request.contextPath}/review/add?userId=1`;
-    document.getElementById('reviewId').value = "";
+    form.action = `${contextPath}/review/add`;
+	// reviewId는 JS로 생성한 hidden input이라,모달이 닫힌 시점에 존재하지 않을 수도 있음 → null 접근 오류 발생 가능. 방어코드(if문)
+    if (reviewIdInput) reviewIdInput.value = "";
     document.getElementById('reviewModalLabel').textContent = "리뷰 등록";
     form.querySelector('button[type="submit"]').textContent = "등록";
   });
 });
-const isLoggedIn = "${sessionScope.LOGIN_UID}" !== "";
+
+// 리뷰 등록 버튼은 유저ID값이 있을때만 작동되게끔 
 document.addEventListener('DOMContentLoaded', () => {
   const openReviewBtn = document.getElementById('openReviewBtn');
+  if (!openReviewBtn) return; // 버튼 없으면 코드 종료
 
-  // ✅ JSP에서 data로 전달한 값 읽기
+  // JSP에서 data로 전달한 값 읽기 body에 data 속성으로 전달한 값 가져오기
   const isLoggedIn = openReviewBtn.dataset.isLoggedIn === "true";
   const contextPath = openReviewBtn.dataset.ctx || "";
 
