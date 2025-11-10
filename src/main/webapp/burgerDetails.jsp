@@ -218,15 +218,15 @@
                       </small>
                       <!-- ⭐ 별점 -->
                       <div class="rating text-warning" style="font-size: 15px;">
-                        <c:forEach begin="1" end="${record.rating}" var="i">★</c:forEach>
-                        <c:forEach begin="1" end="${5 - record.rating}" var="i">☆</c:forEach>
+                        <c:forEach begin="1" end="${record.rating}" var="i"><span>★</span></c:forEach>
+                        <c:forEach begin="1" end="${5 - record.rating}" var="i"><span>☆</span></c:forEach>
                       </div>
                     </div>
                     <!-- ✅ 본인 리뷰일 때만 수정/삭제 버튼 노출 -->
                     <c:if test="${sessionScope.LOGIN_UID eq record.userId}">
                       <!-- 수정 버튼 -->
                       <a href="#"
-                         class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 my-1 me-0"
+                         class="btn btn-outline-success btn-sm position-absolute top-0 end-0 my-1 me-0"
                          onclick="openUpdateModal(event, ${record.id}, '${fn:escapeXml(record.content)}', ${record.rating}, '${burger.id}')">
                          <i class="bi bi-pencil"></i> 수정
                       </a> 

@@ -6,12 +6,18 @@
 <head>
 <meta charset="UTF-8">
 <title>마이페이지</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/user.css">
+	<!-- ✅ Bootstrap & Fonts -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+	
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css">
 </head>
 <body>
 	<main class="profile-wrap">
-		<h1 class="profile-title">🍔 마이페이지</h1>
+		<h1 class="profile-title"><a href="${pageContext.request.contextPath}/main.jsp" class="text-decoration-none">🍔</a>마이페이지</h1>
 
 		<c:if test="${not empty error}">
 			<div class="alert error">${error}</div>
@@ -48,10 +54,14 @@
 		</section>
 
 		<div class="profile-actions">
-			<a class="btn primary"
-				href="${pageContext.request.contextPath}/user/edit.jsp">정보 수정</a> <a
-				class="btn secondary"
-				href="${pageContext.request.contextPath}/logout">로그아웃</a>
+			<a class="btn primary lh-1 d-flex"
+				href="${pageContext.request.contextPath}/user/edit.jsp">정보 수정</a> 
+			<a
+			class="btn secondary lh-1"
+			href="${pageContext.request.contextPath}/logout">로그아웃</a>
+			<a
+			class="btn btn-outline-warning lh-1 ms-auto"
+			href="${pageContext.request.contextPath}/mypageReview.jsp">나의 리뷰</a>
 		</div>
 	</main>
 </body>
