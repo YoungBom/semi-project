@@ -54,6 +54,7 @@
 }
 
 .me-5 { margin-right: 5rem !important; }
+
 </style>
 
 </head>
@@ -174,6 +175,16 @@
 			            <label for="image" class="form-label">이미지 업로드</label>
 			            <input type="file" class="form-control" id="image" name="images" multiple>
 			          </div>
+			          
+					  <div class="mb-3 text-end mt-1">
+					  <input type="hidden" name="imageCheck" id="imageCheck" value="false">
+					  <button type="button"
+					    class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-1"
+					    data-bs-toggle="button"
+					    onclick="checkUploadNewImage()">
+					    기존 이미지 등록
+					  </button>
+					  </div>
 			
 			          <div class="mb-3">
 			            <label for="rating" class="form-label">별점</label>
@@ -264,16 +275,10 @@
 </main>
 
 <script>
-	function checkForm(e) {
-		const rating = document.reviewForm.rating.value;
-		const ratingValue = parseFloat(rating);
-		if(isNaN(ratingValue) || ratingValue < 0 || ratingValue > 5) {
-			alert("별점은 0~5 값을 입력해주세요");
-			e.preventDefault();
-			document.reviewForm.rating.focus();
-			return false;
-		}
-		return true;
+	function checkUploadNewImage(){
+		// 해당 버튼 클릭시 기존 이미지로 등록하겠다
+		document.getElementById("imageCheck").value = "true";
+		alert("기존 이미지를 유지하도록 설정되었습니다.");
 	}
 	
 	function openUpdateModal(event, reviewId, content, rating, burgerId) {
@@ -359,12 +364,7 @@
 		    modal.hide();
 		    sessionStorage.removeItem("preventModal");
 		  }
-		});
-
-	
-	
-	
-	
+		});	
 </script>
 
 

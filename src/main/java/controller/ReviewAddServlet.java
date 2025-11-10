@@ -140,14 +140,8 @@ public class ReviewAddServlet extends HttpServlet {
 		        }
 		    }
 
-		    // ✅ 파일이 완전히 없거나 유효하지 않을 경우 기본값 저장
-		    if (!hasValidImage) {
-		        ReviewImageDTO ri = new ReviewImageDTO();
-		        ri.setReviewId(reviewId);
-		        ri.setImagePath(""); // 빈 경로 저장
-		        reviewImageDao.addReviewImage(ri);
-		    }
-
+		    // ✅ 파일이 완전히 없거나 유효하지 않을경우 DB 저장하지 않음
+		    if (!hasValidImage) { }
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
