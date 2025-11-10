@@ -643,3 +643,39 @@ select.input {
 	transform: translateY(1px);
 	filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
 }
+
+/* 읽기전용 텍스트를 인풋처럼 보이게 */
+.readonly-text{
+  height: 48px; display:flex; align-items:center;
+  padding: 0 14px; border:1px solid var(--line);
+  border-radius:12px; background:#f9f9f9; color:var(--ink);
+  font-weight:600;
+}
+
+/* 폼에서 라벨-값을 같은 줄에 배치 */
+.form-row.inline{
+  display:grid;
+  grid-template-columns: 140px 1fr;  /* 라벨 / 값 */
+  align-items:center;
+  gap:12px;
+}
+
+/* 읽기전용 값을 인풋처럼 보이게 */
+.readonly-pill{
+  height: 48px;
+  display:flex;
+  align-items:center;
+  padding: 0 14px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#f9f9f9;
+  color:var(--ink);
+  font-weight:600;
+}
+
+/* 모바일에서 세로 쌓이게 */
+@media (max-width: 560px){
+  .form-row.inline{ grid-template-columns: 1fr; }
+}
+
+.plain-text { font-weight: 600; }

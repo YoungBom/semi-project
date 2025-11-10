@@ -47,8 +47,6 @@
 
       <div class="assist">
         <a class="link" href="${pageContext.request.contextPath}/id/lookup">아이디 찾기</a>
-        <span class="dot">•</span>
-        <a class="link" href="${pageContext.request.contextPath}/password/forgot">비밀번호 재설정</a>
       </div>
     </form>
   </main>
