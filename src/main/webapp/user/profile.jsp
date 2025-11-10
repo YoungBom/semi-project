@@ -22,7 +22,7 @@
 
 <h1>프로필</h1>
 
-<form method="post" action="<%=ctx%>/user/profile/update" autocomplete="on">
+<form method="post" action="<%=ctx%>/user/profile/updaste" autocomplete="on">
   <label>
     이메일
     <input type="email" name="email"

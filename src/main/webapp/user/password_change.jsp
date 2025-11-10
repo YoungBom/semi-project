@@ -1,11 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
 <html lang="ko">
 <head><meta charset="UTF-8"><title>비밀번호 변경</title>
-<link rel="stylesheet" href="${ctx}/resources/css/user.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user.css">
 </head>
 <body>
 <h1>비밀번호 변경</h1>
