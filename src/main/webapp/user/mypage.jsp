@@ -1,35 +1,58 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="ctx" value="${pageContext.request.contextPath}" />
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>마이페이지</title>
-  <link rel="stylesheet" href="${ctx}/resources/css/user.css">
+<meta charset="UTF-8">
+<title>마이페이지</title>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/user.css">
 </head>
 <body>
-  <h1>마이페이지</h1>
+	<main class="profile-wrap">
+		<h1 class="profile-title">🍔 마이페이지</h1>
 
-  <!-- 서블릿에서 user/me 어느 이름으로 내려와도 통일해서 쓰기 -->
-  <c:set var="u" value="${not empty user ? user : me}" />
+		<c:if test="${not empty error}">
+			<div class="alert error">${error}</div>
+		</c:if>
 
-  <div class="card">
-    <p><strong>아이디 :</strong> <c:out value="${u.userId}"/></p>
-    <p><strong>이름 :</strong> <c:out value="${u.name}"/></p>
-    <p><strong>닉네임 :</strong> <c:out value="${u.nickname}"/></p>
-    <p><strong>이메일 :</strong> <c:out value="${u.email}"/></p>
-    <p><strong>휴대폰 :</strong> <c:out value="${u.phone}"/></p>
-    <p><strong>생년월일 :</strong> <c:out value="${u.birth}"/></p>
-    <p><strong>성별 :</strong> <c:out value="${u.gender}"/></p>
-    <p><strong>주소 :</strong> <c:out value="${u.address}"/></p>
-  </div>
+		<section class="profile-card">
+			<div class="profile-row">
+				<span class="k">아이디</span><span class="v">${user.userId}</span>
+			</div>
+			<div class="profile-row">
+				<span class="k">이름</span><span class="v">${user.name}</span>
+			</div>
+			<div class="profile-row">
+				<span class="k">이메일</span><span class="v">${user.email}</span>
+			</div>
+			<div class="profile-row">
+				<span class="k">닉네임</span><span class="v">${user.nickname}</span>
+			</div>
+			<div class="profile-row">
+				<span class="k">권한</span><span class="v">${user.role}</span>
+			</div>
+			<div class="profile-row">
+				<span class="k">연락처</span><span class="v">${user.phone}</span>
+			</div>
+			<div class="profile-row">
+				<span class="k">생년월일</span><span class="v">${user.birth}</span>
+			</div>
+			<div class="profile-row">
+				<span class="k">성별</span><span class="v">${user.gender}</span>
+			</div>
+			<div class="profile-row">
+				<span class="k">주소</span><span class="v">${user.address}</span>
+			</div>
+		</section>
 
-  <p>
-    <a href="${ctx}/user/edit">정보 수정</a>
-    |
-    <a href="${ctx}/user/password_change.jsp">비밀번호 변경</a>
-  </p>
+		<div class="profile-actions">
+			<a class="btn primary"
+				href="${pageContext.request.contextPath}/user/edit.jsp">정보 수정</a> <a
+				class="btn secondary"
+				href="${pageContext.request.contextPath}/logout">로그아웃</a>
+		</div>
+	</main>
 </body>
 </html>
