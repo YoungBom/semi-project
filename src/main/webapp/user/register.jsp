@@ -33,7 +33,7 @@
 					<input class="input" type="text" id="user_id" name="user_id"
 						maxlength="30" required placeholder="로그인에 쓸 아이디"
 						autocomplete="username" autocapitalize="off">
-					<button type="button" class="btn ghost" id="btnCheckId">중복확인</button>
+					<button type="button" class="btn btn-secondary" id="btnCheckId" style="white-space: nowrap; width: auto; min-width: 90px;">중복확인</button>
 				</div>
 				<small id="idStatus" class="hint">중복확인을 눌러주세요.</small> <input
 					type="hidden" id="idChecked" value="false">
