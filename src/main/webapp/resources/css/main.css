@@ -483,4 +483,19 @@ body {
   background-color: #27ae60;
 }
 
-
+/* 버거카드에 붙는 NEW 배지 스타일 */
+.new-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-block;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  color: #fff;
+  background: #ff3b30; /* 선명한 레드 */
+  border-radius: 9999px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  z-index: 2;
+}
