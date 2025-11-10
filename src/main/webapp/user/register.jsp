@@ -1,86 +1,257 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<title>회원가입</title>
-
-<c:set var="ctx" value="${pageContext.request.contextPath}" />
-<link rel="stylesheet" href="${ctx}/resources/css/user.css">
+  <meta charset="UTF-8">
+  <title>회원가입</title>
+  <!-- 캐시 무력화 파라미터 v= 갱신하면서 사용 -->
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user.css?v=reg_inline_pwnum_1">
 </head>
-<body>
+<body class="login-page">
 
-  <h1>회원가입</h1>
+<h1>🍔 회원가입</h1>
 
-  <!-- 메시지: request 속성에 error/msg가 없으면 빈 문자열로 출력됨 -->
-  <div role="alert" class="msg error">
-    <c:out value="${requestScope.error}" />
+<main class="auth-viewport">
+<form class="login-form" method="post" action="${pageContext.request.contextPath}/register" autocomplete="off">
+
+  <!-- 아이디 + 중복확인 -->
+  <label>아이디(*)
+    <div class="row-compact">
+      <input type="text" id="user_id" name="user_id" maxlength="30" required
+             placeholder="로그인에 쓸 아이디" autocomplete="username" autocapitalize="off">
+      <button type="button" class="btn-outline" id="btnCheckId">중복확인</button>
+    </div>
+    <small id="idStatus" class="hint">중복확인을 눌러주세요.</small>
+    <input type="hidden" id="idChecked" value="false">
+  </label>
+
+  <!-- 비밀번호 & 확인 (소문자+숫자 8~20자) -->
+  <label>비밀번호(*)
+    <input type="password" id="user_pw" name="user_pw"
+           minlength="8" maxlength="20" required
+           placeholder="소문자+숫자 8~20자"
+           pattern="[a-z0-9]{8,20}" inputmode="text"
+           autocomplete="new-password" autocapitalize="off">
+    <small class="hint">소문자와 숫자만 사용(8~20자)</small>
+  </label>
+
+  <label>비밀번호 확인(*)
+    <input type="password" id="user_pw2" name="user_pw2"
+           minlength="8" maxlength="20" required
+           placeholder="비밀번호 다시한번 입력해주세요."
+           pattern="[a-z0-9]{8,20}" inputmode="text"
+           autocomplete="new-password" autocapitalize="off">
+    <small id="pwStatus" class="hint"></small>
+  </label>
+
+  <!-- 이메일: local + 도메인 선택(또는 직접입력) -->
+  <label>이메일(*)
+    <div class="row-compact">
+      <input type="text" id="emailLocal" placeholder="example" required autocapitalize="off">
+      <select id="emailDomain" required>
+        <option value="@gmail.com">@gmail.com</option>
+        <option value="@naver.com">@naver.com</option>
+        <option value="@daum.net">@daum.net</option>
+        <option value="@yahoo.com">@yahoo.com</option>
+        <option value="custom">직접입력</option>
+      </select>
+    </div>
+    <input type="text" id="emailCustom" placeholder="직접입력 예: @mycompany.co.kr" style="display:none" autocapitalize="off">
+    <!-- 서버로 실제 전송될 이메일 -->
+    <input type="hidden" id="email" name="email">
+    <small id="emailStatus" class="hint"></small>
+  </label>
+
+  <!-- 이름 / 성별 -->
+  <div class="row">
+    <label>이름(*)
+      <input type="text" id="name" name="name" maxlength="50" required>
+    </label>
+    <label>성별(*)
+      <select id="gender" name="gender" required>
+        <option value="">선택</option>
+        <option value="M">남성</option>
+        <option value="F">여성</option>
+        <option value="O">기타/응답하지 않음</option>
+      </select>
+    </label>
   </div>
-  <div role="status" class="msg">
-    <c:out value="${requestScope.msg}" />
+
+  <!-- 생년월일 / 휴대폰 -->
+  <div class="row">
+    <label>생년월일(*)
+      <input type="date" id="birth" name="birth" required>
+    </label>
+    <label>휴대폰(*)
+      <input type="tel" id="phone" name="phone" required
+             placeholder="01012345678" maxlength="11" inputmode="numeric" pattern="01[0-9]{8,9}">
+      <small id="phoneStatus" class="hint"></small>
+    </label>
   </div>
 
-  <form method="post" action="${pageContext.request.contextPath}/user/signup" autocomplete="off">
-    <label> 아이디(*) 
-      <input type="text" name="user_id" required maxlength="255" placeholder="로그인에 쓸 아이디" autocomplete="username">
-    </label>
+  <!-- 닉네임 -->
+  <label>닉네임(*)
+    <input type="text" id="nickname" name="nickname" maxlength="30" required>
+  </label>
 
-    <label> 비밀번호(*) 
-      <input type="password" name="user_pw" required minlength="8" maxlength="255" placeholder="8~20자 권장" autocomplete="new-password">
-    </label>
+  <!-- 주소(선택) -->
+  <label>주소(선택)
+    <input type="text" id="address" name="address" maxlength="255" placeholder="">
+  </label>
 
-    <label> 비밀번호 확인(*) 
-      <input type="password" name="user_pw_confirm" required minlength="8" maxlength="255" placeholder="비밀번호 재입력" autocomplete="new-password">
-    </label>
+  <!-- 제출 -->
+  <div class="actions center">
+    <button type="submit" class="btn-primary" id="btnSubmit">가입하기</button>
+  </div>
 
-    <label> 이메일(*) 
-      <input type="email" name="email" required maxlength="255" placeholder="example@domain.com" autocomplete="email">
-    </label>
+  <!-- 하단: 로그인 이동 -->
+  <c:url var="loginUrl" value="/login"/>
+  <p class="auth-switch tight-center">이미 계정이 있나요? <a class="link-accent" href="${loginUrl}">로그인</a></p>
 
-    <div class="row">
-      <label> 이름(*) 
-        <input type="text" name="name" required maxlength="255" autocomplete="name">
-      </label>
+</form>
+</main>
 
-      <label> 성별(*) 
-        <select name="gender" required>
-          <option value="">선택</option>
-          <option value="남">남</option>
-          <option value="여">여</option>
-        </select>
-      </label>
-    </div>
+<!-- 아이디 중복확인 요청 URL -->
+<c:url var="checkIdUrl" value="/user/check-id"/>
 
-    <div class="row">
-      <label> 생년월일(*) 
-        <input type="date" 
-               name="birth"
-               max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>" 
-               required>
-      </label>
+<script>
+(() => {
+  const $ = (s, p=document) => p.querySelector(s);
 
-      <label> 휴대폰(*) 
-        <input type="text" name="phone" maxlength="20" placeholder="01000000000"
-               pattern="^[0-9\\-+ ]{9,20}$" autocomplete="tel">
-      </label>
-    </div>
+  // ===== 아이디 중복확인 (인라인 메시지) =====
+  const userId = $('#user_id');
+  const btnCheck = $('#btnCheckId');
+  const idChecked = $('#idChecked');
+  const idStatus = $('#idStatus');
 
-    <label> 닉네임(*) 
-      <input type="text" name="nickname" maxlength="255" required autocomplete="nickname">
-    </label>
+  btnCheck.addEventListener('click', async () => {
+    const id = (userId.value || '').trim();
+    if (!id) {
+      idChecked.value = 'false';
+      idStatus.textContent = '아이디를 입력해주세요.';
+      idStatus.className = 'hint bad';
+      return;
+    }
+    idChecked.value = 'false';
+    idStatus.textContent = '확인 중...';
+    idStatus.className = 'hint';
 
-    <label> 주소(선택) 
-      <input type="text" name="address" maxlength="255" autocomplete="street-address">
-    </label>
+    try {
+      const res = await fetch('${checkIdUrl}?user_id=' + encodeURIComponent(id), {headers: {'Accept': 'application/json'}});
+      if (!res.ok) throw new Error('서버 오류');
+      const data = await res.json(); // {available:true/false}
+      if (data.available) {
+        idChecked.value = 'true';
+        idStatus.textContent = '사용 가능한 아이디입니다.';
+        idStatus.className = 'hint ok';
+      } else {
+        idChecked.value = 'false';
+        idStatus.textContent = '이미 사용중인 아이디입니다.';
+        idStatus.className = 'hint bad';
+      }
+    } catch (e) {
+      idChecked.value = 'false';
+      idStatus.textContent = '확인 실패. 잠시 후 다시 시도해주세요.';
+      idStatus.className = 'hint bad';
+    }
+  });
 
-    <div class="actions">
-      <button type="submit">가입하기</button>
-    </div>
-  </form>
+  // 아이디가 바뀌면 다시 확인하도록 상태 초기화
+  userId.addEventListener('input', () => {
+    idChecked.value = 'false';
+    idStatus.textContent = '중복확인을 눌러주세요.';
+    idStatus.className = 'hint';
+  });
 
-  <p class="sub" style="margin-top: 12px;">
-    이미 계정이 있나요? <a href="${ctx}/user/login.jsp">로그인</a>
-  </p>
+  // ===== 비밀번호 규칙/일치 검사 (소문자+숫자 8~20자) =====
+  const rePw = /^(?=.*[a-z])(?=.*\\d)[a-z0-9]{8,20}$/;
+  const pw1 = $('#user_pw');
+  const pw2 = $('#user_pw2');
+  const pwStatus = $('#pwStatus');
+
+  function validatePw(){
+    // 대문자 자동 소문자화(사용성 보완)
+    if (pw1.value !== pw1.value.toLowerCase()) pw1.value = pw1.value.toLowerCase();
+    if (pw2.value !== pw2.value.toLowerCase()) pw2.value = pw2.value.toLowerCase();
+
+    if (!rePw.test(pw1.value)) {
+      pwStatus.textContent = '조건 불충족: 소문자+숫자 8~20자';
+      pwStatus.className = 'hint bad';
+      return false;
+    }
+    if (pw2.value && pw1.value !== pw2.value) {
+      pwStatus.textContent = '비밀번호가 일치하지 않습니다.';
+      pwStatus.className = 'hint bad';
+      return false;
+    }
+    if (pw1.value && pw2.value && pw1.value === pw2.value) {
+      pwStatus.textContent = '사용 가능한 비밀번호입니다.';
+      pwStatus.className = 'hint ok';
+    } else {
+      pwStatus.textContent = '';
+      pwStatus.className = 'hint';
+    }
+    return true;
+  }
+  pw1.addEventListener('input', validatePw);
+  pw2.addEventListener('input', validatePw);
+
+  // ===== 이메일 합치기 + 형식 점검 =====
+  const emailLocal = $('#emailLocal');
+  const emailDomain = $('#emailDomain');
+  const emailCustom = $('#emailCustom');
+  const emailHidden = $('#email');
+  const emailStatus = $('#emailStatus');
+
+  emailDomain.addEventListener('change', () => {
+    const custom = emailDomain.value === 'custom';
+    emailCustom.style.display = custom ? 'block' : 'none';
+    if (!custom) emailCustom.value = '';
+    buildEmail();
+  });
+
+  function buildEmail(){
+    const local = (emailLocal.value || '').trim();
+    let domain = emailDomain.value;
+    if (domain === 'custom') domain = (emailCustom.value || '').trim();
+    const full = local + domain;
+    emailHidden.value = full;
+    const ok = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$/.test(full);
+    emailStatus.textContent = ok ? '' : '이메일 형식이 올바르지 않습니다.';
+    emailStatus.className = ok ? 'hint' : 'hint bad';
+    return ok;
+  }
+  emailLocal.addEventListener('input', buildEmail);
+  emailDomain.addEventListener('input', buildEmail);
+  emailCustom.addEventListener('input', buildEmail);
+
+  // ===== 휴대폰 간단 검증 (010으로 시작 10~11자리) =====
+  const phone = $('#phone');
+  const phoneStatus = $('#phoneStatus');
+  function validatePhone(){
+    const v = (phone.value || '').trim();
+    const ok = /^01[0-9]{8,9}$/.test(v);
+    phoneStatus.textContent = ok ? '' : '숫자만 10~11자리(예: 01012345678)';
+    phoneStatus.className = ok ? 'hint' : 'hint bad';
+    return ok;
+  }
+  phone.addEventListener('input', validatePhone);
+
+  // ===== 제출 전 최종 검증 =====
+  $('#btnSubmit').closest('form').addEventListener('submit', (e) => {
+    if (idChecked.value !== 'true') {
+      e.preventDefault();
+      idStatus.textContent = '아이디 중복확인을 먼저 해주세요.';
+      idStatus.className = 'hint bad';
+      return;
+    }
+    if (!validatePw()) { e.preventDefault(); return; }
+    if (!buildEmail()) { e.preventDefault(); return; }
+    if (!validatePhone()) { e.preventDefault(); return; }
+  });
+})();
+</script>
+
 </body>
 </html>

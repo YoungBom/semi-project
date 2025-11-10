@@ -4,6 +4,11 @@
 <div class="col-md-3 col-sm-6 mb-4">
     <div class="card burger-card shadow-sm position-relative">
 
+	    <!-- 🆕 NEW 배지 -->
+	    <c:if test="${b.newBurger}">
+	      <span class="new-badge">NEW</span>
+	    </c:if>
+
         <!-- ✅ 책갈피 브랜드 로고 -->
         <div class="brand-flag">
             <img src="${pageContext.request.contextPath}/img/${b.brand eq '맥도날드' ? 'mcdonalds_logo.png' 

@@ -1,28 +1,28 @@
 package dto;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
-public class UserDTO implements Serializable {
-	private Long id; // PK
-	private String userId; // 로그인 ID
+public class UserDTO {
+	private Integer id;
+	private String userId;
+	private String pwHash;
+	private String userPw; // legacy/plain (nullable)
 	private String email;
+	private String phone;
+	private LocalDate birth;
+	private String gender; // "남"|"여"
 	private String name;
 	private String nickname;
-	private String phone;
 	private String address;
-	private String gender;
-	private String birth; // yyyy-MM-dd 등
-	private String passwordHash;
-	private String role; // USER/ADMIN
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
+	private String role;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -34,12 +34,52 @@ public class UserDTO implements Serializable {
 		this.userId = userId;
 	}
 
+	public String getPwHash() {
+		return pwHash;
+	}
+
+	public void setPwHash(String pwHash) {
+		this.pwHash = pwHash;
+	}
+
+	public String getUserPw() {
+		return userPw;
+	}
+
+	public void setUserPw(String userPw) {
+		this.userPw = userPw;
+	}
+
 	public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public LocalDate getBirth() {
+		return birth;
+	}
+
+	public void setBirth(LocalDate birth) {
+		this.birth = birth;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	public String getName() {
@@ -58,44 +98,12 @@ public class UserDTO implements Serializable {
 		this.nickname = nickname;
 	}
 
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
 	public String getAddress() {
 		return address;
 	}
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public String getBirth() {
-		return birth;
-	}
-
-	public void setBirth(String birth) {
-		this.birth = birth;
-	}
-
-	public String getPasswordHash() {
-		return passwordHash;
-	}
-
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
 	}
 
 	public String getRole() {
@@ -106,19 +114,10 @@ public class UserDTO implements Serializable {
 		this.role = role;
 	}
 
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public LocalDateTime getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
+	// helper for DATE <-> LocalDate conversion if needed
+	public static LocalDate toLocalDate(Date date) {
+		if (date == null)
+			return null;
+		return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 }
