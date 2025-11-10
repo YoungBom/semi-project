@@ -55,7 +55,6 @@
 
 .me-5 { margin-right: 5rem !important; }
 
-.btn.clicked {  }
 </style>
 
 </head>
@@ -276,17 +275,6 @@
 </main>
 
 <script>
-	function checkForm(e) {
-		const rating = document.reviewForm.rating.value;
-		const ratingValue = parseFloat(rating);
-		if(isNaN(ratingValue) || ratingValue < 0 || ratingValue > 5) {
-			alert("별점은 0~5 값을 입력해주세요");
-			e.preventDefault();
-			document.reviewForm.rating.focus();
-			return false;
-		}
-		return true;
-	}
 	function checkUploadNewImage(){
 		// 해당 버튼 클릭시 기존 이미지로 등록하겠다
 		document.getElementById("imageCheck").value = "true";
@@ -376,12 +364,7 @@
 		    modal.hide();
 		    sessionStorage.removeItem("preventModal");
 		  }
-		});
-
-	
-	
-	
-	
+		});	
 </script>
 
 
