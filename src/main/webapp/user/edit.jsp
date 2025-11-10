@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <title>회원정보 수정</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user.css?v=3">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user.css">
 </head>
 <body>
   <main class="profile-wrap">
@@ -24,45 +25,43 @@
     <c:set var="emailDomain" value="${fn:substringAfter(user.email,  '@')}" />
 
     <form class="form-card" method="post" action="${pageContext.request.contextPath}/user/edit">
-      <!-- 아이디: 읽기 전용 + 제출됨 -->
-      <div class="form-row">
-        <label class="form-label" for="uid">아이디</label>
-        <input id="uid" class="input" type="text" name="user_id" value="${user.userId}" readonly>
-      </div>
+     
+	<!-- 아이디: 라벨 + 값(텍스트) + 전송용 hidden -->
+	<div class="form-row inline">
+  	<span class="form-label">아이디:</span>
+  	<span class="plain-text">${user.userId}</span>
+	</div>
 
-      <!-- 이메일: 고정 배치 (로컬) @ (도메인 셀렉트) (도메인 입력칸은 항상 보임, 직접입력일 때만 활성) -->
-      <div class="form-row">
-        <label class="form-label" for="emailLocal">이메일</label>
-        <div style="display:flex; gap:10px; align-items:center; width:100%;">
-          <input id="emailLocal" class="input" type="text" placeholder="example"
-                 value="${emailLocal}" style="flex:1 1 0;">
+    <div class="form-row">
+  <label class="form-label" for="emailLocal">이메일</label>
 
-          <span aria-hidden="true">@</span>
+  <div style="display:flex; gap:10px; align-items:center; width:100%;">
+    <!-- 로컬파트 -->
+    <input id="emailLocal" class="input" type="text" placeholder="example"
+           value="${emailLocal}" style="flex:1 1 0;" autocapitalize="off">
 
-          <select id="emailDomainSel" class="input" style="width:220px;">
-            <option value="naver.com"  <c:if test="${emailDomain eq 'naver.com'}">selected</c:if>>naver.com</option>
-            <option value="gmail.com"  <c:if test="${emailDomain eq 'gmail.com'}">selected</c:if>>gmail.com</option>
-            <option value="daum.net"   <c:if test="${emailDomain eq 'daum.net'}">selected</c:if>>daum.net</option>
-            <option value="kakao.com"  <c:if test="${emailDomain eq 'kakao.com'}">selected</c:if>>kakao.com</option>
-            <option value="hanmail.net"<c:if test="${emailDomain eq 'hanmail.net'}">selected</c:if>>hanmail.net</option>
-            <option value="outlook.com"<c:if test="${emailDomain eq 'outlook.com'}">selected</c:if>>outlook.com</option>
-            <option value="yahoo.com"  <c:if test="${emailDomain eq 'yahoo.com'}">selected</c:if>>yahoo.com</option>
-            <option value="_custom"    <c:if test="${emailDomain ne 'naver.com' 
-                                                    and emailDomain ne 'gmail.com' 
-                                                    and emailDomain ne 'daum.net'
-                                                    and emailDomain ne 'kakao.com'
-                                                    and emailDomain ne 'hanmail.net'
-                                                    and emailDomain ne 'outlook.com'
-                                                    and emailDomain ne 'yahoo.com'}">selected</c:if>>직접입력</option>
-          </select>
+    <span aria-hidden="true">@</span>
 
-          <!-- 항상 같은 자리 유지, 직접입력 선택시에만 수정 가능 -->
-          <input id="emailDomainBox" class="input" type="text" placeholder="domain.com"
-                 style="width:220px;" value="${emailDomain}">
-        </div>
-        <!-- 서버로 제출되는 실제 이메일 -->
-        <input type="hidden" id="emailFull" name="email" value="${user.email}">
-      </div>
+    <!-- 도메인 셀렉트 (+ 직접입력) -->
+    <select id="emailDomainSel" class="input" style="width:220px;">
+      
+      <option value="gmail.com"   <c:if test="${emailDomain eq 'gmail.com'}">selected</c:if>>gmail.com</option>
+      <option value="naver.com"   <c:if test="${emailDomain eq 'naver.com'}">selected</c:if>>naver.com</option>
+      <option value="daum.net"    <c:if test="${emailDomain eq 'daum.net'}">selected</c:if>>daum.net</option>
+      <option value="kakao.com"   <c:if test="${emailDomain eq 'kakao.com'}">selected</c:if>>kakao.com</option>
+      <option value="hanmail.net" <c:if test="${emailDomain eq 'hanmail.net'}">selected</c:if>>hanmail.net</option>
+      <option value="nate.com" <c:if test="${emailDomain eq 'hanmail.net'}">selected</c:if>>nate.com</option>
+    </select>
+
+    <!-- 직접입력 도메인 (custom 선택 시에만 활성/표시) -->
+    <input id="emailDomainCustom" class="input" type="text" placeholder="domain.com"
+           style="width:220px; display:none;" value="${emailDomain}" autocapitalize="off">
+  </div>
+
+  <!-- 서버로 제출되는 전체 이메일 -->
+  <input type="hidden" id="emailFull" name="email" value="${user.email}">
+</div>
+
 
       <!-- 닉네임 -->
       <div class="form-row">
