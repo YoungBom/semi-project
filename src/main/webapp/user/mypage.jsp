@@ -55,7 +55,7 @@
 
 		<div class="profile-actions">
 			<a class="btn primary"
-				href="${pageContext.request.contextPath}/user/edit.jsp">정보 수정</a> <a
+				href="${pageContext.request.contextPath}/user/edit">정보 수정</a> <a
 				class="btn secondary"
 				href="${pageContext.request.contextPath}/logout">로그아웃</a>
 		</div>

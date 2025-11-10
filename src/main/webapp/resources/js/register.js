@@ -116,7 +116,8 @@
   emailLocal.addEventListener('input', buildEmail);
   emailDomain.addEventListener('input', buildEmail);
   emailCustom.addEventListener('input', buildEmail);
-
+	
+  
   // ===== 휴대폰 간단 검증 =====
   const phone = $('#phone');
   const phoneStatus = $('#phoneStatus');
