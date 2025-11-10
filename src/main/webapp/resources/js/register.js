@@ -1,21 +1,23 @@
 /**
- * 
+ * register.js
+ * 회원가입 유효성 검사 스크립트
+ * - 아이디 중복확인
+ * - 비밀번호 일치 및 규칙 검증
+ * - 이메일 유효성 검사
+ * - 휴대폰 검증
  */
-
 
 (() => {
   const $ = (s, p = document) => p.querySelector(s);
 
-  // ===== 아이디 중복확인 (인라인 메시지) =====
+  // ===== 아이디 중복확인 =====
   const userId = $('#user_id');
   const btnCheck = $('#btnCheckId');
   const idChecked = $('#idChecked');
   const idStatus = $('#idStatus');
-
-  // 서버에서 JSTL로 전달받은 체크 URL
   const checkIdUrl = document.body.dataset.checkIdUrl;
 
-  btnCheck.addEventListener('click', async () => {
+  btnCheck?.addEventListener('click', async () => {
     const id = (userId.value || '').trim();
     if (!id) {
       idChecked.value = 'false';
@@ -23,6 +25,7 @@
       idStatus.className = 'hint bad';
       return;
     }
+
     idChecked.value = 'false';
     idStatus.textContent = '확인 중...';
     idStatus.className = 'hint';
@@ -32,7 +35,7 @@
         headers: { 'Accept': 'application/json' }
       });
       if (!res.ok) throw new Error('서버 오류');
-      const data = await res.json(); // {available:true/false}
+      const data = await res.json();
       if (data.available) {
         idChecked.value = 'true';
         idStatus.textContent = '사용 가능한 아이디입니다.';
@@ -49,79 +52,99 @@
     }
   });
 
-  // 아이디가 바뀌면 다시 확인하도록 상태 초기화
-  userId.addEventListener('input', () => {
+  userId?.addEventListener('input', () => {
     idChecked.value = 'false';
     idStatus.textContent = '중복확인을 눌러주세요.';
     idStatus.className = 'hint';
   });
 
-  // ===== 비밀번호 규칙/일치 검사 (소문자+숫자 8~20자) =====
+  // ===== 비밀번호 규칙/일치 검사 =====
   const rePw = /^(?=.*[a-z])(?=.*\d)[a-z0-9]{8,20}$/;
   const pw1 = $('#user_pw');
   const pw2 = $('#user_pw2');
   const pwStatus = $('#pwStatus');
 
   function validatePw() {
-    if (pw1.value !== pw1.value.toLowerCase()) pw1.value = pw1.value.toLowerCase();
-    if (pw2.value !== pw2.value.toLowerCase()) pw2.value = pw2.value.toLowerCase();
+    const pwA = pw1.value.trim();
+    const pwB = pw2.value.trim();
 
-    if (!rePw.test(pw1.value)) {
+    // 자동으로 소문자로 변경
+    if (pwA !== pwA.toLowerCase()) pw1.value = pwA.toLowerCase();
+    if (pwB !== pwB.toLowerCase()) pw2.value = pwB.toLowerCase();
+
+    // 형식 체크
+    if (!rePw.test(pwA)) {
       pwStatus.textContent = '조건 불충족: 소문자+숫자 8~20자';
       pwStatus.className = 'hint bad';
       return false;
     }
-    if (pw2.value && pw1.value !== pw2.value) {
+
+    // 일치 여부 확인
+    if (pwA && pwB && pwA !== pwB) {
       pwStatus.textContent = '비밀번호가 일치하지 않습니다.';
       pwStatus.className = 'hint bad';
       return false;
     }
-    if (pw1.value && pw2.value && pw1.value === pw2.value) {
-      pwStatus.textContent = '사용 가능한 비밀번호입니다.';
+
+    if (pwA && pwB && pwA === pwB) {
+      pwStatus.textContent = '비밀번호가 일치합니다.';
       pwStatus.className = 'hint ok';
-    } else {
-      pwStatus.textContent = '';
-      pwStatus.className = 'hint';
+      return true;
     }
-    return true;
-  }
-  pw1.addEventListener('input', validatePw);
-  pw2.addEventListener('input', validatePw);
 
-  // ===== 이메일 합치기 + 형식 점검 =====
-  // ===== 이메일 합치기 (유효성 검사 제거 버전) =====
+    pwStatus.textContent = '';
+    pwStatus.className = 'hint';
+    return false;
+  }
+
+  pw1?.addEventListener('input', validatePw);
+  pw2?.addEventListener('input', validatePw);
+
+  // ===== 이메일 합치기 + 유효성 검사 =====
   const emailLocal = $('#emailLocal');
-  const emailDomain = $('#emailDomainSel');
-  const emailCustom = $('#emailCustom');
+  const emailDomainSel = $('#emailDomainSel');
+  const emailDomainCustom = $('#emailDomainCustom');
   const emailHidden = $('#email');
+  const emailStatus = $('#emailStatus');
 
-  // 입력할 때마다 그냥 emailHidden에 합쳐 넣기만 함 (형식 검사는 안 함)
-  function updateEmail() {
+  function buildEmail() {
     const local = (emailLocal?.value || '').trim();
-    let domain = (emailDomain?.value || '').trim();
-    if (domain === 'custom') domain = (emailCustom?.value || '').trim();
+    let domain = (emailDomainSel?.value || '').trim();
 
-    if (local && domain) {
-      emailHidden.value = `${local}@${domain}`;
-    } else {
-      emailHidden.value = '';
+    if (domain === 'custom') {
+      domain = (emailDomainCustom?.value || '').trim();
     }
+
+    if (!local || !domain) {
+      emailHidden.value = '';
+      emailStatus.textContent = '이메일을 완성해주세요.';
+      emailStatus.className = 'hint bad';
+      return false;
+    }
+
+    const full = `${local}@${domain}`;
+    emailHidden.value = full;
+
+    const ok = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(full);
+    emailStatus.textContent = ok ? '유효한 이메일 형식입니다.' : '이메일 형식이 올바르지 않습니다.';
+    emailStatus.className = ok ? 'hint ok' : 'hint bad';
+    return ok;
   }
 
-  emailDomain?.addEventListener('change', () => {
-    const custom = emailDomain.value === 'custom';
-    if (emailCustom) {
-      emailCustom.style.display = custom ? 'block' : 'none';
-      if (!custom) emailCustom.value = '';
+  emailDomainSel?.addEventListener('change', () => {
+    const useCustom = emailDomainSel.value === 'custom';
+    if (emailDomainCustom) {
+      emailDomainCustom.style.display = useCustom ? 'block' : 'none';
+      if (!useCustom) emailDomainCustom.value = '';
     }
-    updateEmail();
+    buildEmail();
   });
-  emailLocal?.addEventListener('input', updateEmail);
-  emailDomain?.addEventListener('input', updateEmail);
-  emailCustom?.addEventListener('input', updateEmail);
-	
-  
-  // ===== 휴대폰 간단 검증 =====
+
+  emailLocal?.addEventListener('input', buildEmail);
+  emailDomainSel?.addEventListener('input', buildEmail);
+  emailDomainCustom?.addEventListener('input', buildEmail);
+
+  // ===== 휴대폰 검증 =====
   const phone = $('#phone');
   const phoneStatus = $('#phoneStatus');
   function validatePhone() {
@@ -131,20 +154,19 @@
     phoneStatus.className = ok ? 'hint' : 'hint bad';
     return ok;
   }
-  phone.addEventListener('input', validatePhone);
+  phone?.addEventListener('input', validatePhone);
 
   // ===== 제출 전 최종 검증 =====
-  $('#btnSubmit').closest('form').addEventListener('submit', (e) => {
-	
- /*   if (idChecked.value !== 'true') {
+  $('#btnSubmit')?.closest('form')?.addEventListener('submit', (e) => {
+    if (idChecked.value !== 'true') {
       e.preventDefault();
       idStatus.textContent = '아이디 중복확인을 먼저 해주세요.';
       idStatus.className = 'hint bad';
       return;
     }
-	*/
-	
+
     if (!validatePw()) { e.preventDefault(); return; }
+    if (!buildEmail()) { e.preventDefault(); return; }
     if (!validatePhone()) { e.preventDefault(); return; }
   });
 })();
