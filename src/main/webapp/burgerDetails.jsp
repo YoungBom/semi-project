@@ -133,7 +133,11 @@
   <div class="my-5 py-5">
     <div class="card shadow-sm">
       <div class="text-end mb-3">
-        <button type="button" class="btn btn-warning rounded-3" data-bs-toggle="modal" data-bs-target="#reviewModal">
+        <button type="button" 
+                class="btn btn-warning rounded-3"
+                id ="openReviewBtn" 
+                data-bs-toggle="modal" 
+                data-bs-target="#reviewModal">
           리뷰 등록
         </button>
       </div>
@@ -274,7 +278,7 @@
 	
 	function openUpdateModal(event, reviewId, content, rating, burgerId) {
 	  event.preventDefault();
-	
+	 
 	  // 모달 요소
 	  const modalEl = document.getElementById('reviewModal');
 	  const modal = new bootstrap.Modal(modalEl);
@@ -287,7 +291,7 @@
 	  // 기존 내용 채우기
 	  document.getElementById('content').value = content;
 	  document.getElementById('rating').value = rating;
-	
+	  
 	  // 제목 및 버튼 변경
 	  title.textContent = "리뷰 수정";
 	  submitBtn.textContent = "수정 완료";
@@ -296,6 +300,7 @@
 	  form.action = `${pageContext.request.contextPath}/review/update`;
 	  
 	  // 기존 reviewId hidden이 있다면 제거 후 다시 추가 (중복 방지)
+	  // 기존 reviewImage 수량도 같이 넘기기
 	  const oldHidden = form.querySelector('input[name="reviewId"]');
 	  if (oldHidden) oldHidden.remove();
 
@@ -322,6 +327,19 @@
 	    form.querySelector('button[type="submit"]').textContent = "등록";
 	  });
 	});
+	const isLoggedIn = "${sessionScope.LOGIN_UID}" !== "";
+	document.addEventListener('DOMContentLoaded',() => {
+		const openReviewBtn = document.getElementById('openReviewBtn');
+		openReviewBtn.addEventListener('click', (e) => {
+			if(!isLoggedIn){
+				e.preventDefault();
+				alert("로그인을 해주세요.");
+				location.href = `${pageContext.request.contextPath}/user/login.jsp`;
+			}
+		});
+	});
+	
+	
 </script>
 
 
