@@ -170,3 +170,14 @@
     if (!validatePhone()) { e.preventDefault(); return; }
   });
 })();
+
+	const pwInput = document.getElementById('user_pw');
+	const togglePw = document.getElementById('togglePw');
+	const pwIcon = togglePw.querySelector('i');
+
+  togglePw.addEventListener('click', () => {
+    const isHidden = pwInput.type === 'password';
+    pwInput.type = isHidden ? 'text' : 'password';
+    pwIcon.classList.toggle('bi-eye');
+    pwIcon.classList.toggle('bi-eye-slash');
+  });

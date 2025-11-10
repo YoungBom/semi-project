@@ -42,13 +42,22 @@
 
 			<!-- 비밀번호 & 확인 -->
 			<div class="field">
-				<label class="label" for="user_pw">비밀번호(*)</label> 
+              <label class="label" for="user_pw">비밀번호(*)</label> 
+              <div style="position: relative;">
                 <input class="input" type="password" id="user_pw" name="user_pw"
-					minlength="8" maxlength="20" required placeholder="소문자+숫자 8~20자"
-					pattern="[a-z0-9]{8,20}" inputmode="text"
-					autocomplete="new-password" autocapitalize="off"> 
-                <small class="hint">소문자와 숫자만 사용(8~20자)</small>
-			</div>
+                  minlength="8" maxlength="20" required placeholder="소문자와 숫자를 포함한 8~20자"
+                  pattern="[a-z0-9]{8,20}" inputmode="text"
+                  autocomplete="new-password" autocapitalize="off">
+            
+                <!-- 👁 눈 아이콘 버튼 -->
+                <button type="button" id="togglePw" 
+                  style="position:absolute; right:10px; top:50%; transform:translateY(-50%); 
+                         border:none; background:transparent; cursor:pointer;">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+              <small class="hint">소문자와 숫자만 사용(8~20자)</small>
+            </div>
 
 			<div class="field">
 				<label class="label" for="user_pw2">비밀번호 확인(*)</label> 
