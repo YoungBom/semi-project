@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+
+
+.review-images {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap; /* 한 줄로만 표시 */
+  overflow-x: auto; /* 이미지 많을 경우 가로 스크롤 */
+}
+
+.review-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0; /* 줄바꿈 방지 */
+}
+
+.me-5 { margin-right: 5rem !important; }

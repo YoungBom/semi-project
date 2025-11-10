@@ -98,8 +98,15 @@
 
 			<!-- 생년월일(캘린더) -->
 			<div class="field">
-				<label class="label" for="birth">생년월일(*)</label> <input
-					class="input" id="birth" type="date" name="birth" required>
+				<label class="label" for="birth">생년월일(*)</label> 
+                <input class="input"
+                       id="birth" 
+                       type="date" 
+                       name="birth"
+                       max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>"
+                       onkeydown="return false;" 
+                       onpaste="return false;"
+                       required>
 			</div>
 
 			<!-- 휴대폰 -->
