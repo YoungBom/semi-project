@@ -84,7 +84,7 @@ body {
  /* ✅ 카드 리스트 */
  #list {
    width: 90%;
-   margin: 20px auto 80px;
+   margin: 20px auto;
    display: grid;
    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
    gap: 20px;
