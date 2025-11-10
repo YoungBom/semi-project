@@ -9,4 +9,6 @@ public final class SessionKeys {
     public static final String LOGIN_USERID = "LOGIN_USERID";
     /** 로그인한 사용자의 표시 이름(옵션) */
     public static final String LOGIN_NAME   = "LOGIN_NAME";
+    /** 닉네임 */
+    public static final String LOGIN_NICKNAME   = "LOGIN_NICKNAME";
 }
