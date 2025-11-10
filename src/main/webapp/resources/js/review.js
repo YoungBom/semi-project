@@ -3,9 +3,19 @@
  */
 
 function checkUploadNewImage(){
-	// 해당 버튼 클릭시 기존 이미지로 등록하겠다
-	document.getElementById("imageCheck").value = "true";
-	alert("기존 이미지를 유지하도록 설정되었습니다.");
+	// 해당 버튼 클릭시 기존 이미지 등록 여부 체크
+	// imageCheckValue = "false"는 문자열 복사기때문에 속성값을 넣으려면 document.getElementById("imageCheck").value 객체 접근해야함
+	const imageCheckValue = document.getElementById("imageCheck").value;
+	if(imageCheckValue === "false") {
+		alert("기존 이미지를 유지하도록 설정되었습니다.");
+		document.getElementById("imageCheck").value = "true";
+		return;
+	} else {
+		alert("이미지를 삭제합니다.");
+		document.getElementById("imageCheck").value = "false";
+		return;		
+	}
+	
 }
 
 function openUpdateModal(event, reviewId, content, rating, burgerId) {
