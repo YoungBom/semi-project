@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-  String ctx = request.getContextPath();
   dto.UserDTO user = (dto.UserDTO) request.getAttribute("user");
 %>
 <!DOCTYPE html>
@@ -8,9 +7,15 @@
 <head>
 <meta charset="UTF-8">
 <title>프로필</title>
-<link rel="stylesheet" href="<%=ctx%>/resources/css/user.css">
+  	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/css/user.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
 </head>
 <body>
+	<%@ include file="/include/header.jsp" %>
 
 <% String flash = (String) session.getAttribute("FLASH_SUCCESS");
    if (flash != null) { session.removeAttribute("FLASH_SUCCESS"); %>
@@ -22,7 +27,7 @@
 
 <h1>프로필</h1>
 
-<form method="post" action="<%=ctx%>/user/profile/updaste" autocomplete="on">
+<form method="post" action="${pageContext.request.contextPath}/user/profile/updaste" autocomplete="on">
   <label>
     이메일
     <input type="email" name="email"
@@ -51,9 +56,9 @@
 
   <div class="actions">
     <button type="submit">저장</button>
-    <a class="button" href="<%=ctx%>/user/change-password">비밀번호 변경</a>
+    <a class="button" href="${pageContext.request.contextPath}/user/change-password">비밀번호 변경</a>
   </div>
 </form>
-
+<%@ include file="/include/footer.jsp" %>
 </body>
 </html>
