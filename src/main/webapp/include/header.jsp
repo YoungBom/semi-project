@@ -28,7 +28,7 @@
         <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/burger/menu">메뉴</a></li>
         <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/event.jsp">이벤트</a></li>
         <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/notice.jsp">공지사항</a></li>
-        <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/findStore.jsp">매장찾기</a></li>
+        <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/findStore">매장찾기</a></li>
       </ul>
 
       <!-- 검색 폼 -->

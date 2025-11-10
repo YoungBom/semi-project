@@ -334,10 +334,35 @@
 			if(!isLoggedIn){
 				e.preventDefault();
 				alert("로그인을 해주세요.");
+				sessionStorage.setItem("preventModal", "true");
 				location.href = `${pageContext.request.contextPath}/user/login.jsp`;
 			}
 		});
 	});
+	
+	window.addEventListener("pageshow", function (event) {
+		  const modalEl = document.getElementById("reviewModal");
+		  const modal = bootstrap.Modal.getInstance(modalEl);
+		  
+		  if (modal) {
+		    modal.hide(); // 모달 강제 닫기
+		  }
+		});
+	
+	document.addEventListener("DOMContentLoaded", () => {
+		  // 뒤로가기 복원 방지용
+		  const modalEl = document.getElementById("reviewModal");
+		  const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+
+		  // ✅ sessionStorage에 표시값이 있으면 모달 닫고 제거
+		  if (sessionStorage.getItem("preventModal") === "true") {
+		    modal.hide();
+		    sessionStorage.removeItem("preventModal");
+		  }
+		});
+
+	
+	
 	
 	
 </script>

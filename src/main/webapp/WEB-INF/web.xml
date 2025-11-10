@@ -45,4 +45,15 @@
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
+	
+	 <servlet>
+        <servlet-name>findStorePage</servlet-name>
+        <jsp-file>/findStore.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>findStorePage</servlet-name>
+        <url-pattern>/findStore</url-pattern>
+    </servlet-mapping>
+	
 </web-app>

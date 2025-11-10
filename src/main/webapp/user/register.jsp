@@ -54,7 +54,10 @@
 
     <div class="row">
       <label> 생년월일(*) 
-        <input type="date" name="birth" required>
+        <input type="date" 
+               name="birth"
+               max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>" 
+               required>
       </label>
 
       <label> 휴대폰(*) 

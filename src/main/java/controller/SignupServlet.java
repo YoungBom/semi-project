@@ -48,7 +48,7 @@ public class SignupServlet extends HttpServlet {
             u.setRole("USER");
 
             long newId = dao.create(u);
-            if (newId <= 0) {
+            if (newId <= 0) { 
                 req.setAttribute("error", "회원 가입에 실패했습니다.");
                 req.getRequestDispatcher("/user/register.jsp").forward(req, resp);
                 return;
