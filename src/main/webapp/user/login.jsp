@@ -36,10 +36,7 @@
         <input type="password" name="user_pw" placeholder="비밀번호를 입력하세요" required minlength="8" maxlength="255" autocomplete="current-password">
       </label>
 
-      <label class="checkline">
-        <input type="checkbox" name="remember_me" value="1">
-        <span>로그인 상태 유지(선택)</span>
-      </label>
+      
 
       <div class="actions">
         <button type="submit" class="btn primary">로그인</button>
