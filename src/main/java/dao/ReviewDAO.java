@@ -126,18 +126,27 @@ public class ReviewDAO {
 	public int updateReview(ReviewDTO review) {	
 		Connection conn = DBUtil.getConnection();
 	    PreparedStatement pstmt = null;
+	    Statement stmt = null;
+	    ResultSet rs = null;
 	    int result = 0;
 	    
 	    String sql = "";
-	    try {    	
+	    try {
 	    	sql ="UPDATE review "
 	    			+ "SET content= ?, "
 	    			+ "rating = ? "
-	    			+ "WHERE burger_id = ? ";
+	    			+ "WHERE burger_id = ? AND id = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, review.getContent());
 			pstmt.setDouble(2, review.getRating());
 			pstmt.setInt(3, review.getBurgerId());
+			pstmt.setInt(4, review.getId());			
+			result = pstmt.executeUpdate();
+			pstmt.close(); // ⚡ 중요: 닫고 새로 생성
+			
+			sql = "DELETE FROM review_image WHERE review_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, review.getId());
 			result = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {

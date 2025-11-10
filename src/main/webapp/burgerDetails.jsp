@@ -296,6 +296,7 @@
 	  form.action = `${pageContext.request.contextPath}/review/update`;
 	  
 	  // 기존 reviewId hidden이 있다면 제거 후 다시 추가 (중복 방지)
+	  // 기존 reviewImage 수량도 같이 넘기기
 	  const oldHidden = form.querySelector('input[name="reviewId"]');
 	  if (oldHidden) oldHidden.remove();
 
