@@ -10,7 +10,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%
-    // JSP가 단독 실행될 때 burger가 없으면 메인으로 이동 (burgerDetails.jsp를 실행하면 main으로 이동하게 바꿈), 근데 굳이 필요한가 싶기도하고
+    // JSP가 단독 실행될 때 burger가 없으면 메인으로 이동 (burgerDetails.jsp를 실행하면 main으로 이동하게 바꿈)
     Object burgerObj = request.getAttribute("burger");
     if (burgerObj == null) {
         response.sendRedirect(request.getContextPath() + "/main");
@@ -31,35 +31,18 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/details.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/review.css">
 
 
 <!-- JS 연결 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/details.js"></script>
 
-<style>
-.review-images {
-  display: flex;
-  gap: 8px;
-  flex-wrap: nowrap; /* 한 줄로만 표시 */
-  overflow-x: auto; /* 이미지 많을 경우 가로 스크롤 */
-}
-
-.review-img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
-  flex-shrink: 0; /* 줄바꿈 방지 */
-}
-
-.me-5 { margin-right: 5rem !important; }
-
-</style>
 
 </head>
 <body 
   class="${burger.brand eq '맥도날드' ? 'mcdonalds' : (burger.brand eq '버거킹' ? 'burgerking' : (burger.brand eq '롯데리아' ? 'lotteria' : ''))}"
+  data-is-logged-in="${not empty sessionScope.LOGIN_UID}" 
+  data-ctx="${pageContext.request.contextPath}"
 >
 
 <!-- ✅ 헤더 -->
@@ -134,12 +117,14 @@
   <div class="my-5 py-5">
     <div class="card shadow-sm">
       <div class="text-end mb-3">
-        <button type="button" 
-                class="btn btn-warning rounded-3"
-                id ="openReviewBtn" 
-                data-bs-toggle="modal" 
-                data-bs-target="#reviewModal">
-          리뷰 등록
+        <button type="button"
+        class="btn btn-warning rounded-3"
+        id="openReviewBtn"
+        data-bs-toggle="modal"
+        data-bs-target="#reviewModal"
+        data-is-logged-in="${not empty sessionScope.LOGIN_UID}"
+        data-ctx="${pageContext.request.contextPath}">
+        리뷰 등록
         </button>
       </div>
 		  
@@ -274,102 +259,14 @@
   </div>
 </main>
 
-<script>
-	function checkUploadNewImage(){
-		// 해당 버튼 클릭시 기존 이미지로 등록하겠다
-		document.getElementById("imageCheck").value = "true";
-		alert("기존 이미지를 유지하도록 설정되었습니다.");
-	}
-	
-	function openUpdateModal(event, reviewId, content, rating, burgerId) {
-	  event.preventDefault();
-	 
-	  // 모달 요소
-	  const modalEl = document.getElementById('reviewModal');
-	  const modal = new bootstrap.Modal(modalEl);
-	
-	  // 폼 요소
-	  const form = document.querySelector('.comment-form');
-	  const title = document.getElementById('reviewModalLabel');
-	  const submitBtn = form.querySelector('button[type="submit"]');
-	
-	  // 기존 내용 채우기
-	  document.getElementById('content').value = content;
-	  document.getElementById('rating').value = rating;
-	  
-	  // 제목 및 버튼 변경
-	  title.textContent = "리뷰 수정";
-	  submitBtn.textContent = "수정 완료";
-	
-	  // form action 변경 (수정용)
-	  form.action = `${pageContext.request.contextPath}/review/update`;
-	  
-	  // 기존 reviewId hidden이 있다면 제거 후 다시 추가 (중복 방지)
-	  // 기존 reviewImage 수량도 같이 넘기기
-	  const oldHidden = form.querySelector('input[name="reviewId"]');
-	  if (oldHidden) oldHidden.remove();
-
-	  // 새로운 reviewId hidden input 추가
-	  const hiddenInput = document.createElement('input');
-	  hiddenInput.type = 'hidden';
-	  hiddenInput.name = 'reviewId';
-	  hiddenInput.value = reviewId;
-	  form.appendChild(hiddenInput);
-	
-	  // 모달 표시
-	  modal.show();
-	}
-	
-	// ✅ 모달 닫힐 때 등록 모드로 초기화
-	document.addEventListener('DOMContentLoaded', () => {
-	  const reviewModal = document.getElementById('reviewModal');
-	  reviewModal.addEventListener('hidden.bs.modal', () => {
-	    const form = document.querySelector('.comment-form');
-	    form.reset();
-	    form.action = `${pageContext.request.contextPath}/review/add?userId=1`;
-	    document.getElementById('reviewId').value = "";
-	    document.getElementById('reviewModalLabel').textContent = "리뷰 등록";
-	    form.querySelector('button[type="submit"]').textContent = "등록";
-	  });
-	});
-	const isLoggedIn = "${sessionScope.LOGIN_UID}" !== "";
-	document.addEventListener('DOMContentLoaded',() => {
-		const openReviewBtn = document.getElementById('openReviewBtn');
-		openReviewBtn.addEventListener('click', (e) => {
-			if(!isLoggedIn){
-				e.preventDefault();
-				alert("로그인을 해주세요.");
-				sessionStorage.setItem("preventModal", "true");
-				location.href = `${pageContext.request.contextPath}/user/login.jsp`;
-			}
-		});
-	});
-	
-	window.addEventListener("pageshow", function (event) {
-		  const modalEl = document.getElementById("reviewModal");
-		  const modal = bootstrap.Modal.getInstance(modalEl);
-		  
-		  if (modal) {
-		    modal.hide(); // 모달 강제 닫기
-		  }
-		});
-	
-	document.addEventListener("DOMContentLoaded", () => {
-		  // 뒤로가기 복원 방지용
-		  const modalEl = document.getElementById("reviewModal");
-		  const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
-
-		  // ✅ sessionStorage에 표시값이 있으면 모달 닫고 제거
-		  if (sessionStorage.getItem("preventModal") === "true") {
-		    modal.hide();
-		    sessionStorage.removeItem("preventModal");
-		  }
-		});	
-</script>
 
 
 <!-- ✅ 푸터 -->
 <%@ include file="/include/footer.jsp" %>
+
+<script src="${pageContext.request.contextPath}/resources/js/details.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/review.js"></script>
+
 
 </body>
 </html>
