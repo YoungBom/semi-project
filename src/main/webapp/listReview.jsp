@@ -11,44 +11,8 @@
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 	<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/css/reviewList.css" rel="stylesheet">
 
-<style>
-body {
-  background-color: #f8f9fa;
-}
-
-.card {
-  border: none;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
-}
-.card:hover {
-  transform: translateY(-2px);
-}
-
-.review-img {
-  width: 100px;
-  height: 100px;
-  border-radius: 8px;
-  object-fit: cover;
-  margin-right: 8px;
-}
-
-.rating {
-  color: #ffc107;
-  font-size: 15px;
-}
-
-.btn-outline-warning {
-  color: #f39c12;
-  border-color: #f39c12;
-}
-.btn-outline-warning:hover {
-  background-color: #f39c12;
-  color: white;
-}
-</style>
 </head>
 <body>
 <%@ include file="/include/header.jsp" %>

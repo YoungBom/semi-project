@@ -12,12 +12,13 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 	<link href="${pageContext.request.contextPath}/resources/css/user.css" rel="stylesheet">
 	<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/css/mypage.css" rel="stylesheet">
 
 </head>
 <body class="mt-3">
 	<%@ include file="/include/header.jsp" %>
 	<main class="profile-wrap">
-		<h1 class="profile-title">🍔 마이페이지</h1>
+		<h1 class="profile-title"><a href="${pageContext.request.contextPath}/main.jsp" class="text-decoration-none">🍔</a> 마이페이지</h1>
 
 		<c:if test="${not empty error}">
 			<div class="alert error">${error}</div>
@@ -53,11 +54,15 @@
 			</div>
 		</section>
 
-		<div class="profile-actions">
-			<a class="btn primary"
-				href="${pageContext.request.contextPath}/user/edit">정보 수정</a> <a
-				class="btn secondary"
-				href="${pageContext.request.contextPath}/logout">로그아웃</a>
+		<div class="profile-actions  d-flex">
+			<a class="btn primary text-center lh-1"
+				href="${pageContext.request.contextPath}/user/edit">정보 수정</a>
+			<a
+			class="btn secondary text-center lh-1"
+			href="${pageContext.request.contextPath}/logout">로그아웃</a>
+			<a
+			class="btn btn-outline-warning text-center lh-1 ms-auto"
+			href="${pageContext.request.contextPath}/review/list">나의 리뷰</a>
 		</div>
 	</main>
 	

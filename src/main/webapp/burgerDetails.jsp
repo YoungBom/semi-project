@@ -148,7 +148,7 @@
 			
 			          <div class="mb-3">
 			            <label class="form-label">닉네임</label>
-			            <input type="text" class="form-control" value="${nickname}" readonly>
+			            <input type="text" class="form-control" value="${LOGIN_NICKNAME}" readonly>
 			          </div>
 			
 			          <div class="mb-3">
