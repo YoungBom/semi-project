@@ -11,4 +11,6 @@ public final class SessionKeys {
     public static final String LOGIN_NAME   = "LOGIN_NAME";
     /** 닉네임 */
     public static final String LOGIN_NICKNAME   = "LOGIN_NICKNAME";
+    /** 권한 **/
+	public static final String LOGIN_ROLE = "LOGIN_ROLE";
 }
