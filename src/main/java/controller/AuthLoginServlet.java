@@ -45,6 +45,7 @@ public class AuthLoginServlet extends HttpServlet {
 		s.setAttribute(SessionKeys.LOGIN_USERID, u.getUserId());
 		s.setAttribute(SessionKeys.LOGIN_NAME, u.getName());
 		s.setAttribute(SessionKeys.LOGIN_NICKNAME, u.getNickname());
+		s.setAttribute(SessionKeys.LOGIN_ROLE, u.getRole());
 
 		// 로그인 상태 유지(자동로그인)
 		if (remember) {
