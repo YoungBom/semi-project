@@ -62,7 +62,7 @@
 			href="${pageContext.request.contextPath}/logout">로그아웃</a>
 			<a
 			class="btn btn-outline-warning text-center lh-1 ms-auto"
-			href="${pageContext.request.contextPath}/review/list?userId=${user.userId}">나의 리뷰</a>
+			href="${pageContext.request.contextPath}/review/list">나의 리뷰</a>
 		</div>
 	</main>
 	

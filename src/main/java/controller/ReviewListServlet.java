@@ -5,9 +5,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
+import java.util.List;
 
 import dao.ReviewDAO;
+import dto.ReviewDTO;
 
 
 @WebServlet("/review/list")
@@ -16,13 +20,15 @@ public class ReviewListServlet extends HttpServlet {
 	ReviewDAO reviewdao = new ReviewDAO();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int userId = Integer.parseInt(request.getParameter("userId"));
+		HttpSession s = request.getSession(true);
+		int userId = (int) s.getAttribute("LOGIN_UID");
 		
 		ReviewDAO reviewDao = new ReviewDAO();
 		// 객체 리스트로 받아오
-		reviewAllList = reviewDao.listUpReview(userId);
+		List<ReviewDTO> reviewAllList = reviewDao.listUpReview(userId);
+
 		request.setAttribute("reviewAllList", reviewAllList);
-		response.sendRedirect("${pageContext.request.contextPath}/mypage.jsp");
+		request.getRequestDispatcher("/listReview.jsp").forward(request, response);			
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
