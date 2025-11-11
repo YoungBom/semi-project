@@ -92,8 +92,8 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
-            <p>비밀번호를 입력하세요.</p>
-            <input type="password" id="deletePw" class="form-control" placeholder="비밀번호 입력">
+            <p>아이디를 입력하세요.</p>
+            <input type="password" id="deletePw" class="form-control" placeholder="아이디 입력">
             <div id="deleteMsg" class="text-danger small mt-2"></div>
           </div>
           <div class="modal-footer">
