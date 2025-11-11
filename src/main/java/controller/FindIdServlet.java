@@ -2,70 +2,129 @@ package controller;
 
 import dao.UserDAO;
 import dto.UserDTO;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.util.Optional;
 
 @WebServlet("/user/find_id")
 public class FindIdServlet extends HttpServlet {
 	private final UserDAO userDao = new UserDAO();
 
-	// GET으로 직접 들어오면 폼 보여주기
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getRequestDispatcher("/user/find_id.jsp").forward(req, resp);
-	}
-
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 
-		// 파라미터 안전 처리(널가드 + trim)
-		String email = toTrim(req.getParameter("email"));
-		String nickname = toTrim(req.getParameter("nickname"));
-
-		// 실패 시 입력값 유지
-		req.setAttribute("email", email);
-		req.setAttribute("nickname", nickname);
-
-		if (email.isEmpty() || nickname.isEmpty()) {
-			req.setAttribute("error", "이메일과 닉네임을 모두 입력하세요.");
-			req.getRequestDispatcher("/user/find_id.jsp").forward(req, resp);
-			return;
-		}
-
+		String step = req.getParameter("step");
 		try {
-			// DB 공백/대소문자 이슈를 줄이려면: findByEmailAndNickname 에 TRIM / COLLATE 반영한 버전 사용 권장
-			UserDTO u = userDao.findByEmailAndNickname(email, nickname);
-			if (u == null) {
-				req.setAttribute("error", "일치하는 회원 정보를 찾을 수 없습니다.");
-				req.getRequestDispatcher("/user/find_id.jsp").forward(req, resp);
+			if ("answer".equals(step)) {
+				// 2단계: 보안질문 답 검증
+				String uidStr = req.getParameter("uid");
+				String answer = req.getParameter("answer");
+				if (isBlank(uidStr) || isBlank(answer)) {
+					req.setAttribute("error", "요청이 올바르지 않습니다.");
+					forward(req, resp, "/user/find_id.jsp");
+					return;
+				}
+
+				int uid = safeToInt(uidStr);
+
+				boolean ok = userDao.verifySecurityAnswer(uid, answer);
+				if (!ok) {
+					req.setAttribute("error", "보안 질문의 답변이 일치하지 않습니다.");
+					req.setAttribute("step", "answer");
+					req.setAttribute("uid", uid);
+					req.setAttribute("question_text", nullToEmpty(userDao.getSecurityQuestionText(uid)));
+					forward(req, resp, "/user/find_id.jsp");
+					return;
+				}
+
+				// 정답 → 아이디 마스킹 표시
+				Optional<UserDTO> uOpt = userDao.findById(uid);
+				if (uOpt.isEmpty()) {
+					req.setAttribute("error", "사용자 정보를 찾을 수 없습니다.");
+					forward(req, resp, "/user/find_id.jsp");
+					return;
+				}
+				String loginId = uOpt.get().getUserId();
+				String masked = maskLoginId(loginId);
+
+				req.setAttribute("maskedUserId", masked);
+				forward(req, resp, "/user/find_id_result.jsp");
 				return;
 			}
 
-			String masked = maskUserId(u.getUserId());
-			req.setAttribute("maskedUserId", masked);
-			req.getRequestDispatcher("/user/find_id_result.jsp").forward(req, resp);
+			// 1단계: 휴대폰 번호로 사용자 찾기
+			String phone = req.getParameter("phone");
+			if (isBlank(phone)) {
+				req.setAttribute("error", "휴대폰 번호를 입력해 주세요.");
+				forward(req, resp, "/user/find_id.jsp");
+				return;
+			}
+			String phoneDigits = phone.replaceAll("[^0-9]", "");
+
+			Optional<UserDTO> uOpt = userDao.findByPhone(phoneDigits);
+			if (uOpt.isEmpty()) {
+				req.setAttribute("error", "일치하는 회원 정보를 찾을 수 없습니다.");
+				forward(req, resp, "/user/find_id.jsp");
+				return;
+			}
+
+			// DTO의 id가 Integer든 Long이든 안전하게 변환
+			int uid = safeToInt(uOpt.get().getId());
+
+			String qText = userDao.getSecurityQuestionText(uid);
+			if (isBlank(qText)) {
+				req.setAttribute("error", "보안 질문이 설정되어 있지 않습니다. 마이페이지에서 먼저 설정해 주세요.");
+				forward(req, resp, "/user/find_id.jsp");
+				return;
+			}
+
+			req.setAttribute("step", "answer");
+			req.setAttribute("uid", uid);
+			req.setAttribute("question_text", qText);
+			forward(req, resp, "/user/find_id.jsp");
 
 		} catch (Exception e) {
-			// (선택) 서버 로그
 			e.printStackTrace();
 			req.setAttribute("error", "처리 중 오류가 발생했습니다.");
-			req.getRequestDispatcher("/user/find_id.jsp").forward(req, resp);
+			forward(req, resp, "/user/find_id.jsp");
 		}
 	}
 
-	private static String toTrim(String s) {
-		return (s == null) ? "" : s.trim();
+	// ---------- helpers ----------
+	private void forward(HttpServletRequest req, HttpServletResponse resp, String jsp)
+			throws ServletException, IOException {
+		req.getRequestDispatcher(jsp).forward(req, resp);
 	}
 
-	private String maskUserId(String id) {
-		if (id == null || id.isEmpty())
+	private boolean isBlank(String s) {
+		return s == null || s.trim().isEmpty();
+	}
+
+	private String nullToEmpty(String s) {
+		return s == null ? "" : s;
+	}
+
+	/** Long/Integer/String 모두 안전하게 int로 변환 */
+	private int safeToInt(Object v) {
+		if (v instanceof Integer)
+			return (Integer) v;
+		if (v instanceof Long)
+			return Math.toIntExact((Long) v);
+		if (v instanceof String)
+			return Math.toIntExact(Long.parseLong((String) v));
+		if (v instanceof Number)
+			return Math.toIntExact(((Number) v).longValue());
+		return Math.toIntExact(Long.parseLong(String.valueOf(v)));
+	}
+
+	private String maskLoginId(String id) {
+		if (id == null || id.length() < 3)
 			return "***";
-		int keep = Math.min(4, id.length()); // 최대 4글자 노출
-		if (keep < 3 && id.length() >= 3)
-			keep = 3; // 최소 3 보장
+		int keep = Math.min(3, id.length());
 		StringBuilder sb = new StringBuilder(id.substring(0, keep));
 		for (int i = keep; i < id.length(); i++)
 			sb.append('*');

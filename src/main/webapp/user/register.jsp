@@ -164,6 +164,7 @@
 			<!-- 제출 -->
 			<div class="actions">
 				<button type="submit" class="btn primary" id="btnSubmit">가입하기</button>
+				
 			</div>
 
 			<!-- 하단: 로그인 이동 -->

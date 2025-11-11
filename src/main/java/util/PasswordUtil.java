@@ -63,4 +63,10 @@ public final class PasswordUtil {
 			r |= a[i] ^ b[i];
 		return r == 0;
 	}
+	public static String normalize(String s) {
+	    if (s == null) return "";
+	    String t = s.trim().replaceAll("\\s+", " ");
+	    return t.toLowerCase();
+	}
+
 }

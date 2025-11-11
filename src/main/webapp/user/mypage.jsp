@@ -77,6 +77,7 @@
 			<a
 			class="btn secondary text-center lh-1"
 			href="${pageContext.request.contextPath}/logout">로그아웃</a>
+			<a class="btn-link" href="${pageContext.request.contextPath}/user/security_setup">질답하기</a>
 			<a
 			class="btn btn-outline-warning text-center lh-1 ms-auto"
 			href="${pageContext.request.contextPath}/review/list">나의 리뷰</a>

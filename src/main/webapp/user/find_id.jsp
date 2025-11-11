@@ -1,34 +1,68 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 <title>아이디 찾기</title>
-<link href="${ctx}/resources/css/user.css" rel="stylesheet">
-<link href="${ctx}/resources/css/main.css" rel="stylesheet">
+<!-- user.css 뒤에 recover.css (우선순위 중요) -->
+<link href="${ctx}/resources/css/user.css" rel="stylesheet" />
+<link href="${ctx}/resources/css/recover.css" rel="stylesheet" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>
-	<%@ include file="/include/header.jsp"%>
-	<h1>아이디 찾기</h1>
+  <%@ include file="/include/header.jsp"%>
 
-	<form method="post" action="${ctx}/user/find_id">
-		<label>이메일 <input type="email" name="email" required
-			maxlength="255" placeholder="가입 시 사용한 이메일">
-		</label> <label>닉네임 <input type="text" name="nickname" required
-			maxlength="100" placeholder="닉네임">
-		</label>
+  <main class="auth-wrap">
+    <section class="auth-card">
+      <h1>아이디 찾기</h1>
 
-		<div class="actions">
-			<button type="submit">아이디 찾기</button>
-			<a class="btn-link" href="${ctx}/user/login.jsp">로그인으로</a>
-		</div>
-	</form>
+      <form method="post" action="${ctx}/user/find_id" class="auth-form">
+        <c:choose>
+          <c:when test="${step eq 'answer'}">
+            <input type="hidden" name="step" value="answer" />
+            <input type="hidden" name="uid" value="${uid}" />
 
-	<c:if test="${not empty requestScope.error}">
-		<p class="error">${requestScope.error}</p>
-	</c:if>
+            <label class="field">
+              <span class="label">질문</span>
+              <input type="text" value="${fn:escapeXml(question_text)}" readonly />
+            </label>
+
+            <label class="field">
+              <span class="label">답변</span>
+              <input type="text" name="answer" autocomplete="off" required autofocus />
+            </label>
+
+            <div class="auth-actions">
+              <button type="submit" class="auth-btn">확인</button>
+              <a class="auth-btn secondary" href="${ctx}/user/login.jsp">로그인으로</a>
+            </div>
+          </c:when>
+
+          <c:otherwise>
+            <label class="field">
+              <span class="label">휴대폰 번호</span>
+              <input type="tel" name="phone"
+                     placeholder="예: 01012345678"
+                     inputmode="numeric" pattern="[0-9]{10,11}"
+                     autocomplete="tel" required autofocus />
+            </label>
+
+            <div class="auth-actions">
+              <button type="submit" class="auth-btn">아이디 찾기</button>
+              <a class="auth-btn secondary" href="${ctx}/user/login.jsp">로그인으로</a>
+            </div>
+          </c:otherwise>
+        </c:choose>
+
+        <c:if test="${not empty error}">
+          <p class="auth-error">${fn:escapeXml(error)}</p>
+        </c:if>
+      </form>
+    </section>
+  </main>
 </body>
 </html>
