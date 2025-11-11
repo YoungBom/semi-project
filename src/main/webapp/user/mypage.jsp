@@ -25,32 +25,49 @@
 		</c:if>
 
 		<section class="profile-card">
+            <div class="profile-row d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="k me-2">아이디</span>
+                    <span class="v">${user.userId}</span>
+                </div>
+            
+                <!-- 🔻 오른쪽 끝에 정렬되는 탈퇴 버튼 -->
+                <button class="btn btn-outline-danger btn-sm px-3"
+                        data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    탈퇴
+                </button>
+            </div>
 			<div class="profile-row">
-				<span class="k">아이디</span><span class="v">${user.userId}</span>
+		        <span class="k">이름</span>
+                <span class="v">${user.name}</span>
 			</div>
 			<div class="profile-row">
-				<span class="k">이름</span><span class="v">${user.name}</span>
+		        <span class="k">이메일</span>
+                <span class="v">${user.email}</span>
 			</div>
 			<div class="profile-row">
-				<span class="k">이메일</span><span class="v">${user.email}</span>
+			    <span class="k">닉네임</span>
+                <span class="v">${user.nickname}</span>
 			</div>
 			<div class="profile-row">
-				<span class="k">닉네임</span><span class="v">${user.nickname}</span>
+		        <span class="k">권한</span>
+                <span class="v">${user.role}</span>
 			</div>
 			<div class="profile-row">
-				<span class="k">권한</span><span class="v">${user.role}</span>
+			   <span class="k">연락처</span>
+                <span class="v">${user.phone}</span>
 			</div>
 			<div class="profile-row">
-				<span class="k">연락처</span><span class="v">${user.phone}</span>
+				<span class="k">생년월일</span>
+                <span class="v">${user.birth}</span>
 			</div>
 			<div class="profile-row">
-				<span class="k">생년월일</span><span class="v">${user.birth}</span>
+				<span class="k">성별</span>
+                <span class="v">${user.gender}</span>
 			</div>
 			<div class="profile-row">
-				<span class="k">성별</span><span class="v">${user.gender}</span>
-			</div>
-			<div class="profile-row">
-				<span class="k">주소</span><span class="v">${user.address}</span>
+				<span class="k">주소</span>
+                <span class="v">${user.address}</span>
 			</div>
 		</section>
 
