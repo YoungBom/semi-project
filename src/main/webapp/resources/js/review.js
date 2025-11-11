@@ -128,3 +128,37 @@ document.addEventListener("DOMContentLoaded", () => {
 	    sessionStorage.removeItem("preventModal");
 	  }
 	});	
+
+	function checkForm(e) {
+	  e.preventDefault();
+
+	  const form = document.querySelector(".comment-form");
+	  const ratingInput = form.querySelector("#rating");
+	  const contentInput = form.querySelector("#content");
+
+	  const ratingValue = Number(ratingInput.value.trim());
+	  const content = contentInput.value.trim();
+
+	  // 별점 검사
+	  if (!isFinite(ratingValue) || ratingValue < 0 || ratingValue > 5) {
+	    alert("🚫 별점은 0.0 ~ 5.0 사이로 입력해주세요.");
+	    ratingInput.focus();
+	    return false;
+	  }
+
+	  // 내용 검사
+	  if (content.length === 0) {
+	    alert("✏️ 리뷰 내용을 입력해주세요.");
+	    contentInput.focus();
+	    return false;
+	  }
+
+	  if (content.length > 100) {
+	    alert("⚠️ 내용이 너무 깁니다. (최대 100자)");
+	    contentInput.focus();
+	    return false;
+	  }
+
+	  form.submit();
+	  return true;
+	}
