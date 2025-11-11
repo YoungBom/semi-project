@@ -158,7 +158,27 @@ public class ReviewDAO {
 		return result;
 	}
 	
-	public void listUpReview(int userId) {
-		
+	public List<ReviewDTO> listUpReview(int userId) {
+		Connection conn = DBUtil.getConnection();
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    
+	    try {
+	    	String sql = "SELECT * FROM review r JOIN burger b ON r.burger_id = b.id JOIN review_image ri ON r.id = ri.review_id WHERE r.user_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userId);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				ReviewDTO review = new ReviewDTO();
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	    
+	    		
+	    
+	    return null;
 	}
 }

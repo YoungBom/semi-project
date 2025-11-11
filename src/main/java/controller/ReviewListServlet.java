@@ -16,12 +16,16 @@ public class ReviewListServlet extends HttpServlet {
 	ReviewDAO reviewdao = new ReviewDAO();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int userId = Integer.parseInt(request.getParameter("userId"));
 		
+		ReviewDAO reviewDao = new ReviewDAO();
+		// 객체 리스트로 받아오
+		reviewAllList = reviewDao.listUpReview(userId);
+		request.setAttribute("reviewAllList", reviewAllList);
+		response.sendRedirect("${pageContext.request.contextPath}/mypage.jsp");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }
