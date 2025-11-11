@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -158,5 +159,61 @@ public class ReviewDAO {
 	    }
 		
 		return result;
+	}
+	
+	public List<ReviewDTO> listUpReview(int userId) {
+		Connection conn = DBUtil.getConnection();
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    
+	    List<ReviewDTO> reviewList = new ArrayList<ReviewDTO>();
+	    
+	    try {
+	    	String sql  = "SELECT r.id AS id, r.burger_id, "
+	                   + "b.name AS burger_name, b.brand AS brand_name, "
+	                   + "u.id AS user_id, u.name AS user_name, r.rating, "
+	                   + "r.content, u.nickname, r.created_at, r.updated_at, "
+	                   + "GROUP_CONCAT(ri.image_path) AS image_paths " // 이미지 여러장 한번에 가져오기
+	                   + "FROM review r "
+	                   + "JOIN burger b ON r.burger_id = b.id "
+	                   + "JOIN user u ON r.user_id = u.id "
+	                   + "LEFT JOIN review_image ri ON r.id = ri.review_id "
+	                   + "WHERE r.user_id = ? "
+	                   + "GROUP BY r.id "
+	                   + "ORDER BY r.updated_at";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userId);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				ReviewDTO review = new ReviewDTO();
+				review.setId(rs.getInt("id"));
+				review.setBurgerId(rs.getInt("burger_id"));
+				review.setburgerName(rs.getString("burger_name"));
+				review.setBrand(rs.getString("brand_name"));
+				review.setUserId(rs.getInt("user_id"));
+				review.setUserName(rs.getString("user_name"));
+				review.setRating(rs.getDouble("rating"));
+				review.setContent(rs.getString("content"));
+				review.setNickname(rs.getString("nickname"));
+				review.setCreatedAt(rs.getTimestamp("created_at"));
+				review.setUpdatedAt(rs.getTimestamp("updated_at"));
+				
+				// 이미지 문자열을 리스트로 변환
+				// 여러장으로 묶인 이미지 문자열을 배열에 나눠서 저장하기
+	            String imagePathsStr = rs.getString("image_paths");
+	            if (imagePathsStr != null && !imagePathsStr.isEmpty()) {
+	                review.setImageList(Arrays.asList(imagePathsStr.split(",")));
+	            } else {
+	                review.setImageList(new ArrayList<>());
+	            }
+				reviewList.add(review);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+	        DBUtil.close(rs, pstmt, conn);
+	    }
+	    return reviewList;
 	}
 }

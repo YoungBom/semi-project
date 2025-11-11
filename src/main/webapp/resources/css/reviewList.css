@@ -8,18 +8,19 @@ body {
   border: none;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
+  transition: transform 0.2s ease;
+  min-height: 260px; /* 모든 카드의 최소 높이 통일 */
 }
 .card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
 }
 
 .review-img {
   width: 100px;
   height: 100px;
-  border-radius: 8px;
   object-fit: cover;
-  margin-right: 8px;
+  border-radius: 10px;
+  background-color: #f8f9fa; /* 이미지 없을 때도 일정 공간 유지 */
 }
 
 .rating {

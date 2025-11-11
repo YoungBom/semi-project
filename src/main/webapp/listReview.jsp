@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -21,105 +22,60 @@
   <h2 class="fw-bold mb-4 text-center">🍔 내 리뷰 목록</h2>
 
   <!-- 리뷰가 없을 때 -->
-  <!-- <div class="alert alert-secondary text-center">
-    아직 작성한 리뷰가 없습니다 😢
-  </div> -->
+  <c:choose>
+  	<c:when test="${empty reviewAllList}">
+		<div class="alert alert-secondary text-center">
+			아직 작성한 리뷰가 없습니다 😢
+		</div>
+	</c:when>
+	<c:otherwise>
+		  <div class="row row-cols-1 row-cols-md-2 g-4">
+			<c:forEach var="review" items="${reviewAllList}">
+			    <!-- 리뷰 카드  -->
+			    <div class="col">
+			    	<!-- 카드 전체가 같은 높이를 유지하도록 -->
+			    	<div class="card h-100 d-flex flex-column p-3 shadow-sm border-0">
+			    		<!-- 상단: 버거 정보 -->
+				        <div class="d-flex align-items-center mb-3">
+				          <div class="flex-grow-1">
+				            <h5 class="mb-1 fw-bold">${review.burgerName}</h5>
+				            <small class="text-muted">${review.brand}</small>
+				          </div>
+				          <div class="rating fw-bold text-warning">${review.rating}</div>
+				        </div>
+				        
+						<!-- 본문 내용 -->
+				        <p class="mb-2">${review.content}</p>
+						<!-- 이미지 영역 (고정 높이) -->
+				        <div class="d-flex flex-wrap mb-3 gap-2">
+							<c:forEach var="img" items="${review.imageList}">
+								<img src="${pageContext.request.contextPath}/image/${img}" class="review-img" alt="리뷰 이미지">
+							</c:forEach>
+						</div>
+				
+						<!-- ✅ 하단 고정 footer -->
+						<div class="mt-auto d-flex justify-content-between align-items-center">
+							<c:choose>
+								<c:when test="${review.createdAt ne review.updatedAt}">
+								<small class="text-muted">${review.updatedAt} (수정됨)</small>
+								</c:when>
+								<c:otherwise>
+									<small class="text-muted">${review.createdAt}</small>
+								</c:otherwise>
+							</c:choose>
+							<div>
+								<a href="/semi-project/burger/details?id=${review.burgerId}" class="btn btn-outline-secondary btn-sm me-2">
+									<i class="bi bi-eye"></i> 보기
+								</a>
+							</div>
+						</div>
+			    	</div>
+			    </div>
+			</c:forEach>
+		  </div>
+	</c:otherwise>
+  </c:choose>
 
-  <div class="row row-cols-1 row-cols-md-2 g-4">
-    <!-- 리뷰 카드 1 -->
-    <div class="col">
-      <div class="card p-3">
-        <div class="d-flex align-items-center mb-3">
-          <div class="flex-grow-1">
-            <h5 class="mb-1 fw-bold">빅맥</h5>
-            <small class="text-muted">맥도날드</small>
-          </div>
-          <div class="rating">★★★★☆</div>
-        </div>
-
-        <p class="mb-2">고기 맛이 진하고 소스가 진짜 맛있어요. 다만 약간 짰어요.</p>
-
-        <div class="d-flex mb-3">
-          <img src="https://via.placeholder.com/100x100?text=Review1" class="review-img" alt="리뷰 이미지">
-          <img src="https://via.placeholder.com/100x100?text=Review2" class="review-img" alt="리뷰 이미지">
-        </div>
-
-        <div class="d-flex justify-content-between align-items-center">
-          <small class="text-muted">2025-11-08 14:32 (수정됨)</small>
-          <div>
-            <a href="#" class="btn btn-outline-secondary btn-sm me-2">
-              <i class="bi bi-eye"></i> 보기
-            </a>
-            <a href="#" class="btn btn-outline-danger btn-sm">
-              <i class="bi bi-trash"></i> 삭제
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 리뷰 카드 2 -->
-    <div class="col">
-      <div class="card p-3">
-        <div class="d-flex align-items-center mb-3">
-          <div class="flex-grow-1">
-            <h5 class="mb-1 fw-bold">통새우와퍼</h5>
-            <small class="text-muted">버거킹</small>
-          </div>
-          <div class="rating">★★★★★</div>
-        </div>
-
-        <p class="mb-2">새우가 통통하고 패티도 두꺼워서 완전 만족! 또 먹을 거예요 😋</p>
-
-        <div class="d-flex mb-3">
-          <img src="https://via.placeholder.com/100x100?text=Shrimp1" class="review-img" alt="리뷰 이미지">
-        </div>
-
-        <div class="d-flex justify-content-between align-items-center">
-          <small class="text-muted">2025-10-31 09:15</small>
-          <div>
-            <a href="#" class="btn btn-outline-secondary btn-sm me-2">
-              <i class="bi bi-eye"></i> 보기
-            </a>
-            <a href="#" class="btn btn-outline-danger btn-sm">
-              <i class="bi bi-trash"></i> 삭제
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 리뷰 카드 3 -->
-    <div class="col">
-      <div class="card p-3">
-        <div class="d-flex align-items-center mb-3">
-          <div class="flex-grow-1">
-            <h5 class="mb-1 fw-bold">한우불고기버거</h5>
-            <small class="text-muted">롯데리아</small>
-          </div>
-          <div class="rating">★★★☆☆</div>
-        </div>
-
-        <p class="mb-2">무난한 맛이에요. 특별한 점은 없지만 가끔 생각날 듯!</p>
-
-        <div class="d-flex mb-3">
-          <img src="https://via.placeholder.com/100x100?text=Bulgogi" class="review-img" alt="리뷰 이미지">
-        </div>
-
-        <div class="d-flex justify-content-between align-items-center">
-          <small class="text-muted">2025-09-20 18:05</small>
-          <div>
-            <a href="#" class="btn btn-outline-secondary btn-sm me-2">
-              <i class="bi bi-eye"></i> 보기
-            </a>
-            <a href="#" class="btn btn-outline-danger btn-sm">
-              <i class="bi bi-trash"></i> 삭제
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </main>
 
 <%@ include file="/include/footer.jsp" %>
