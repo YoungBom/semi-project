@@ -277,7 +277,6 @@
 <!-- ✅ 푸터 -->
 <%@ include file="/include/footer.jsp" %>
 
-<script src="${pageContext.request.contextPath}/resources/js/details.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/review.js"></script>
 
 

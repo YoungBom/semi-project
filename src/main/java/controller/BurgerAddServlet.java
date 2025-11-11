@@ -77,7 +77,7 @@ public class BurgerAddServlet extends HttpServlet {
 			if (result > 0) {
 				out.println("<script>");
 				out.println("alert('버거 등록이 완료되었습니다!');");
-				out.println("location.href='" + req.getContextPath() + "/main.jsp';");
+				out.println("location.href='" + req.getContextPath() + "/main';");
 				out.println("</script>");
 			} else {
 				out.println("<script>");
