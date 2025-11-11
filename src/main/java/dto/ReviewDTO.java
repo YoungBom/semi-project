@@ -13,20 +13,34 @@ public class ReviewDTO {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private String imagePath;
+    private String userProfileImg;
     private List<String> imageList;
-
-	public ReviewDTO() {}
+    private String brand;
+    private String burgerName;
+    private String userName;
+    
+    public ReviewDTO() {}
+    
 
 
 
 	public int getId() { return id; }
 	public void setId(int id) { this.id = id; }
 
-    public int getBurgerId() { return burgerId; }
+	public String getBrand() { return brand; }
+	public void setBrand(String brand) {this.brand = brand; }
+
+	public int getBurgerId() { return burgerId; }
     public void setBurgerId(int burgerId) { this.burgerId = burgerId; }
+
+    public String getburgerName() { return burgerName; }
+    public void setburgerName(String brandName) { this.burgerName = brandName; }
 
     public int getUserId() { return userId; }
     public void setUserId(int userId) { this.userId = userId; }
+
+    public String getUserName() { return userName; }
+    public void setUserName(String userName) { this.userName = userName; }
 
     public double getRating() { return rating; }
     public void setRating(double rating) { this.rating = rating; }
@@ -45,6 +59,10 @@ public class ReviewDTO {
     
     public String getNickname() { return nickname; }
     public void setNickname(String nickname) { this.nickname = nickname; }
+    
+    public String getUserProfileImg() { return userProfileImg; }
+    public void setUserProfileImg(String userProfileImg) { this.userProfileImg = userProfileImg; }
+
     
     public List<String> getImageList() { return imageList; }
     public void setImageList(List<String> imageList) { this.imageList = imageList; }

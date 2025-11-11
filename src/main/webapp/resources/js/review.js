@@ -1,24 +1,6 @@
-/**
- * 
- */
 
-function checkUploadNewImage(){
-	// 해당 버튼 클릭시 기존 이미지 등록 여부 체크
-	// imageCheckValue = "false"는 문자열 복사기때문에 속성값을 넣으려면 document.getElementById("imageCheck").value 객체 접근해야함
-	const imageCheckValue = document.getElementById("imageCheck").value;
-	if(imageCheckValue === "false") {
-		alert("기존 이미지를 유지하도록 설정되었습니다.");
-		document.getElementById("imageCheck").value = "true";
-		return;
-	} else {
-		alert("이미지를 삭제합니다.");
-		document.getElementById("imageCheck").value = "false";
-		return;		
-	}
-	
-}
-
-function openUpdateModal(event, reviewId, content, rating, burgerId) {
+// 리뷰 수정하기 버튼 클릭시 모달창 띄우기
+function openUpdateModal(event, reviewId, content, rating, burgerId, imageList) {
   event.preventDefault();
  
   // 모달 요소
@@ -29,13 +11,20 @@ function openUpdateModal(event, reviewId, content, rating, burgerId) {
   const form = document.querySelector('.comment-form');
   const title = document.getElementById('reviewModalLabel');
   const submitBtn = form.querySelector('button[type="submit"]');
+  const oldImageBtn = document.getElementById('oldImageButtonContainer');
+  const imageCheck = document.getElementById('imageCheck');
+  const oldImageInput = document.getElementById("oldImageName");
   
-  // 기존이미지 기능 버튼 활성화
-  document.getElementById("oldImageButtonContainer").style.display = "block";
 
   // 기존 내용 채우기
   document.getElementById('content').value = content;
   document.getElementById('rating').value = rating;
+  
+  // 리뷰 등록시 이미지를 저장하였을때만 버튼 활성화
+  if (imageList.length > 2) {
+    // 기존이미지 기능 버튼 활성화
+    oldImageBtn.style.display = 'inline-block';
+  }
   
   // 제목 및 버튼 변경
   title.textContent = "리뷰 수정";
@@ -61,19 +50,43 @@ function openUpdateModal(event, reviewId, content, rating, burgerId) {
   modal.show();
 }
 
+function checkImg() {
+  const oldImageBtn = document.getElementById('oldImageButtonContainer');
+  const imageCheck = document.getElementById('imageCheck');
+
+  // 기존이미지 버튼 토글 기능
+  const isActive =  oldImageBtn.classList.toggle('active');
+  if (isActive) {
+	alert("기존이미지로 등록되었습니다.")
+    imageCheck.value = 'true';
+  } else {
+	alert("이미지를 삭제합니다.")
+    imageCheck.value = 'false';
+  }
+
+}
+
 // ✅ 모달 닫힐 때 등록 모드로 초기화
 document.addEventListener('DOMContentLoaded', () => {
   const reviewModal = document.getElementById('reviewModal');
+  // body에서 context path 가져오기(js파일 나누면 기존의 EL태그가 오류나서 body의 data 속성을 이용해 값 전달)
+  const contextPath = document.body.dataset.ctx;
+  const form = document.querySelector('.comment-form');
+  const oldImageBtn = document.getElementById('oldImageButtonContainer');
+	
   reviewModal.addEventListener('hidden.bs.modal', () => {
-    const form = document.querySelector('.comment-form');
+	// 폼 초기화
     form.reset();
     form.action = `${contextPath}/review/add`;
-	// reviewId는 JS로 생성한 hidden input이라,모달이 닫힌 시점에 존재하지 않을 수도 있음 → null 접근 오류 발생 가능. 방어코드(if문)
-    if (reviewIdInput) reviewIdInput.value = "";
     document.getElementById('reviewModalLabel').textContent = "리뷰 등록";
     form.querySelector('button[type="submit"]').textContent = "등록";
+	// 기존이미지등록 버튼 초기화
+	imageCheck.value = 'false';         // 초기화
+	oldImageBtn.style.display = 'none'; // 숨김
+	oldImageBtn.classList.remove('active');
   });
 });
+
 
 // 리뷰 등록 버튼은 유저ID값이 있을때만 작동되게끔 
 document.addEventListener('DOMContentLoaded', () => {
@@ -115,3 +128,37 @@ document.addEventListener("DOMContentLoaded", () => {
 	    sessionStorage.removeItem("preventModal");
 	  }
 	});	
+
+	function checkForm(e) {
+	  e.preventDefault();
+
+	  const form = document.querySelector(".comment-form");
+	  const ratingInput = form.querySelector("#rating");
+	  const contentInput = form.querySelector("#content");
+
+	  const ratingValue = Number(ratingInput.value.trim());
+	  const content = contentInput.value.trim();
+
+	  // 별점 검사
+	  if (!isFinite(ratingValue) || ratingValue < 0 || ratingValue > 5) {
+	    alert("🚫 별점은 0.0 ~ 5.0 사이로 입력해주세요.");
+	    ratingInput.focus();
+	    return false;
+	  }
+
+	  // 내용 검사
+	  if (content.length === 0) {
+	    alert("✏️ 리뷰 내용을 입력해주세요.");
+	    contentInput.focus();
+	    return false;
+	  }
+
+	  if (content.length > 100) {
+	    alert("⚠️ 내용이 너무 깁니다. (최대 100자)");
+	    contentInput.focus();
+	    return false;
+	  }
+
+	  form.submit();
+	  return true;
+	}

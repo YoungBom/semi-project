@@ -29,7 +29,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-semibold">
         <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/burger/menu">메뉴</a></li>
         <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/event.jsp">이벤트</a></li>
-        <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/notice.jsp">공지사항</a></li>
+        <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/board/list">공지사항</a></li>
         <li class="nav-item"><a class="nav-link text-dark" href="<%=ctx%>/findStore">매장찾기</a></li>
       </ul>
 

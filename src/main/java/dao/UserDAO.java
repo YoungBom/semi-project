@@ -3,11 +3,12 @@ package dao;
 import dto.UserDTO;
 import util.DBUtil;
 import util.PasswordUtil;
-import java.util.*;
+
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-
+import java.util.Optional;
 
 public class UserDAO {
 
@@ -16,14 +17,15 @@ public class UserDAO {
 	// ===== 공용 매핑 =====
 	private UserDTO map(ResultSet rs) throws SQLException {
 		UserDTO u = new UserDTO();
-		u.setId(rs.getInt("id"));
-		u.setUserId(rs.getString("user_id"));
-		u.setPwHash(rs.getString("pw_hash")); // 신규 해시
+		u.setId(rs.getInt("id")); // PK(Integer)
+		u.setUserId(rs.getString("user_id")); // 로그인용 아이디
+		u.setPwHash(rs.getString("pw_hash")); // 해시(신규)
 		u.setUserPw(rs.getString("user_pw")); // legacy(Nullable)
 		u.setEmail(rs.getString("email"));
 		u.setPhone(rs.getString("phone"));
+		u.setProfileImage(rs.getString("profile_image"));
 
-		String b = rs.getString("birth"); // yyyy-MM-dd
+		String b = rs.getString("birth"); // DB: VARCHAR(yyyy-MM-dd)
 		if (b != null && !b.isBlank()) {
 			try {
 				u.setBirth(LocalDate.parse(b, DF));
@@ -41,7 +43,7 @@ public class UserDAO {
 	}
 
 	// ===== 존재 여부 =====
-	public boolean existsByLoginId(String userId) {
+	public boolean existsByLoginId(String userId) {	
 		String sql = "SELECT 1 FROM `user` WHERE BINARY user_id = ?";
 		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
 			ps.setString(1, userId);
@@ -51,11 +53,6 @@ public class UserDAO {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	// (호환) 이름만 다른 중복 — existsByLoginId로 위임
-	public boolean existsByUserId(String userId) {
-		return existsByLoginId(userId);
 	}
 
 	public boolean existsByEmail(String email) {
@@ -72,23 +69,9 @@ public class UserDAO {
 
 	// ===== 조회 =====
 	public Optional<UserDTO> findByLoginId(String loginId) {
-		String sql = "SELECT * FROM `user` WHERE BINARY user_id = ?";
+		 String sql = "SELECT * FROM `user` WHERE BINARY user_id = ?";
 		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
 			ps.setString(1, loginId);
-			try (ResultSet rs = ps.executeQuery()) {
-				return rs.next() ? Optional.of(map(rs)) : Optional.empty();
-			}
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/** FindPassword 1단계용: 아이디 + 휴대폰(숫자만)으로 식별 */
-	public Optional<UserDTO> findByLoginIdAndPhone(String userId, String phoneDigits) {
-		String sql = "SELECT * FROM `user` WHERE BINARY user_id=? AND phone=?";
-		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
-			ps.setString(1, userId);
-			ps.setString(2, phoneDigits);
 			try (ResultSet rs = ps.executeQuery()) {
 				return rs.next() ? Optional.of(map(rs)) : Optional.empty();
 			}
@@ -140,13 +123,12 @@ public class UserDAO {
 		String sql = "INSERT INTO `user` (user_id,pw_hash,user_pw,email,phone,birth,gender,name,nickname,address,role) "
 				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 		String hash = PasswordUtil.hash(rawPassword);
-
 		try (Connection c = DBUtil.getConnection();
 				PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
 			ps.setString(1, in.getUserId());
 			ps.setString(2, hash);
-			ps.setNull(3, Types.VARCHAR); // legacy 칸 비움
+			ps.setNull(3, Types.VARCHAR); // legacy 칸은 비움
 			ps.setString(4, in.getEmail());
 			ps.setString(5, in.getPhone());
 			ps.setString(6, in.getBirth() != null ? in.getBirth().format(DF) : null);
@@ -155,7 +137,6 @@ public class UserDAO {
 			ps.setString(9, in.getNickname());
 			ps.setString(10, in.getAddress());
 			ps.setString(11, in.getRole() != null ? in.getRole() : "USER");
-
 			ps.executeUpdate();
 			try (ResultSet keys = ps.getGeneratedKeys()) {
 				if (keys.next()) {
@@ -187,27 +168,29 @@ public class UserDAO {
 	}
 
 	// ===== 프로필 수정 =====
-	public boolean updateProfile(int uid, String email, String phone, String birth, String gender, String name,
-			String nickname, String address) {
-		String sql = "UPDATE `user` SET email=?, phone=?, birth=?, gender=?, name=?, nickname=?, address=? WHERE id=?";
-		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
-
-			ps.setString(1, email);
-			ps.setString(2, phone);
-			ps.setString(3, birth);
-			ps.setString(4, gender);
-			ps.setString(5, name);
-			ps.setString(6, nickname);
-			ps.setString(7, address);
-			ps.setInt(8, uid);
-
+	public boolean updateProfile(int uid, String email, String phone, String birth, String gender,
+         String name, String nickname, String address) {
+			String sql = "UPDATE `user` SET email=?, phone=?, birth=?, gender=?, name=?, nickname=?, address=? WHERE id=?";
+			try (Connection c = DBUtil.getConnection();
+			PreparedStatement ps = c.prepareStatement(sql)) {
+			
+				ps.setString(1, email);
+				ps.setString(2, phone);
+				ps.setString(3, birth);
+				ps.setString(4, gender);
+				ps.setString(5, name);
+				ps.setString(6, nickname);
+				ps.setString(7, address);
+				ps.setInt(8, uid);
+			
 			return ps.executeUpdate() > 0;
-		} catch (SQLException e) {
+			} catch (SQLException e) {
+			// 유니크 제약 위반 등 감지 시 메시지 포함해서 던짐
 			if (e.getMessage() != null && e.getMessage().contains("Duplicate")) {
-				throw new RuntimeException("중복된 데이터 (" + e.getMessage() + ")");
+			throw new RuntimeException("중복된 데이터 (" + e.getMessage() + ")");
 			}
 			throw new RuntimeException(e);
-		}
+			}
 	}
 
 	// ===== 비밀번호 변경 / 재설정 =====
@@ -223,32 +206,6 @@ public class UserDAO {
 		}
 	}
 
-	// (호환) user_id로 해시 업데이트
-	public int updatePasswordHash(String userId, String newHash) throws Exception {
-		String sql = "UPDATE `user` SET pw_hash = ?, user_pw = NULL, updated_at = CURRENT_TIMESTAMP WHERE user_id = ?";
-		try (var conn = DBUtil.getConnection(); var ps = conn.prepareStatement(sql)) {
-			ps.setString(1, newHash);
-			ps.setString(2, userId);
-			return ps.executeUpdate();
-		}
-	}
-
-	// (권장) PK(id)로 해시 업데이트
-	public int updatePasswordHashById(int uid, String newHash) throws Exception {
-		String sql = "UPDATE `user` SET pw_hash = ?, user_pw = NULL, updated_at = CURRENT_TIMESTAMP WHERE id = ?";
-		try (var conn = DBUtil.getConnection(); var ps = conn.prepareStatement(sql)) {
-			ps.setString(1, newHash);
-			ps.setInt(2, uid);
-			return ps.executeUpdate();
-		}
-	}
-
-	// (호환 오버로드) ResetPasswordServlet에서 호출한 시그니처
-	public int updatePasswordHash(int uid, String newHash) throws Exception {
-		return updatePasswordHashById(uid, newHash);
-	}
-
-	// ===== 패스워드 토큰 흐름(이메일 기반) =====
 	private static String genToken() {
 		byte[] buf = new byte[32];
 		new java.security.SecureRandom().nextBytes(buf);
@@ -323,27 +280,28 @@ public class UserDAO {
 		}
 	}
 
-	
-
-	// ===== 삭제 =====
-	public boolean deleteUserById(String userId) {
-		String sql = "DELETE FROM `user` WHERE user_id = ?";
-		try (Connection conn = DBUtil.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setString(1, userId);
-			int n = pstmt.executeUpdate();
-			return n > 0;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
+	// ===== 자동로그인(remember_me) =====
+	public String issueRememberToken(int uid, int days) {
+		String token = java.util.UUID.randomUUID().toString().replace("-", "");
+		String sql = "INSERT INTO remember_me(user_id, token, expires_at) "
+				+ "VALUES(?, ?, DATE_ADD(NOW(), INTERVAL ? DAY))";
+		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
+			ps.setInt(1, uid);
+			ps.setString(2, token);
+			ps.setInt(3, days);
+			ps.executeUpdate();
+			return token;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
-	// ===== 아이디 찾기/보안질문 =====
-	public Optional<UserDTO> findByPhone(String phone) {
-		String sql = "SELECT * FROM `user` WHERE phone = ?";
-		try (var c = DBUtil.getConnection(); var ps = c.prepareStatement(sql)) {
-			ps.setString(1, phone);
-			try (var rs = ps.executeQuery()) {
+	public Optional<UserDTO> findByRememberToken(String token) {
+		String sql = "SELECT u.* FROM remember_me r " + "JOIN `user` u ON r.user_id = u.id "
+				+ "WHERE r.token=? AND r.expires_at > NOW()";
+		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
+			ps.setString(1, token);
+			try (ResultSet rs = ps.executeQuery()) {
 				return rs.next() ? Optional.of(map(rs)) : Optional.empty();
 			}
 		} catch (SQLException e) {
@@ -351,84 +309,102 @@ public class UserDAO {
 		}
 	}
 
-	/** 유저의 보안질문 텍스트를 가져옴 (security_qa.question_tx 우선) */
-	public String getSecurityQuestionText(int uid) {
-	    String sql = "SELECT question_tx FROM security_qa WHERE user_id=?";
-	    try (var c = DBUtil.getConnection(); var ps = c.prepareStatement(sql)) {
-	        ps.setInt(1, uid);
-	        try (var rs = ps.executeQuery()) {
+	public void deleteRememberToken(String token) {
+		String sql = "DELETE FROM remember_me WHERE token=?";
+		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
+			ps.setString(1, token);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	public boolean existsByUserId(String userId) {
+	    boolean exists = false;
+	    String sql = "SELECT COUNT(*) FROM user WHERE user_id = ?";
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+	        pstmt.setString(1, userId);
+
+	        try (ResultSet rs = pstmt.executeQuery()) {
 	            if (rs.next()) {
-	                String tx = rs.getString(1);
-	                return (tx != null && !tx.isBlank()) ? tx : null;
+	                exists = rs.getInt(1) > 0;
 	            }
 	        }
-	    } catch (java.sql.SQLException e) {
-	        throw new RuntimeException(e);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return exists;
+	}
+	
+	
+	// 유저 삭제 로직
+	public boolean deleteUserById(String userId) {
+	    String sql = "DELETE FROM `user` WHERE user_id = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, userId);
+	        int n = pstmt.executeUpdate();
+	        return n > 0;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
+	
+	public int updateProfileImg(String userId, String fileName) {
+	    String sql = "UPDATE user SET profile_image = ? WHERE user_id = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setString(1, fileName);
+	        ps.setString(2, userId);
+	        return ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return 0;
+	    }
+	}
+
+	public UserDTO findByUserId(String userId) {
+	    String sql = "SELECT * FROM user WHERE user_id = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setString(1, userId);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                UserDTO u = new UserDTO();
+	                u.setId(rs.getInt("id"));
+	                u.setUserId(rs.getString("user_id"));
+	                u.setEmail(rs.getString("email"));
+	                u.setName(rs.getString("name"));
+	                u.setNickname(rs.getString("nickname"));
+	                u.setPhone(rs.getString("phone"));
+	                u.setProfileImage(rs.getString("profile_image"));
+	                return u;
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
 	    }
 	    return null;
 	}
 
 		
 
-	/** 보안질문/답 1건 조회(Map) — 필요시 유지 */
-	public Optional<java.util.Map<String, Object>> getSecurityQA(int uid) {
-		String sql = "SELECT question_id, question_tx FROM security_qa WHERE user_id=?";
-		try (var c = DBUtil.getConnection(); var ps = c.prepareStatement(sql)) {
-			ps.setInt(1, uid);
-			try (var rs = ps.executeQuery()) {
-				if (!rs.next())
-					return Optional.empty();
-				var m = new java.util.HashMap<String, Object>();
-				m.put("question_id", rs.getInt("question_id"));
-				m.put("question_tx", rs.getString("question_tx"));
-				return Optional.of(m);
-			}
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/** 답 검증 (정규화 + 해시 비교) */
-	public boolean verifySecurityAnswer(int uid, String answerPlain) {
-		String sql = "SELECT answer_hash FROM security_qa WHERE user_id=?";
-		try (var c = DBUtil.getConnection(); var ps = c.prepareStatement(sql)) {
-			ps.setInt(1, uid);
-			try (var rs = ps.executeQuery()) {
-				if (!rs.next())
-					return false;
-				String stored = rs.getString(1);
-				String normalized = PasswordUtil.normalize(answerPlain); // 소문자/trim 등
-				return PasswordUtil.verify(normalized, stored);
-			}
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/** 보안질문 저장/갱신 (upsert). answerPlain은 평문으로 들어오며 내부에서 정규화+해시 */
-	public boolean upsertSecurityQA(int uid, int questionId, String questionTx, String answerPlain) {
-		String normalized = (answerPlain == null) ? "" : answerPlain.trim().replaceAll("\\s+", " ").toLowerCase();
-		String answerHash = PasswordUtil.hash(normalized);
-
-		String sql = """
-				INSERT INTO security_qa (user_id, question_id, question_tx, answer_hash, created_at, updated_at)
-				VALUES (?, ?, ?, ?, NOW(), NOW())
-				ON DUPLICATE KEY UPDATE
-				    question_id = VALUES(question_id),
-				    question_tx = VALUES(question_tx),
-				    answer_hash = VALUES(answer_hash),
-				    updated_at = NOW()
-				""";
-
-		try (var c = DBUtil.getConnection(); var ps = c.prepareStatement(sql)) {
-			ps.setInt(1, uid);
-			ps.setInt(2, questionId);
-			ps.setString(3, questionTx);
-			ps.setString(4, answerHash);
-			return ps.executeUpdate() > 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+	
+	
 }
+
+
+
+
+
+
+
+

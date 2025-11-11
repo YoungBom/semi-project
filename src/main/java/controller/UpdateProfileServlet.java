@@ -1,45 +1,61 @@
 package controller;
 
 import dao.UserDAO;
-import util.SessionKeys;
-
+import dto.UserDTO;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
-@WebServlet("/user/update")
+@WebServlet("/user/updateProfile")
+@MultipartConfig(maxFileSize = 1024 * 1024 * 10) // 10MB
 public class UpdateProfileServlet extends HttpServlet {
-    private final UserDAO userDao = new UserDAO();
+    private static final long serialVersionUID = 1L;
+    private static final String PROFILE_DIR = "d:\\profile";
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         req.setCharacterEncoding("UTF-8");
+        HttpSession session = req.getSession();
+        String userId = (String) session.getAttribute("LOGIN_USERID");
 
-        HttpSession s = req.getSession(false);
-        Object uidObj = (s != null) ? s.getAttribute(SessionKeys.LOGIN_UID) : null;
-        if (uidObj == null) {
-            resp.sendRedirect(req.getContextPath() + "/login");
+        if (userId == null) {
+            resp.sendRedirect(req.getContextPath() + "/user/login.jsp");
             return;
         }
-        int uid = (uidObj instanceof Integer) ? (Integer) uidObj : Integer.parseInt(uidObj.toString());
 
-        String email   = req.getParameter("email");
-        String phone   = req.getParameter("phone");
-        String birth   = req.getParameter("birth");   // 현재 DB가 VARCHAR(255)라 문자열로 유지
-        String gender  = req.getParameter("gender");
-        String name    = req.getParameter("name");
-        String nickname= req.getParameter("nickname");
-        String address = req.getParameter("address");
+        Part part = req.getPart("profileImg");
+        String fileName = null;
 
-        boolean ok = userDao.updateProfile(uid, email, phone, birth, gender, name, nickname, address);
-        if (ok) {
-            resp.sendRedirect(req.getContextPath() + "/user/mypage?msg=updated");
-        } else {
-            req.setAttribute("error", "수정에 실패했습니다.");
-            req.getRequestDispatcher("/user/edit.jsp").forward(req, resp);
+        if (part != null && part.getSize() > 0) {
+            // 확장자 추출
+            String submittedName = part.getSubmittedFileName();
+            String ext = submittedName.substring(submittedName.lastIndexOf("."));
+            fileName = UUID.randomUUID().toString() + ext;
+
+            File dir = new File(PROFILE_DIR);
+            if (!dir.exists()) dir.mkdirs();
+
+            part.write(new File(dir, fileName).getAbsolutePath());
         }
+
+        if (fileName != null) {
+            UserDAO dao = new UserDAO();
+            dao.updateProfileImg(userId, fileName);
+
+            // ✅ 세션 갱신
+            UserDTO updatedUser = dao.findByUserId(userId);
+            if (updatedUser != null) {
+                session.setAttribute("LOGIN_USER", updatedUser);
+            }
+        }
+
+        // ✅ 리다이렉트 (세션 기반이라 괜찮음)
+        resp.sendRedirect(req.getContextPath() + "/user/mypage");
     }
 }
