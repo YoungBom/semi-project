@@ -6,6 +6,7 @@ import util.PasswordUtil;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ public class UserDAO {
 		u.setUserPw(rs.getString("user_pw")); // legacy(Nullable)
 		u.setEmail(rs.getString("email"));
 		u.setPhone(rs.getString("phone"));
+		u.setProfileImage(rs.getString("profile_image"));
 
 		String b = rs.getString("birth"); // DB: VARCHAR(yyyy-MM-dd)
 		if (b != null && !b.isBlank()) {
@@ -135,7 +137,6 @@ public class UserDAO {
 			ps.setString(9, in.getNickname());
 			ps.setString(10, in.getAddress());
 			ps.setString(11, in.getRole() != null ? in.getRole() : "USER");
-
 			ps.executeUpdate();
 			try (ResultSet keys = ps.getGeneratedKeys()) {
 				if (keys.next()) {
@@ -167,23 +168,29 @@ public class UserDAO {
 	}
 
 	// ===== 프로필 수정 =====
-	public boolean updateProfile(int uid, String email, String phone, String birth, String gender, String name,
-			String nickname, String address) {
-		String sql = "UPDATE `user` SET email=?, phone=?, birth=?, gender=?, name=?, nickname=?, address=? "
-				+ "WHERE id=?";
-		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
-			ps.setString(1, email);
-			ps.setString(2, phone);
-			ps.setString(3, birth);
-			ps.setString(4, gender);
-			ps.setString(5, name);
-			ps.setString(6, nickname);
-			ps.setString(7, address);
-			ps.setInt(8, uid);
+	public boolean updateProfile(int uid, String email, String phone, String birth, String gender,
+         String name, String nickname, String address) {
+			String sql = "UPDATE `user` SET email=?, phone=?, birth=?, gender=?, name=?, nickname=?, address=? WHERE id=?";
+			try (Connection c = DBUtil.getConnection();
+			PreparedStatement ps = c.prepareStatement(sql)) {
+			
+				ps.setString(1, email);
+				ps.setString(2, phone);
+				ps.setString(3, birth);
+				ps.setString(4, gender);
+				ps.setString(5, name);
+				ps.setString(6, nickname);
+				ps.setString(7, address);
+				ps.setInt(8, uid);
+			
 			return ps.executeUpdate() > 0;
-		} catch (SQLException e) {
+			} catch (SQLException e) {
+			// 유니크 제약 위반 등 감지 시 메시지 포함해서 던짐
+			if (e.getMessage() != null && e.getMessage().contains("Duplicate")) {
+			throw new RuntimeException("중복된 데이터 (" + e.getMessage() + ")");
+			}
 			throw new RuntimeException(e);
-		}
+			}
 	}
 
 	// ===== 비밀번호 변경 / 재설정 =====
@@ -334,6 +341,64 @@ public class UserDAO {
 
 	    return exists;
 	}
+	
+	
+	// 유저 삭제 로직
+	public boolean deleteUserById(String userId) {
+	    String sql = "DELETE FROM `user` WHERE user_id = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, userId);
+	        int n = pstmt.executeUpdate();
+	        return n > 0;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
+	
+	public int updateProfileImg(String userId, String fileName) {
+	    String sql = "UPDATE user SET profile_image = ? WHERE user_id = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setString(1, fileName);
+	        ps.setString(2, userId);
+	        return ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return 0;
+	    }
+	}
+
+	public UserDTO findByUserId(String userId) {
+	    String sql = "SELECT * FROM user WHERE user_id = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setString(1, userId);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                UserDTO u = new UserDTO();
+	                u.setId(rs.getInt("id"));
+	                u.setUserId(rs.getString("user_id"));
+	                u.setEmail(rs.getString("email"));
+	                u.setName(rs.getString("name"));
+	                u.setNickname(rs.getString("nickname"));
+	                u.setPhone(rs.getString("phone"));
+	                u.setProfileImage(rs.getString("profile_image"));
+	                return u;
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
+
+		
+
+	
+	
 }
 
 

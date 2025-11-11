@@ -3,6 +3,8 @@
   String ctx = request.getContextPath();
   Object uidObj = (session == null) ? null : session.getAttribute("LOGIN_UID");
   String userNickName = (session == null) ? null : (String) session.getAttribute("LOGIN_NICKNAME");
+  String userRole = (session == null) ? null : (String) session.getAttribute("LOGIN_ROLE");
+  boolean isAdmin = "ADMIN".equalsIgnoreCase(userRole);
   boolean loggedIn = (uidObj != null);
 %>
 
@@ -41,6 +43,45 @@
 
       
       <div class="d-flex align-items-center gap-2">
+      	<% if (!loggedIn) { %>
+      		<a href="<%=ctx%>/user/login.jsp" class="btn me-1 rounded-3" style="background:#4caf50; color:white;">로그인</a>
+    		<a href="<%=ctx%>/user/register.jsp" class="btn me-1 rounded-3 btn-primary">회원가입</a>
+    	<% } else if (isAdmin) { %>
+    		<span class="me-2 user-greeting text-nowrap">
+	      		<%= (userNickName == null ? "관리자" : "관리자" + userNickName) %>님
+		    </span>
+		
+			<div class="d-flex flex-column align-items-start gap-2">
+			  <!-- 1줄: 버거/회원 관리 -->
+			  <div class="d-flex align-items-center gap-1">
+			    <a href="<%=ctx%>/burger/list" class="btn btn-sm rounded-3" style="background:#2196f3; color:white;">버거 관리</a>
+			    <a href="<%=ctx%>/user/manage" class="btn btn-sm rounded-3" style="background:#9c27b0; color:white;">회원 관리</a>
+			  </div>
+			
+			  <!-- 2줄: 마이페이지/로그아웃 -->
+			  <div class="d-flex align-items-center gap-1">
+			    <a href="<%=ctx%>/user/mypage" class="btn btn-sm rounded-3" style="background:#ff8d00; color:white;">마이페이지</a>
+			    <form method="post" action="<%=ctx%>/logout" class="d-inline m-0 p-0">
+			      <button type="submit" class="btn btn-sm rounded-3" style="background:#4caf50; color:white;">로그아웃</button>
+			    </form>
+			  </div>
+			</div>
+			
+		<% } else { %>
+			<span class="me-2 user-greeting text-nowrap">
+      			<%= (userNickName == null ? "회원" : userNickName) %>님
+    		</span>
+    		<a href="<%=ctx%>/user/mypage" class="btn me-1 rounded-3" style="background:#ff8d00; color:white;">마이페이지</a>
+		    <form method="post" action="<%=ctx%>/logout" class="d-inline m-0 p-0">
+		      <button type="submit" class="btn me-1 rounded-3" style="background:#4caf50; color:white;">로그아웃</button>
+		    </form>
+		<% } %>
+      </div>
+      
+      
+      
+      
+<%--       <div class="d-flex align-items-center gap-2">
         <% if (!loggedIn) { %>
          
           <a href="<%=ctx%>/user/login.jsp" class="btn me-1 rounded-3" style="background:#4caf50; color:white;">로그인</a>
@@ -57,9 +98,9 @@
             <button type="submit" class="btn me-1 rounded-3" style="background:#4caf50; color:white;">로그아웃</button>
           </form>
         <% } %>
-      </div>
+      </div> --%>
 
     </div>
   </div>
 </nav>
-</div>
+</div>	

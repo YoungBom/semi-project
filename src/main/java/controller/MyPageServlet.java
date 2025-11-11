@@ -34,6 +34,7 @@ public class MyPageServlet extends HttpServlet {
 			return;
 		}
 
+		
 		// ✅ int로 안전 변환 (DAO는 findById(int))
 		final int uid;
 		try {
