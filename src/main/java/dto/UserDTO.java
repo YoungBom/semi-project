@@ -1,11 +1,14 @@
 package dto;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
 public class UserDTO {
-	private Integer id;
+	// 기본 키는 Long으로 (DAO에서 rs.getLong("id") 사용과 호환)
+	private Long id;
+
 	private String userId;
 	private String pwHash;
 	private String userPw; // legacy/plain (nullable)
@@ -18,12 +21,22 @@ public class UserDTO {
 	private String address;
 	private String role;
 
-	public Integer getId() {
+	private Timestamp createdAt;
+	private Timestamp updatedAt;
+
+	// --- getters / setters ---
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
+	}
+
+	// (선택) int 소스와도 호환되게 오버로드 하나 더
+	public void setId(int id) {
+		this.id = Long.valueOf(id);
 	}
 
 	public String getUserId() {
@@ -114,10 +127,64 @@ public class UserDTO {
 		this.role = role;
 	}
 
-	// helper for DATE <-> LocalDate conversion if needed
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp ts) {
+		this.createdAt = ts;
+	}
+
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp ts) {
+		this.updatedAt = ts;
+	} // ← 기존 버그 수정: updatedAt에 세팅
+
+	// --- 유틸 ---
+
 	public static LocalDate toLocalDate(Date date) {
 		if (date == null)
 			return null;
 		return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+
+	// --- 호환용 별칭 (snake_case 필드명을 쓰는 기존 코드/DAO와 동시 호환) ---
+
+	// user_id
+	public String getUser_id() {
+		return getUserId();
+	}
+
+	public void setUser_id(String v) {
+		setUserId(v);
+	}
+
+	// pw_hash
+	public String getPw_hash() {
+		return getPwHash();
+	}
+
+	public void setPw_hash(String v) {
+		setPwHash(v);
+	}
+
+	// created_at / updated_at
+	public Timestamp getCreated_at() {
+		return getCreatedAt();
+	}
+
+	public void setCreated_at(Timestamp v) {
+		setCreatedAt(v);
+	}
+
+	public Timestamp getUpdated_at() {
+		return getUpdatedAt();
+	}
+
+	public void setUpdated_at(Timestamp v) {
+		setUpdatedAt(v);
 	}
 }
