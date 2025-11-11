@@ -167,23 +167,29 @@ public class UserDAO {
 	}
 
 	// ===== 프로필 수정 =====
-	public boolean updateProfile(int uid, String email, String phone, String birth, String gender, String name,
-			String nickname, String address) {
-		String sql = "UPDATE `user` SET email=?, phone=?, birth=?, gender=?, name=?, nickname=?, address=? "
-				+ "WHERE id=?";
-		try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
-			ps.setString(1, email);
-			ps.setString(2, phone);
-			ps.setString(3, birth);
-			ps.setString(4, gender);
-			ps.setString(5, name);
-			ps.setString(6, nickname);
-			ps.setString(7, address);
-			ps.setInt(8, uid);
+	public boolean updateProfile(int uid, String email, String phone, String birth, String gender,
+         String name, String nickname, String address) {
+			String sql = "UPDATE `user` SET email=?, phone=?, birth=?, gender=?, name=?, nickname=?, address=? WHERE id=?";
+			try (Connection c = DBUtil.getConnection();
+			PreparedStatement ps = c.prepareStatement(sql)) {
+			
+				ps.setString(1, email);
+				ps.setString(2, phone);
+				ps.setString(3, birth);
+				ps.setString(4, gender);
+				ps.setString(5, name);
+				ps.setString(6, nickname);
+				ps.setString(7, address);
+				ps.setInt(8, uid);
+			
 			return ps.executeUpdate() > 0;
-		} catch (SQLException e) {
+			} catch (SQLException e) {
+			// 유니크 제약 위반 등 감지 시 메시지 포함해서 던짐
+			if (e.getMessage() != null && e.getMessage().contains("Duplicate")) {
+			throw new RuntimeException("중복된 데이터 (" + e.getMessage() + ")");
+			}
 			throw new RuntimeException(e);
-		}
+			}
 	}
 
 	// ===== 비밀번호 변경 / 재설정 =====

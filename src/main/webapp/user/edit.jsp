@@ -64,7 +64,7 @@
 
 
 <!-- 실제 서버로 보내는 값 -->
-<input type="hidden" id="emailHidden" name="email" value="${user.email}">
+<input type="hidden" id="emailHidden" name="email" value="">
 
 
 
