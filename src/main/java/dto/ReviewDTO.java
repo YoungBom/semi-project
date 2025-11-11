@@ -21,7 +21,6 @@ public class ReviewDTO {
     
     public ReviewDTO() {}
     
-	public ReviewDTO() {}
 
 
 
