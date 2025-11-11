@@ -424,9 +424,6 @@ select.input {
 	max-width: 880px;
 	margin: 40px auto 80px;
 	padding: 0 16px;
-	background: radial-gradient(1200px 300px at 50% -150px, rgba(255, 122, 34, 0.06),
-		transparent 50%),
-		linear-gradient(180deg, #fff 0%, #fff 55%, var(--brand-cream) 100%);
 }
 
 /* 제목 */

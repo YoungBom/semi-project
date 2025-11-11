@@ -17,7 +17,9 @@ public class UserDTO {
 	private String nickname;
 	private String address;
 	private String role;
+	private String profileImage;
 
+	
 	public Integer getId() {
 		return id;
 	}
@@ -112,6 +114,14 @@ public class UserDTO {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+	
+	public String getProfileImage() {
+	    return profileImage;
+	}
+	
+	public void setProfileImage(String profileImage) {
+	    this.profileImage = profileImage;
 	}
 
 	// helper for DATE <-> LocalDate conversion if needed

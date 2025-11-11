@@ -2,43 +2,44 @@ package controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import jakarta.servlet.http.*;
 import java.io.*;
-/**
- * Servlet implementation class ImageServlet
- */
-@WebServlet("/image/*")
+
+@WebServlet({"/image/*", "/profile/*"})
 public class ImageServlet extends HttpServlet {
-	 	private static final String UPLOAD_DIR = "d:\\upload";
+    private static final String UPLOAD_DIR = "d:\\upload";
+    private static final String PROFILE_DIR = "d:\\profile";
 
-	    @Override
-	    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-	            throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-	        String fileName = req.getPathInfo().substring(1); // "/abc.png" → "abc.png"
-	        File file = new File(UPLOAD_DIR, fileName);
+        String servletPath = req.getServletPath(); // /image or /profile
+        String fileName = req.getPathInfo().substring(1);
 
-	        if (!file.exists()) {
-	            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-	            return;
-	        }
+        File file;
+        if (servletPath.startsWith("/profile")) {
+            file = new File(PROFILE_DIR, fileName);
+        } else {
+            file = new File(UPLOAD_DIR, fileName);
+        }
 
-	        // MIME 타입 자동 설정
-	        String mime = getServletContext().getMimeType(file.getName());
-	        if (mime == null) mime = "application/octet-stream";
-	        resp.setContentType(mime);
+        if (!file.exists()) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
 
-	        // 파일 스트리밍
-	        try (FileInputStream fis = new FileInputStream(file);
-	             OutputStream os = resp.getOutputStream()) {
-	            byte[] buffer = new byte[8192];
-	            int bytesRead;
-	            while ((bytesRead = fis.read(buffer)) != -1) {
-	                os.write(buffer, 0, bytesRead);
-	            }
-	        }
-	    }
+        String mime = getServletContext().getMimeType(file.getName());
+        if (mime == null) mime = "application/octet-stream";
+        resp.setContentType(mime);
+
+        try (InputStream in = new FileInputStream(file);
+             OutputStream out = resp.getOutputStream()) {
+            byte[] buf = new byte[8192];
+            int len;
+            while ((len = in.read(buf)) != -1) {
+                out.write(buf, 0, len);
+            }
+        }
+    }
 }
