@@ -25,15 +25,15 @@
 		</c:if>
 
 		<section class="profile-card">
-            <div class="profile-row d-flex justify-content-between align-items-center">
-                <div>
-                    <span class="k me-2">아이디</span>
-                    <span class="v">${user.userId}</span>
-                </div>
+            <div class="profile-row position-relative">
+                <span class="k">아이디</span>
+                <span class="v">${user.userId}</span>
             
-                <!-- 🔻 오른쪽 끝에 정렬되는 탈퇴 버튼 -->
-                <button class="btn btn-outline-danger btn-sm px-3"
-                        data-bs-toggle="modal" data-bs-target="#deleteModal">
+                <!-- 🔻 버튼을 절대 위치로 배치 (오른쪽 정렬) -->
+                <button type="button"
+                        class="btn btn-outline-danger btn-sm px-3 position-absolute top-50 end-0 translate-middle-y me-3"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteModal">
                     탈퇴
                 </button>
             </div>
@@ -82,7 +82,35 @@
 			href="${pageContext.request.contextPath}/review/list">나의 리뷰</a>
 		</div>
 	</main>
-	
-		<%@ include file="/include/footer.jsp" %>
+	 
+  <!-- 회원탈퇴 모달 창 -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">회원 탈퇴</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <p>비밀번호를 입력하세요.</p>
+            <input type="password" id="deletePw" class="form-control" placeholder="비밀번호 입력">
+            <div id="deleteMsg" class="text-danger small mt-2"></div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            <button class="btn btn-danger" id="confirmDeleteBtn">확인</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 회원탈퇴 js 연결 -->
+    <script>
+		const contextPath = "${pageContext.request.contextPath}";
+	</script>
+    <script src="${pageContext.request.contextPath}/resources/js/mypage.js"></script>
+    
+    
+	<%@ include file="/include/footer.jsp" %>
 </body>
 </html>

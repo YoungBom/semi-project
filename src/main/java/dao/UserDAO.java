@@ -334,6 +334,45 @@ public class UserDAO {
 
 	    return exists;
 	}
+	
+	
+	// 유저 삭제 로직
+	
+	public boolean checkPassword(String userId, String inputPw) {
+	    String sql = "SELECT pw_hash FROM user WHERE user_id = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, userId);
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            String dbPw = rs.getString("pw_hash");
+	            return PasswordUtil.verify(inputPw, dbPw);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
+	public boolean deleteUser(String userId) {
+	    String sql = "DELETE FROM user WHERE user_id = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, userId);
+	        int result = pstmt.executeUpdate();
+	        return result > 0;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+	
+	
+	
+	
+	
+	
+	
 }
 
 

@@ -3,3 +3,31 @@
 .lh-1 {
     line-height: 2 !important;
 }
+
+.profile-row {
+  position: relative;
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-row .k {
+  display: inline-block;
+  width: 100px;
+  color: #666;
+}
+
+.profile-row .v {
+  font-weight: 600;
+  color: #333;
+}
+
+.profile-row button.btn-outline-danger {
+  font-size: 0.85rem;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
+.profile-row button.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: #fff;
+}
+
