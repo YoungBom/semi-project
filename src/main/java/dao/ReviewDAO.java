@@ -177,7 +177,8 @@ public class ReviewDAO {
 	                   + "JOIN user u ON r.user_id = u.id "
 	                   + "LEFT JOIN review_image ri ON r.id = ri.review_id "
 	                   + "WHERE r.user_id = ? "
-	                   + "GROUP BY r.id";
+	                   + "GROUP BY r.id "
+	                   + "ORDER BY r.updated_at";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, userId);
 			rs = pstmt.executeQuery();
