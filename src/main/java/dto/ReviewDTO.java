@@ -13,12 +13,17 @@ public class ReviewDTO {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private String imagePath;
+    private String userProfileImg;
     private List<String> imageList;
     private String brand;
     private String burgerName;
     private String userName;
     
     public ReviewDTO() {}
+    
+	public ReviewDTO() {}
+
+
 
 	public int getId() { return id; }
 	public void setId(int id) { this.id = id; }
@@ -55,6 +60,10 @@ public class ReviewDTO {
     
     public String getNickname() { return nickname; }
     public void setNickname(String nickname) { this.nickname = nickname; }
+    
+    public String getUserProfileImg() { return userProfileImg; }
+    public void setUserProfileImg(String userProfileImg) { this.userProfileImg = userProfileImg; }
+
     
     public List<String> getImageList() { return imageList; }
     public void setImageList(List<String> imageList) { this.imageList = imageList; }
