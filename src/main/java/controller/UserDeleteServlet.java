@@ -27,8 +27,6 @@ public class UserDeleteServlet extends HttpServlet {
 
         // ✅ 세션에서 로그인 아이디 가져오기
         String userId = (String) session.getAttribute(SessionKeys.LOGIN_USERID);
-        System.out.println("🟢 탈퇴요청 세션 userId=" + userId);
-
         if (userId == null || userId.isEmpty()) {
             resp.getWriter().write("NO_USER");
             return;
