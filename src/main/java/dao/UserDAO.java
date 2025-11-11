@@ -6,6 +6,7 @@ import util.PasswordUtil;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ public class UserDAO {
 		u.setUserPw(rs.getString("user_pw")); // legacy(Nullable)
 		u.setEmail(rs.getString("email"));
 		u.setPhone(rs.getString("phone"));
+		u.setProfileImage(rs.getString("profile_image"));
 
 		String b = rs.getString("birth"); // DB: VARCHAR(yyyy-MM-dd)
 		if (b != null && !b.isBlank()) {
@@ -135,7 +137,6 @@ public class UserDAO {
 			ps.setString(9, in.getNickname());
 			ps.setString(10, in.getAddress());
 			ps.setString(11, in.getRole() != null ? in.getRole() : "USER");
-
 			ps.executeUpdate();
 			try (ResultSet keys = ps.getGeneratedKeys()) {
 				if (keys.next()) {
@@ -343,7 +344,6 @@ public class UserDAO {
 	
 	
 	// 유저 삭제 로직
-	
 	public boolean deleteUserById(String userId) {
 	    String sql = "DELETE FROM `user` WHERE user_id = ?";
 	    try (Connection conn = DBUtil.getConnection();
@@ -358,10 +358,45 @@ public class UserDAO {
 	}
 
 	
-	
-	
-	
-	
+	public int updateProfileImg(String userId, String fileName) {
+	    String sql = "UPDATE user SET profile_image = ? WHERE user_id = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setString(1, fileName);
+	        ps.setString(2, userId);
+	        return ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return 0;
+	    }
+	}
+
+	public UserDTO findByUserId(String userId) {
+	    String sql = "SELECT * FROM user WHERE user_id = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setString(1, userId);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                UserDTO u = new UserDTO();
+	                u.setId(rs.getInt("id"));
+	                u.setUserId(rs.getString("user_id"));
+	                u.setEmail(rs.getString("email"));
+	                u.setName(rs.getString("name"));
+	                u.setNickname(rs.getString("nickname"));
+	                u.setPhone(rs.getString("phone"));
+	                u.setProfileImage(rs.getString("profile_image"));
+	                return u;
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
+
+		
+
 	
 	
 }

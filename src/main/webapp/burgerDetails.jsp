@@ -142,8 +142,7 @@
                 <form action="${pageContext.request.contextPath}/review/add?"
 		              method="post"
 		              enctype="multipart/form-data"
-		              class="comment-form"
-		              name="reviewForm">
+		              class="comment-form">
 			          <input type="hidden" name="burgerId" value="${burger.id}">
 			
 			          <div class="mb-3">
@@ -163,12 +162,12 @@
 			          
 					  <div class="mb-3 text-end mt-1">
 					  <input type="hidden" name="imageCheck" id="imageCheck" value="false">
+					  <input type="text" id="oldImageName" class="form-control mt-2" readonly style="display:none;">
 					  <button type="button"
 					    class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-1"
 					    id="oldImageButtonContainer"
-					    data-bs-toggle="button"
 					    style="display:none;"
-					    onclick="checkUploadNewImage()">
+					    onclick="checkImg()">
 					    기존 이미지 등록
 					  </button>
 					  </div>
@@ -197,9 +196,23 @@
                 <!-- 프로필 영역 -->
                 <div class="d-flex align-items-center mb-3 position-relative">
                   <div class="me-3">
-                    <i class="bi bi-person-circle profileIcon" style="font-size: 30px;"></i>
+                  
+                    <c:choose>
+                      <c:when test="${record.userProfileImg != null and fn:trim(record.userProfileImg) != ''}">
+                        <img src="${pageContext.request.contextPath}/profile/${record.userProfileImg}"
+                             alt="${record.nickname}의 프로필"
+                             class="rounded-circle"
+                             style="width:40px; height:40px; object-fit:cover;">
+                      </c:when>
+                      <c:otherwise>
+                        <img src="${pageContext.request.contextPath}/img/default_profile.png"
+                             alt="기본 프로필"
+                             class="rounded-circle"
+                             style="width:40px; height:40px; object-fit:cover;">
+                      </c:otherwise>
+                    </c:choose>
+                    
                   </div>
-            
                   <div>
                     <strong class="d-block">${record.nickname}</strong>
             
@@ -227,7 +240,7 @@
                       <!-- 수정 버튼 -->
                       <a href="#"
                          class="btn btn-outline-success btn-sm position-absolute top-0 end-0 my-1 me-0"
-                         onclick="openUpdateModal(event, ${record.id}, '${fn:escapeXml(record.content)}', ${record.rating}, '${burger.id}')">
+                         onclick="openUpdateModal(event, ${record.id}, '${fn:escapeXml(record.content)}', ${record.rating}, '${burger.id}', '${record.imageList}')">
                          <i class="bi bi-pencil"></i> 수정
                       </a> 
                 
@@ -264,7 +277,6 @@
 <!-- ✅ 푸터 -->
 <%@ include file="/include/footer.jsp" %>
 
-<script src="${pageContext.request.contextPath}/resources/js/details.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/review.js"></script>
 
 

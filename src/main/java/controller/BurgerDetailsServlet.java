@@ -53,7 +53,7 @@ public class BurgerDetailsServlet extends HttpServlet {
         ReviewDAO reviewDAO = new ReviewDAO();
         List<ReviewDTO> reviewList = reviewDAO.getReview(id);
         req.setAttribute("reviewList", reviewList);
-        
+
         req.getRequestDispatcher("/burgerDetails.jsp?id="+id).forward(req, resp);
     }
 }
