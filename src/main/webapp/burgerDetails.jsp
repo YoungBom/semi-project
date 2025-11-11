@@ -197,9 +197,23 @@
                 <!-- 프로필 영역 -->
                 <div class="d-flex align-items-center mb-3 position-relative">
                   <div class="me-3">
-                    <i class="bi bi-person-circle profileIcon" style="font-size: 30px;"></i>
+                  
+                    <c:choose>
+                      <c:when test="${record.userProfileImg != null and fn:trim(record.userProfileImg) != ''}">
+                        <img src="${pageContext.request.contextPath}/profile/${record.userProfileImg}"
+                             alt="${record.nickname}의 프로필"
+                             class="rounded-circle"
+                             style="width:40px; height:40px; object-fit:cover;">
+                      </c:when>
+                      <c:otherwise>
+                        <img src="${pageContext.request.contextPath}/img/default_profile.png"
+                             alt="기본 프로필"
+                             class="rounded-circle"
+                             style="width:40px; height:40px; object-fit:cover;">
+                      </c:otherwise>
+                    </c:choose>
+                    
                   </div>
-            
                   <div>
                     <strong class="d-block">${record.nickname}</strong>
             
