@@ -8,6 +8,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class UserDAO {
@@ -394,8 +396,34 @@ public class UserDAO {
 	    }
 	    return null;
 	}
-
+	
+	public List<UserDTO> getAllUserList () {
+		List<UserDTO> userList = new ArrayList<UserDTO>();
+		String sql = "SELECT * FROM user WHERE role = 'USER'";
 		
+		try(Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				UserDTO user = new UserDTO();
+				
+				user.setId(rs.getInt("id"));
+				user.setUserId(rs.getString("user_id"));
+				user.setName(rs.getString("name"));
+				user.setNickname(rs.getString("nickname"));
+				user.setEmail(rs.getString("email"));
+				user.setCreatedAt(rs.getTimestamp("created_at"));
+				user.setRole(rs.getString("role"));
+				
+				userList.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return userList;
+	}
 
 	
 	
