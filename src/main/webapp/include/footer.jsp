@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<link href="${pageContext.request.contextPath}/resources/css/footer.css" rel="stylesheet">
+
 <footer style="background:#fff3d6; color:#6b3500;" class="pt-4">
   <div class="container d-flex justify-content-between align-items-start flex-wrap">
 
