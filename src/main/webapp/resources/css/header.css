@@ -62,14 +62,7 @@ body {
 
 
 
-/* 로고 */
-.logo {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #ff6600;
-  text-decoration: none;
-  white-space: nowrap;
-}
+
 
 /* 메뉴 링크 */
 .nav-links {
