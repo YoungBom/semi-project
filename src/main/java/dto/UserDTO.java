@@ -1,5 +1,6 @@
 package dto;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -18,6 +19,7 @@ public class UserDTO {
 	private String address;
 	private String role;
 	private String profileImage;
+	private Timestamp createdAt;
 
 	
 	public Integer getId() {
@@ -122,6 +124,14 @@ public class UserDTO {
 	
 	public void setProfileImage(String profileImage) {
 	    this.profileImage = profileImage;
+	}
+	
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	// helper for DATE <-> LocalDate conversion if needed

@@ -24,7 +24,7 @@ public class ReviewListServlet extends HttpServlet {
 		int userId = (int) s.getAttribute("LOGIN_UID");
 		
 		ReviewDAO reviewDao = new ReviewDAO();
-		// 객체 리스트로 받아오
+		// 객체 리스트로 받아오기
 		List<ReviewDTO> reviewAllList = reviewDao.listUpReview(userId);
 
 		request.setAttribute("reviewAllList", reviewAllList);
