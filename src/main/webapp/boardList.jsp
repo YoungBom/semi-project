@@ -142,9 +142,6 @@
       background-color: #fff;
       table-layout: fixed;
     }
-    .board-page tr.notice-row td{
- 	  background-color: #fff8d9bd; /* 부드러운 크림톤 */
-	}
 
     .board-page thead th:nth-child(1) { width: 6%; }
     .board-page thead th:nth-child(2) { width: 42%; }
@@ -169,14 +166,18 @@
 	  word-break: keep-all;
 	  background-color: #FFFCF5; /* ← 상아색 톤 */
 	  text-overflow: ellipsis;
+	  white-space: nowrap;    /* ✅ 추가 */
+	  overflow: hidden;       /* ✅ 추가 */
+	  text-overflow: ellipsis;
+	}
+	
+    .board-page tr.notice-row td{
+ 	  background-color: #fff8d9bd; /* 부드러운 크림톤 */
 	}
 	
 	.board-page td.text-start {
 	  text-align: left;
 	  padding-left: 14px;
-	  white-space: nowrap;
-	  overflow: hidden;
-	  text-overflow: ellipsis;
 	}
 	
 	.board-page tbody tr:hover {
