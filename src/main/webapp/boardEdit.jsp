@@ -128,8 +128,8 @@
             <c:if test="${sessionScope.LOGIN_ROLE eq 'ADMIN'}">
               <option value="공지사항" ${board.category == '공지사항' ? 'selected' : ''}>공지사항</option>
             </c:if>
-            <option value="자유" ${board.category == '자유' ? 'selected' : ''}>자유</option>
-            <option value="버거킹" ${board.category == '버거킹' ? 'selected' : ''}>버거킹</option>
+            <option value="이벤트" ${board.category == '이벤트' ? 'selected' : ''}>이벤트</option>
+            <option value="업데이트" ${board.category == '업데이트' ? 'selected' : ''}>업데이트</option>
             <option value="맥도날드" ${board.category == '맥도날드' ? 'selected' : ''}>맥도날드</option>
             <option value="롯데리아" ${board.category == '롯데리아' ? 'selected' : ''}>롯데리아</option>
             <option value="수제버거" ${board.category == '수제버거' ? 'selected' : ''}>수제버거</option>
