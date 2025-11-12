@@ -288,7 +288,7 @@
           </c:if>
         </tbody>
       </table>
-      <div class="text-center mt-3">
+      <div class="text-center mt-4">
 		<c:forEach var="i" begin="1" end="${totalPage}">
 	      <a href="${pageContext.request.contextPath}/board/list?category=${selectedCategory}&type=${type}&keyword=${keyword}&page=${i}"
 	        class="mx-1 ${i == page ? 'fw-bold text-success' : 'text-secondary'}">
