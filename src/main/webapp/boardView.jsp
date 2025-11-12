@@ -122,6 +122,7 @@
       <h2>${board.title}</h2>
 
       <div class="meta-info">
+        <div>No. ${board.boardId}</div>
         <div>작성자: ${board.writerNickname}</div>
         <div>카테고리: ${board.category}</div>
         <div>작성일: ${board.formattedDateTime}</div>
