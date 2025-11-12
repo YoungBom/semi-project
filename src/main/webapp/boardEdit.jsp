@@ -18,7 +18,6 @@
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-ko-KR.min.js"></script>
 
   <!-- ✅ 공통 스타일 -->
-  <link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/resources/css/burgerList.css" rel="stylesheet">
   <style>
     .note-editor.note-frame {

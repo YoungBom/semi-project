@@ -8,7 +8,7 @@
   boolean loggedIn = (uidObj != null);
 %>
 
-<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/css/header.css" rel="stylesheet">
 
 <div id="site-header">
 <nav class="navbar navbar-expand-lg shadow-sm py-3" style="background:#fff8e6;">
@@ -77,29 +77,6 @@
 		    </form>
 		<% } %>
       </div>
-      
-      
-      
-      
-<%--       <div class="d-flex align-items-center gap-2">
-        <% if (!loggedIn) { %>
-         
-          <a href="<%=ctx%>/user/login.jsp" class="btn me-1 rounded-3" style="background:#4caf50; color:white;">로그인</a>
-          <a href="<%=ctx%>/user/register.jsp" class="btn me-1 rounded-3 btn-primary">회원가입</a>
-          
-          <a href="<%=ctx%>/burger/list" class="btn rounded-3" style="background:#ff8d00; color:white;">버거 리스트</a>
-        <% } else { %>
-          <span class="me-2 user-greeting text-nowrap"
-          	 	title="<%= (userNickName == null ? "회원" : userNickName) %>님"
-          >
-           <%=(userNickName == null ? "회원" : userNickName) %>님</span>
-          <a href="<%=ctx%>/user/mypage" class="btn me-1 rounded-3" style="background:#ff8d00; color:white;">마이페이지</a>
-          <form method="post" action="<%=ctx%>/logout" class="d-inline m-0 p-0">
-            <button type="submit" class="btn me-1 rounded-3" style="background:#4caf50; color:white;">로그아웃</button>
-          </form>
-        <% } %>
-      </div> --%>
-
     </div>
   </div>
 </nav>

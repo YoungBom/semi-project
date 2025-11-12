@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+/* 풋터 */
+.footer {
+   background-color: #333;
+   color: #bbb;
+   text-align: center;
+   padding: 20px;
+   margin-top: 50px;
+   font-size: 0.9rem;
+  font-family: 'Arial', sans-serif;
+}
+
+
+.footer-logo h2 {
+  color: #ffcc00;
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+
+.footer-logo p {
+  color: #ccc;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.footer-contact h3,
+.footer-social h3 {
+  color: #ffcc00;
+  margin-bottom: 15px;
+  font-size: 18px;
+  border-bottom: 1px solid #555;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+/* 연락처 가운데 정렬 */
+.footer-contact p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
