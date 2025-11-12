@@ -61,14 +61,14 @@
                       <option value="user" >user</option>
                       <option value="admin" >admin</option>
                     </select>
-                    <button type="button" class="btn btn-outline-success btn-sm roleController" onclick="changeUserRole(${user.id})" disabled>
-                      <i class="bi bi-check-circle"></i>
-                    </button>
+                    <a href="#" id="roleController-${user.id}" class="btn btn-outline-success btn-sm disabled" aria-disabled="true">
+   					<i class="bi bi-check-circle"></i>
+					</a>
                   </div>
                 </td>
                 <td>
-                  <button class="btn btn-outline-primary btn-sm roleController" onclick="changeUser(${user.id})"><i class="bi bi-pencil">수정</i></button>
-                  <button class="btn btn-outline-danger btn-sm"><i class="bi bi-pencil">삭제</i></button>
+                  <a class="btn btn-outline-primary btn-sm" onclick="changeUser(${user.id})"><i class="bi bi-pencil">수정</i></a>
+                  <a href="#" class="btn btn-outline-danger btn-sm"><i class="bi bi-pencil">삭제</i></a>
                 </td>
               </tr>
             </c:forEach>
