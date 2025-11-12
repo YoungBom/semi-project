@@ -1,6 +1,4 @@
 
-
-
 /* 메인 배너 */
 .hero-slide {
   height: 500px;
@@ -171,6 +169,95 @@
 }
 
 
+
+/* ======================================= */
+/* ✅ 반응형 카드 안정화 버전 */
+/* ======================================= */
+
+/* 1200px 이상 (기본 4열) → 기존 유지 */
+
+/* 992~1199px (3열) */
+@media (max-width: 1199px) {
+  .hero-slide {
+    height: 420px;
+  }
+  .burger-card img {
+    height: 190px;
+  }
+  .brand-flag img {
+    height: 42px;
+  }
+}
+
+/* 768~991px (2열) */
+@media (max-width: 991px) {
+  .hero-slide {
+    height: 360px;
+  }
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+  .hero-content p {
+    font-size: 1.1rem;
+  }
+
+  .burger-card img {
+    height: 180px;
+  }
+
+  .card-body {
+    padding: 12px 14px;
+  }
+
+  .brand-flag {
+    top: -20px;
+    left: -8px;
+  }
+  .brand-flag img {
+    height: 38px;
+  }
+
+  .new-badge {
+    top: 8px;
+    right: 8px;
+    font-size: 0.7rem;
+  }
+}
+
+/* 576~767px (1열) */
+@media (max-width: 767px) {
+  .hero-slide {
+    height: 280px;
+  }
+  .hero-content h1 {
+    font-size: 1.6rem;
+  }
+  .hero-content p {
+    font-size: 0.95rem;
+  }
+  .burger-card img {
+    height: 160px;
+  }
+  .brand-flag img {
+    height: 34px;
+  }
+}
+
+/* 575px 이하 (모바일 최적화) */
+@media (max-width: 575px) {
+  .hero-slide {
+    height: 240px;
+  }
+  .hero-content h1 {
+    font-size: 1.3rem;
+  }
+  .hero-content p {
+    font-size: 0.85rem;
+  }
+  .burger-card img {
+    height: 150px;
+  }
+}
 
 
 
