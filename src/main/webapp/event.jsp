@@ -23,10 +23,10 @@
   <main class="container text-center mt-4">
     <!-- 게임 제목 및 설명 -->
     <h2 class="fw-bold">🍔 버거 피하기</h2>
-    <p class="text-muted">방향키(또는 WASD)로 이동하세요! 사방에서 날아오는 버거를 피해 살아남으세요.</p>
+    <p class="text-muted">방향키(또는 WASD)로 이동하세요! 사방에서 날아오는 버거를 피해 살아남으세요.(선착순 1인 - 2분 달성시 싸이버거 세트)</p>
 
     <!-- 🎮 게임 캔버스 (게임 실행 영역) -->
-    <canvas id="gameCanvas" width="800" height="500"></canvas>
+    <canvas id="gameCanvas" width="800" height="720"></canvas>
 
     <!-- 📊 HUD: 게임 시간 / 점수 표시 -->
     <div class="hud">
