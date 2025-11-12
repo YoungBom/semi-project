@@ -19,11 +19,15 @@ public class BoardListServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String category = req.getParameter("category");
+		String type = req.getParameter("type");
+		String keyword = req.getParameter("keyword");
 		
 		BoardDAO dao = new BoardDAO();
 		List<BoardDTO> boardList;
 		
-		if (category == null || category.equals("전체")) {
+		if (keyword != null && !keyword.trim().isEmpty()) {
+			boardList = dao.searchBoard(type, keyword, category);
+		} else if (category == null || category.equals("전체")) {
 		    boardList = dao.getBoardList();
 		} else {
 		    boardList = dao.getBoardListByCategory(category);
@@ -31,6 +35,9 @@ public class BoardListServlet extends HttpServlet {
 		
 		req.setAttribute("boardList", boardList);
 		req.setAttribute("selectedCategory", category == null ? "전체" : category);
+		req.setAttribute("type", type);
+		req.setAttribute("keyword", keyword);
+		
 		req.getRequestDispatcher("/boardList.jsp").forward(req, resp);
 		
 	}
