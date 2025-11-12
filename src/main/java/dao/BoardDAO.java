@@ -30,39 +30,77 @@ public class BoardDAO {
 		}
 	}
 	
-	public List<BoardDTO> getBoardList() {
-		List<BoardDTO> list = new ArrayList<>();
-		String sql = """
-			    SELECT board_id, title, writer_id, category, created_at, updated_at, view_count, writer_nickname
-			    FROM board
-			    ORDER BY 
-			        CASE 
-			            WHEN category = '공지사항' THEN 0 
-			            ELSE 1 
-			        END,
-			        board_id DESC
-			""";
-		
-		try (Connection conn = DBUtil.getConnection();
-			 PreparedStatement pstmt = conn.prepareStatement(sql);
-			 ResultSet rs = pstmt.executeQuery()) {
-			
-			while (rs.next()) {
-				BoardDTO board = new BoardDTO();
-				board.setBoardId(rs.getInt("board_id"));
-				board.setTitle(rs.getString("title"));
-				board.setWriterId(rs.getString("writer_id"));
-				board.setCategory(rs.getString("category"));
-				board.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-				board.setViewCount(rs.getInt("view_count"));
-				board.setWriterNickname(rs.getString("writer_nickname"));
-				list.add(board);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return list;
+	public List<BoardDTO> getBoardList(String category, String type, String keyword, int page, int limit) {
+	    List<BoardDTO> list = new ArrayList<>();
+
+	    StringBuilder sql = new StringBuilder("""
+	        SELECT board_id, title, writer_id, category, created_at, view_count, writer_nickname
+	        FROM board
+	        WHERE 1=1
+	    """);
+
+	    if (category != null && !category.equals("전체")) {
+	        sql.append(" AND category = ? ");
+	    }
+
+	    if (keyword != null && !keyword.isEmpty()) {
+	        switch (type) {
+	            case "title" -> sql.append(" AND title LIKE ? ");
+	            case "content" -> sql.append(" AND content LIKE ? ");
+	            case "writer" -> sql.append(" AND writer_nickname LIKE ? ");
+	            default -> sql.append(" AND (title LIKE ? OR content LIKE ? OR writer_nickname LIKE ?) ");
+	        }
+	    }
+
+	    sql.append("""
+	        ORDER BY CASE WHEN category = '공지사항' THEN 0 ELSE 1 END, board_id DESC
+	        LIMIT ?, ?
+	    """);
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+
+	        int idx = 1;
+
+	        if (category != null && !category.equals("전체")) {
+	            pstmt.setString(idx++, category);
+	        }
+
+	        if (keyword != null && !keyword.isEmpty()) {
+	            String kw = "%" + keyword + "%";
+	            if (type == null || (!type.equals("title") && !type.equals("content") && !type.equals("writer"))) {
+	                pstmt.setString(idx++, kw);
+	                pstmt.setString(idx++, kw);
+	                pstmt.setString(idx++, kw);
+	            } else {
+	                pstmt.setString(idx++, kw);
+	            }
+	        }
+
+	        int startRow = (page - 1) * limit;
+	        pstmt.setInt(idx++, startRow);
+	        pstmt.setInt(idx, limit);
+
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            while (rs.next()) {
+	                BoardDTO board = new BoardDTO();
+	                board.setBoardId(rs.getInt("board_id"));
+	                board.setTitle(rs.getString("title"));
+	                board.setWriterId(rs.getString("writer_id"));
+	                board.setCategory(rs.getString("category"));
+	                board.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+	                board.setViewCount(rs.getInt("view_count"));
+	                board.setWriterNickname(rs.getString("writer_nickname"));
+	                list.add(board);
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
 	}
+
 	
 	public BoardDTO getBoardById(int boardId) {
 		String sql = "SELECT board_id, title, content, writer_id, category, created_at, view_count, writer_nickname FROM board WHERE board_id = ?";
@@ -240,5 +278,48 @@ public class BoardDAO {
 		return list;
 	}
 	
-	
+	public int getTotalCount(String category, String type, String keyword) {
+	    StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM board WHERE 1=1 ");
+
+	    if (category != null && !category.equals("전체")) {
+	        sql.append(" AND category = ? ");
+	    }
+
+	    if (keyword != null && !keyword.isEmpty()) {
+	        switch (type) {
+	            case "title" -> sql.append(" AND title LIKE ? ");
+	            case "content" -> sql.append(" AND content LIKE ? ");
+	            case "writer" -> sql.append(" AND writer_nickname LIKE ? ");
+	            default -> sql.append(" AND (title LIKE ? OR content LIKE ? OR writer_nickname LIKE ?) ");
+	        }
+	    }
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+
+	        int idx = 1;
+	        if (category != null && !category.equals("전체")) pstmt.setString(idx++, category);
+
+	        if (keyword != null && !keyword.isEmpty()) {
+	            String kw = "%" + keyword + "%";
+	            if (type == null || (!type.equals("title") && !type.equals("content") && !type.equals("writer"))) {
+	                pstmt.setString(idx++, kw);
+	                pstmt.setString(idx++, kw);
+	                pstmt.setString(idx++, kw);
+	            } else {
+	                pstmt.setString(idx++, kw);
+	            }
+	        }
+
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) return rs.getInt(1);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return 0;
+	}
+
 }

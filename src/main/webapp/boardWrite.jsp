@@ -126,8 +126,8 @@
             <c:if test="${sessionScope.LOGIN_ROLE eq 'ADMIN'}">
               <option value="공지사항">공지사항</option>
             </c:if>
-            <option value="자유">자유</option>
-            <option value="버거킹">버거킹</option>
+            <option value="이벤트">이벤트</option>
+            <option value="업데이트">업데이트</option>
             <option value="맥도날드">맥도날드</option>
             <option value="롯데리아">롯데리아</option>
             <option value="수제버거">수제버거</option>

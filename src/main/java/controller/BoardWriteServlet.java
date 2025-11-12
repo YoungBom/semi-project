@@ -60,7 +60,7 @@ public class BoardWriteServlet extends HttpServlet{
 		    resp.setContentType("text/html; charset=UTF-8");
 		    out.println("<script>");
 		    out.println("alert('게시글 등록 성공');");
-		    out.println("location.href='" + req.getContextPath() + "/main';");
+		    out.println("location.href='" + req.getContextPath() + "/board/list';");
 		    out.println("</script>");
 		    out.close();
 		    return;

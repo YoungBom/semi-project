@@ -197,16 +197,26 @@
       }
       .board-page table { font-size: 13px; }
     }
+    .board-banner img {
+	  width: 100%;
+	  max-height: 200px;
+	  object-fit: cover;
+	  object-position: center 60%;
+	  border-radius: 10px;
+	  filter: brightness(0.97) saturate(0.85) contrast(0.8);
+	  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+	}
   </style>
 </head>
 
 <body>
   <%@ include file="/include/header.jsp" %>
-
+  <div class="board-banner mb-4">
+    <img src="${pageContext.request.contextPath}/img/board_banner.png" alt="공지 배너">
+  </div>
   <div class="board-page">
     <div class="board-container">
-      <h2>📋 게시글 목록</h2>
-
+      <h2>이 자리에 뭘 적을까요</h2>
       <div class="text-end mb-3">
         <c:choose>
           <c:when test="${not empty sessionScope.LOGIN_UID}">
@@ -223,7 +233,7 @@
 
       <div class="filter-bar">
         <div class="category-list">
-          <c:set var="categories" value="${fn:split('전체,공지사항,자유,맥도날드,롯데리아,수제버거', ',')}"/>
+          <c:set var="categories" value="${fn:split('전체,공지사항,이벤트,업데이트,롯데리아,수제버거', ',')}"/>
           <c:forEach var="cat" items="${categories}">
             <c:choose>
               <c:when test="${cat eq selectedCategory}">
@@ -235,7 +245,6 @@
             </c:choose>
           </c:forEach>
         </div>
-
         <form method="get" action="${pageContext.request.contextPath}/board/list" class="search-box">
           <input type="hidden" name="category" value="${selectedCategory}">
           <input type="text" name="keyword" value="${keyword}" placeholder="검색어 입력...">
@@ -257,7 +266,7 @@
         <tbody>
           <c:forEach var="b" items="${boardList}">
             <tr class="${b.category eq '공지사항' ? 'notice-row fw-semibold' : ''}">
-              <td>${b.boardId}</td>
+              <td>${b.category eq '공지사항' ? '📢' : b.boardId}</td>
               <td class="text-start">
                 <a href="${pageContext.request.contextPath}/board/view?id=${b.boardId}"
                    class="text-decoration-none text-dark">${b.title}</a>
@@ -268,7 +277,6 @@
               <td>${b.viewCount}</td>
             </tr>
           </c:forEach>
-
           <c:if test="${empty boardList}">
             <tr>
               <td colspan="6" class="text-center text-muted py-4">
@@ -278,8 +286,17 @@
           </c:if>
         </tbody>
       </table>
+      <div class="text-center mt-3">
+		<c:forEach var="i" begin="1" end="${totalPage}">
+	      <a href="${pageContext.request.contextPath}/board/list?category=${selectedCategory}&type=${type}&keyword=${keyword}&page=${i}"
+	        class="mx-1 ${i == page ? 'fw-bold text-primary' : 'text-secondary'}">
+		    ${i}
+		  </a>
+		</c:forEach>
+      </div>
     </div>
   </div>
+
 
   <%@ include file="/include/footer.jsp" %>
 </body>
