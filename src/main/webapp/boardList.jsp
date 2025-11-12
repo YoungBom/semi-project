@@ -289,7 +289,7 @@
       <div class="text-center mt-3">
 		<c:forEach var="i" begin="1" end="${totalPage}">
 	      <a href="${pageContext.request.contextPath}/board/list?category=${selectedCategory}&type=${type}&keyword=${keyword}&page=${i}"
-	        class="mx-1 ${i == page ? 'fw-bold text-primary' : 'text-secondary'}">
+	        class="mx-1 ${i == page ? 'fw-bold text-success' : 'text-secondary'}">
 		    ${i}
 		  </a>
 		</c:forEach>
