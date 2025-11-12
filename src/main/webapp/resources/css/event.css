@@ -57,6 +57,12 @@
       width: 220px;
       animation: fadeIn 0.4s ease;
     }
+    
+    #highScoreText {
+	  color: #b35a00 !important; /* 진한 갈색 */
+	  font-weight: 600;
+	  margin-top: 8px;
+	}
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translate(-50%, -55%); }
