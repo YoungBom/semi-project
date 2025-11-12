@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+.user-page {
+  background-color: #f9fafb;
+  font-family: 'Poppins', sans-serif;
+  color: #444;
+  min-height: 100vh;
+}
+
+.user-page .page-header {
+  background: linear-gradient(135deg, #ff922b, #ffa94d);
+  color: #fff;
+  padding: 2.5rem 0;
+  text-align: center;
+  margin-top: 30px;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.user-container {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.table thead {
+  font-weight: 600;
+  background-color: #fff4e6;
+}
+
+.table tbody tr:hover {
+  background-color: #fff8e1;
+  transition: background-color 0.3s ease;
+}
+
+.btn-outline-primary,
+.btn-outline-danger {
+  border-radius: 10px;
+}
+
+.input-group .form-control {
+  border-radius: 8px 0 0 8px;
+}
+
+.input-group .btn {
+  border-radius: 0 8px 8px 0;
+}

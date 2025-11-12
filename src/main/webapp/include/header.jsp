@@ -55,7 +55,7 @@
 			  <!-- 1줄: 버거/회원 관리 -->
 			  <div class="d-flex align-items-center gap-1">
 			    <a href="<%=ctx%>/burger/list" class="btn btn-sm rounded-3" style="background:#2196f3; color:white;">버거 관리</a>
-			    <a href="<%=ctx%>/user/manage" class="btn btn-sm rounded-3" style="background:#9c27b0; color:white;">회원 관리</a>
+			    <a href="<%=ctx%>/user/management" class="btn btn-sm rounded-3" style="background:#9c27b0; color:white;">회원 관리</a>
 			  </div>
 			
 			  <!-- 2줄: 마이페이지/로그아웃 -->
