@@ -168,6 +168,7 @@
 	  padding: 8px 6px;
 	  word-break: keep-all;
 	  background-color: #FFFCF5; /* ← 상아색 톤 */
+	  text-overflow: ellipsis;
 	}
 	
 	.board-page td.text-start {
