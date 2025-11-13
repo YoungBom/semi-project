@@ -317,7 +317,7 @@
   <% } else if (isAdmin) { %>
     <!-- 🟣 관리자 -->
 		<span class="me-2 user-greeting text-nowrap">
-		  <span class="text-primary">관리자</span><%= (userNickName == null ? "" : userNickName) %>님
+		  <span class="text-primary">관리자</span><%= (userNickName == null ? "" : userNickName) %>
 		</span>
 
     <!-- 마이페이지 / 로그아웃 드롭다운 -->
@@ -351,13 +351,15 @@
   <% } else { %>
     <!-- 🔵 일반 사용자 -->
     <span class="me-2 user-greeting text-nowrap">
-      <%= (userNickName == null ? "회원" : userNickName) %>님
+      <%= (userNickName == null ? "회원" : userNickName) %>
     </span>
 
     <!-- 마이페이지 / 로그아웃 드롭다운 -->
     <div class="user-dropdown position-relative">
       <button type="button" class="btn dropdown-btn" id="userMenuBtn">
         <i class="bi bi-person-circle"></i>
+        <span class="menu-label">계정</span>
+        <span class="chevron">▾</span>
       </button>
       <div class="dropdown-menu-list" id="userMenu">
         <a href="<%=ctx%>/user/mypage">마이페이지</a>
