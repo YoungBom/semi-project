@@ -88,6 +88,7 @@
       <div class="profile-actions d-flex mt-4">
         <a class="btn primary text-center lh-1" href="${pageContext.request.contextPath}/user/edit">정보 수정</a>
         <a class="btn secondary text-center lh-1" href="${pageContext.request.contextPath}/logout">로그아웃</a>
+        <a class="btn-outline" href="${pageContext.request.contextPath}/user/security_setup">질의응답</a>
         <a class="btn btn-outline-warning text-center lh-1 ms-auto" href="${pageContext.request.contextPath}/review/list">나의 리뷰</a>
       </div>
     </div>
@@ -104,7 +105,7 @@
       </div>
       <div class="modal-body">
         <p>아이디를 입력하세요.</p>
-        <input type="password" id="deletePw" class="form-control" placeholder="아이디 입력">
+        <input type="text" id="deleteInputId" class="form-control" placeholder="아이디 입력">
         <div id="deleteMsg" class="text-danger small mt-2"></div>
       </div>
       <div class="modal-footer">
@@ -115,6 +116,8 @@
   </div>
 </div>
 
+<%@ include file="/include/footer.jsp" %>
+
 <!-- JS -->
 <script>
   const contextPath = "${pageContext.request.contextPath}";
@@ -122,6 +125,5 @@
 <script src="${pageContext.request.contextPath}/resources/js/mypage.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/profile.js"></script>
 
-<%@ include file="/include/footer.jsp" %>
 </body>
 </html>

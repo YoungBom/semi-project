@@ -168,7 +168,6 @@
 	  text-overflow: ellipsis;
 	  white-space: nowrap;    /* ✅ 추가 */
 	  overflow: hidden;       /* ✅ 추가 */
-	  text-overflow: ellipsis;
 	}
 	
     .board-page tr.notice-row td{

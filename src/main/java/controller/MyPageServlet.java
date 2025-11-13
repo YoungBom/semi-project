@@ -58,4 +58,5 @@ public class MyPageServlet extends HttpServlet {
 		req.setAttribute("user", opt.get());
 		req.getRequestDispatcher("/user/mypage.jsp").forward(req, resp);
 	}
+	
 }

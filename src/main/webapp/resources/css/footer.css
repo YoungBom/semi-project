@@ -1,29 +1,33 @@
 @charset "UTF-8";
 
-/* 풋터 */
+/* ==========================
+   Footer 기본 스타일
+   ========================== */
 .footer {
-   background-color: #333;
-   color: #bbb;
-   text-align: center;
-   padding: 20px;
-   margin-top: 50px;
-   font-size: 0.9rem;
+  background-color: #333;
+  color: #bbb;
   font-family: 'Arial', sans-serif;
+  font-size: 0.9rem;
+  margin-top: 50px;
 }
 
-
-.footer-logo h2 {
+.footer .row {
+  margin-left: 110px; /* 직접 px 단위 지정 */
+}
+/* 각 섹션 정렬 */
+.footer .footer-logo h2 {
   color: #ffcc00;
   font-size: 26px;
   margin-bottom: 12px;
 }
 
-.footer-logo p {
+.footer .footer-logo p {
   color: #ccc;
   font-size: 15px;
   line-height: 1.6;
 }
 
+/* Contact / Social 제목 */
 .footer-contact h3,
 .footer-social h3 {
   color: #ffcc00;
@@ -34,9 +38,32 @@
   padding-bottom: 4px;
 }
 
-/* 연락처 가운데 정렬 */
+/* 연락처 내용 */
 .footer-contact p {
   margin: 8px 0;
   font-size: 14px;
 }
 
+/* Follow us 내용 */
+.footer-social p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+/* 하단 copyright */
+.footer-bottom {
+  border-top: 1px solid #555;
+  margin-top: 20px;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .footer .row {
+    text-align: center;
+  }
+  .footer-contact h3,
+  .footer-social h3 {
+    display: block;
+    margin: 10px auto;
+  }
+}
