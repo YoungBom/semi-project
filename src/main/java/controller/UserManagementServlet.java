@@ -18,17 +18,24 @@ public class UserManagementServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		String keyword = request.getParameter("keyword");
 		UserDAO userDao = new UserDAO();
 		List<UserDTO> userList = new ArrayList<UserDTO>();
 		
-		userList = userDao.getAllUserList();
 		
-		if(userList != null) {
-			request.setAttribute("userList", userList);
-			request.getRequestDispatcher("/user/userManagement.jsp").forward(request, response);
+		if(keyword == null || keyword.trim().isEmpty()) {
+			userList = userDao.getAllUserList();
 		} else {
-			
+			keyword = keyword.trim();
+			userList = userDao.searchUser(keyword);
 		}
+		
+		
+		
+		request.setAttribute("userList", userList);
+		request.getRequestDispatcher("/user/userManagement.jsp").forward(request, response);
+		
 	}
 
 }
