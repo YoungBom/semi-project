@@ -27,13 +27,16 @@
 	  </div>
 	  
 	  <div class="container user-container mb-5">
-      <div class="d-flex justify-content-between align-items-center mb-3">
+    
+      <form action="${pageContext.request.contextPath}/user/management" method="get" class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="fw-bold">회원 목록</h5>
         <div class="input-group w-25">
-          <input type="text" class="form-control form-control-sm" placeholder="회원 검색...">
-          <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-search"></i></button>
+          <input type="text" name="keyword" class="form-control form-control-sm" placeholder="회원 검색...">
+          <button type="submit" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-search"></i>
+          </button>
         </div>
-      </div>
+      </form>
 	  
 	  <div class="table-responsive">
         <table class="table table-hover align-middle text-center shadow-sm">
@@ -48,6 +51,7 @@
               <th scope="col">관리</th> <!-- user의 경우 삭제가능하도록 -->
             </tr>
           </thead>
+          
           <tbody>
             <c:forEach var="user" items="${userList}">
               <tr>

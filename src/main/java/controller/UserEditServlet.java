@@ -54,7 +54,8 @@ public class UserEditServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
-
+        
+        String emailLocal    = Optional.ofNullable(req.getParameter("emailLocal")).orElse("").trim();
         String email    = Optional.ofNullable(req.getParameter("email")).orElse("").trim();
         String phone    = Optional.ofNullable(req.getParameter("phone")).orElse("").trim();
         String birthStr = req.getParameter("birth");
@@ -70,7 +71,14 @@ public class UserEditServlet extends HttpServlet {
             redisplay(req, resp, uid);
             return;
         }
-
+        // 1. 이메일 길이 검사
+	    if (emailLocal.length() > 20) {
+            req.setAttribute("error", "이메일 아이디 부분은 20자 이하만 가능합니다.");
+            redisplay(req, resp, uid);
+            return;
+        }
+        
+        
         // 2. 전화번호 형식 검사
         if (!phone.isEmpty() && !phone.matches("^01[0-9]{8,9}$")) {
             req.setAttribute("error", "휴대폰 번호 형식이 올바르지 않습니다. (01012345678)");

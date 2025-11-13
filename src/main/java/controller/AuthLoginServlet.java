@@ -19,7 +19,7 @@ public class AuthLoginServlet extends HttpServlet {
 		// 이미 로그인 상태면 메인으로 보내도 됨 (선택)
 		HttpSession s = req.getSession(false);
 		if (s != null && s.getAttribute(SessionKeys.LOGIN_UID) != null) {
-			resp.sendRedirect(req.getContextPath() + "/main.jsp");
+			resp.sendRedirect(req.getContextPath() + "/main");
 			return;
 		}
 		req.getRequestDispatcher("/user/login.jsp").forward(req, resp);
@@ -52,6 +52,6 @@ public class AuthLoginServlet extends HttpServlet {
 		s.setAttribute(SessionKeys.LOGIN_ROLE, u.getRole());
 
 		// ★ 리다이렉트 추가
-		resp.sendRedirect(req.getContextPath() + "/main.jsp");
+		resp.sendRedirect(req.getContextPath() + "/main");
 	}
 }
