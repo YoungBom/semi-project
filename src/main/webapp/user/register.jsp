@@ -18,7 +18,7 @@
 </head>
 <body data-check-id-url="${checkIdUrl}">
 <%@ include file="/include/header.jsp" %>
-	<main class="auth-wrap">
+	<main class="auth-wrap pt-5">
 		<h1 class="auth-title">
 			<span class="title-icon" aria-hidden="true">🍔</span> 회원가입
 		</h1>
