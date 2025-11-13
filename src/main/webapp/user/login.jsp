@@ -11,7 +11,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 	<link href="${pageContext.request.contextPath}/resources/css/user.css" rel="stylesheet">
-	<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
+	
 </head>
 <body>
 	<%@ include file="/include/header.jsp" %>
@@ -42,16 +42,16 @@
         <button type="submit" class="btn primary">로그인</button>
       </div>
 
-      <div class="subline">
-        <span class="muted">아이디가 없습니까?</span>
-        <a class="link" href="${pageContext.request.contextPath}/register">회원가입</a>
-      </div>
+      
+	  <div class="auth-links" style="text-align:center; margin-top:12px;">
+  		<a href="${pageContext.request.contextPath}/user/find_id.jsp">아이디 찾기</a>
+ 			 &nbsp;|&nbsp;
+  		<a href="${pageContext.request.contextPath}/user/find_password.jsp">비밀번호 찾기</a>
+	  </div>
 
       <hr class="divider"/>
 
-      <div class="assist">
-        <a class="link" href="${pageContext.request.contextPath}/id/lookup">아이디 찾기</a>
-      </div>
+      
     </form>
   </main>
   	<%@ include file="/include/footer.jsp" %>

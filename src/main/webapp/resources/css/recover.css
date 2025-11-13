@@ -1,0 +1,207 @@
+/* ==== Account Recovery (ID/PW/QA) scoped styles ==== */
+:root {
+	--brand: #FF7A22;
+	--ink: #222;
+	--muted: #6b7280;
+	--line: #eee;
+	--bg: #FEFAF0; /* 사이트 배경톤 */
+	--surface: #fff;
+	--radius: 14px;
+	--shadow: 0 10px 32px rgba(0, 0, 0, .06);
+}
+
+/* 헤더 아래 간격 고정 (header.jsp에 .navbar가 있다고 가정) */
+.navbar+.auth-wrap {
+	margin-top: 16px;
+}
+
+.auth-wrap {
+	/* 배경 “하얀띠” 제거: 그라디언트 → 단색 */
+	background: var(--bg);
+	min-height: calc(100vh - 80px); /* 화면 꽉 채우기 */
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	padding: 24px 16px 48px;
+}
+
+/* 로그인 카드와 동일한 폭 느낌 */
+.auth-card {
+	width: 100%;
+	max-width: 640px; /* ★ 로그인 카드 크기 수준으로 축소 */
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	padding: 24px;
+}
+
+/* 필요 시 더 좁게 쓰고 싶다면 .auth-narrow 추가(선택) */
+.auth-card.auth-narrow {
+	max-width: 560px;
+}
+
+.auth-card h1 {
+	margin: 0 0 14px;
+	font-size: 24px;
+	font-weight: 800;
+	letter-spacing: -.2px;
+	color: var(--ink);
+}
+
+.auth-card p {
+	color: var(--ink);
+	margin: 6px 0 0;
+}
+
+/* 기본은 1열 폼 (ID찾기/재설정 등) */
+.auth-form {
+	display: grid;
+	grid-template-columns: 1fr; /* ★ 1열로 고정 */
+	gap: 12px 16px;
+	margin-top: 12px;
+}
+
+/* 두 입력을 가로로 배치해야 하는 페이지는 .two-col 을 추가 */
+.auth-form.two-col {
+	grid-template-columns: 1fr 1fr;
+}
+
+.auth-form label {
+	display: grid;
+	gap: 6px;
+	font-size: 14px;
+	color: var(--muted);
+}
+
+.auth-form input[type="text"], .auth-form input[type="email"],
+	.auth-form input[type="password"], .auth-form input[type="tel"],
+	.auth-form select {
+	height: 42px;
+	padding: 0 12px;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	font-size: 15px;
+	background: #fff;
+}
+
+.auth-actions {
+	display: flex;
+	gap: 10px;
+	margin-top: 6px;
+	align-items: center;
+}
+
+.auth-btn {
+	appearance: none;
+	border: 0;
+	background: var(--brand);
+	color: #fff;
+	padding: 10px 16px;
+	border-radius: 12px;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.auth-link {
+	color: var(--brand);
+	text-decoration: underline;
+}
+
+.auth-error {
+	margin-top: 6px;
+	padding: 10px 12px;
+	background: #fff4f4;
+	border: 1px solid #ffd4d4;
+	color: #b71c1c;
+	border-radius: 10px;
+	font-size: 14px;
+}
+
+.auth-question {
+	margin-top: 10px;
+	padding: 12px 14px;
+	background: #f8f9fb;
+	border: 1px solid var(--line);
+	border-radius: 10px;
+	color: var(--ink);
+}
+
+.auth-result strong {
+	background: #fff5ec;
+	border: 1px dashed #ffc9a4;
+	padding: 3px 8px;
+	border-radius: 8px;
+}
+
+/* 모바일 */
+@media ( max-width :640px) {
+	.auth-card {
+		max-width: 100%;
+		padding: 20px;
+	}
+	.auth-form.two-col {
+		grid-template-columns: 1fr;
+	}
+	/* anchor도 버튼처럼 보이게 */
+	.auth-btn, .auth-btn:link, .auth-btn:visited {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		text-decoration: none;
+		height: 42px; /* 입력 높이와 맞춤 */
+	}
+
+	/* hover/focus 상태 */
+	.auth-btn:hover {
+		filter: brightness(0.98);
+	}
+	.auth-btn:active {
+		transform: translateY(1px);
+	}
+}
+
+/* 버튼 통일 옵션들 */
+.auth-btn, .auth-btn:link, .auth-btn:visited {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 42px;
+	padding: 0 16px;
+	border-radius: 12px;
+	text-decoration: none;
+	font-weight: 700;
+	background: var(--brand);
+	color: #fff;
+}
+
+.auth-btn:hover {
+	filter: brightness(.98);
+}
+
+.auth-btn:active {
+	transform: translateY(1px);
+}
+
+.auth-btn.secondary {
+	background: #e9ecef;
+	color: #333;
+}
+
+.auth-btn.secondary:hover {
+	background: #e3e7ea;
+}
+
+.auth-btn.ghost {
+	background: transparent;
+	color: var(--brand);
+	border: 1px solid #ffd4b6;
+}
+
+.auth-btn.ghost:hover {
+	background: #fff7f0;
+}
+
+.auth-actions .auth-btn {
+	min-width: 104px;
+} /* 보기 좋은 최소폭 */
