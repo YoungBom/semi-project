@@ -95,9 +95,26 @@ public class ReviewDAO {
 
 	            // ✅ 이미지 최대 3장까지만 저장
 	            String imagePath = rs.getString("image_path");
-	            if (imagePath != null && review.getImageList().size() < 3) {
-	                review.getImageList().add(imagePath);
+	            
+	            if(imagePath != null) {
+	            	
+	            	String lower = imagePath.toLowerCase();
+	            	
+	            	boolean allowed = 
+	            		lower.endsWith(".jpg") ||
+	            		lower.endsWith(".jpeg") ||
+	            		lower.endsWith(".png") ||
+	            		lower.endsWith(".gif");
+	            	
+	            	if ( allowed && review.getImageList().size() < 3) {
+	            		review.getImageList().add(imagePath);
+	            	}
 	            }
+	            
+	            
+	            
+	            
+	            
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
