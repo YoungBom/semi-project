@@ -379,34 +379,31 @@
 </div>	
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  const userBtn = document.getElementById("userMenuBtn");
-  const adminBtn = document.getElementById("adminMenuBtn");
-  const userMenu = document.getElementById("userMenu");
-  const adminMenu = document.getElementById("adminMenu");
+	  const userBtn = document.getElementById("userMenuBtn");
+	  const adminBtn = document.getElementById("adminMenuBtn");
+	  const userMenu = document.getElementById("userMenu");
+	  const adminMenu = document.getElementById("adminMenu");
 
-  // 공통 토글 함수
-  const toggleMenu = (btn, menu) => {
-    if (!btn || !menu) return;
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      menu.classList.toggle("show");
-      btn.classList.toggle("active");
-    });
-  };
+	  const toggleMenu = (btn, menu, otherBtn, otherMenu) => {
+	    btn?.addEventListener("click", (e) => {
+	      e.stopPropagation();
 
-  toggleMenu(userBtn, userMenu);
-  toggleMenu(adminBtn, adminMenu);
+	      otherMenu?.classList.remove("show");
+	      otherBtn?.classList.remove("active");
 
-  // 메뉴 외부 클릭 시 닫기
-  document.addEventListener("click", () => {
-    if (userMenu) {
-      userMenu.classList.remove("show");
-      userBtn?.classList.remove("active");
-    }
-    if (adminMenu) {
-      adminMenu.classList.remove("show");
-      adminBtn?.classList.remove("active");
-    }
-  });
-});
+	      menu?.classList.toggle("show");
+	      btn?.classList.toggle("active");
+	    });
+	  };
+
+	  toggleMenu(userBtn, userMenu, adminBtn, adminMenu);
+	  toggleMenu(adminBtn, adminMenu, userBtn, userMenu);
+
+	  document.addEventListener("click", () => {
+	    userMenu?.classList.remove("show");
+	    adminMenu?.classList.remove("show");
+	    userBtn?.classList.remove("active");
+	    adminBtn?.classList.remove("active");
+	  });
+	});
 </script>
