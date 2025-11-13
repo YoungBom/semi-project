@@ -488,7 +488,7 @@ public class UserDAO {
 	 * ${current.qtext_resolved} 등
 	 */
 	public Map<String, Object> getSecurityQA(int userId) {
-		String sql = "SELECT q.user_id, q.question_id, q.question_tx, sq.question_text " + "FROM security_qa q "
+		String sql = "SELECT q.user_id, q.question_id, q.question_tx, sq.question_text " + "FROM security_answer q "
 				+ "LEFT JOIN security_question sq ON q.question_id = sq.id " + "WHERE q.user_id = ?";
 
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -531,7 +531,7 @@ public class UserDAO {
 		String hash = PasswordUtil.hash(answerPlain.trim());
 		String trimmedQuestionTx = (questionTx == null || questionTx.isBlank()) ? null : questionTx.trim();
 
-		String sql = "INSERT INTO security_qa (user_id, question_id, question_tx, answer_hash) " + "VALUES (?,?,?,?) "
+		String sql = "INSERT INTO security_answer (user_id, question_id, question_tx, answer_hash) " + "VALUES (?,?,?,?) "
 				+ "ON DUPLICATE KEY UPDATE " + "question_id = VALUES(question_id), "
 				+ "question_tx = VALUES(question_tx), " + "answer_hash = VALUES(answer_hash)";
 
@@ -557,7 +557,7 @@ public class UserDAO {
 	 * 비밀번호/아이디 찾기 화면에서 질문 텍스트만 필요할 때 - FindIdServlet / FindPasswordServlet 에서 사용
 	 */
 	public String getSecurityQuestionText(int userId) {
-		String sql = "SELECT COALESCE(q.question_tx, sq.question_text) AS question_text " + "FROM security_qa q "
+		String sql = "SELECT COALESCE(q.question_tx, sq.question_text) AS question_text " + "FROM security_answer q "
 				+ "LEFT JOIN security_question sq ON q.question_id = sq.id " + "WHERE q.user_id = ?";
 
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -584,7 +584,7 @@ public class UserDAO {
 			return false;
 		}
 
-		String sql = "SELECT answer_hash FROM security_qa WHERE user_id = ?";
+		String sql = "SELECT answer_hash FROM security_answer WHERE user_id = ?";
 
 		try (Connection con = DBUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
