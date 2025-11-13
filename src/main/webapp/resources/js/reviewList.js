@@ -67,6 +67,19 @@ function checkImg() {
 
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+	const oldImageBtn = document.getElementById('oldImageButtonContainer');
+	const imageCheck = document.getElementById('imageCheck');
+	const form = document.querySelector('.comment-form');
+	reviewModal.addEventListener('hidden.bs.modal', () => {	
+		form.reset();
+		imageCheck.value = 'false';         // 초기화
+		oldImageBtn.style.display = 'none'; // 숨김
+		oldImageBtn.classList.remove('active');
+	});
+});	
+	
+
 // 이미지 클릭시 모달창으로 크게 보여주기
 function showImageModal(imageUrl) {
   const modalImg = document.getElementById('modalImage');

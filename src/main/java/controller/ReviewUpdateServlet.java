@@ -17,6 +17,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 @WebServlet("/review/update")
@@ -34,6 +35,8 @@ public class ReviewUpdateServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		// 기존의 정보 가져오기
+		HttpSession s = req.getSession(true);
+		int userId = (int) s.getAttribute("LOGIN_UID");
 		int burgerId = 0;
 		int reviewId = 0;
 		String imageCheck = "";
@@ -126,11 +129,13 @@ public class ReviewUpdateServlet extends HttpServlet {
 		    }
 		 } catch (Exception e) { e.printStackTrace(); }
 		
-		if(result > 0) {
-			List<ReviewDTO> reviewList = reviewDao.getReview(burgerId);
-			req.setAttribute("reviewList", reviewDao.getReview(burgerId));
+		// 마이페이지에서 리뷰 수정 시 redirect -> mypage로 이동
+		String redirect = req.getParameter("redirect");
+		if (redirect != null && !redirect.isEmpty()) { // redirect 지정값(마이페이지에서 수정한 경우)이 있는 경우 mypage로
+			resp.sendRedirect("/semi-project/review/list");
+		} else {
+			resp.sendRedirect("/semi-project/burger/details?id="+burgerId);			
 		}
-		resp.sendRedirect("/semi-project/burger/details?id="+burgerId);
 	}
 
 }
