@@ -54,7 +54,7 @@
           
           <tbody>
             <c:forEach var="user" items="${userList}">
-              <tr>
+              <tr id="selectUser-${user.id}">
                 <td>${user.userId}</td>
                 <td>${user.name}</td>
                 <td>${user.nickname}</td>
@@ -66,7 +66,7 @@
                       <option value="user" >user</option>
                       <option value="admin" >admin</option>
                     </select>
-                    <a href="${pageContext.request.contextPath}/user/authorize?id=${user.id}" id="roleController-${user.id}" class="btn btn-outline-success btn-sm disabled" aria-disabled="true">
+                    <a href="${pageContext.request.contextPath}/user/authorize?id=${user.id}" id="roleController-${user.id}" class="btn btn-outline-success btn-sm disabled" onclick="return checkPosition(event)" aria-disabled="true">
    					<i class="bi bi-check-circle"></i>
 					</a>
                   </div>
