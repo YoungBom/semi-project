@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -61,14 +62,14 @@
                       <option value="user" >user</option>
                       <option value="admin" >admin</option>
                     </select>
-                    <button type="button" class="btn btn-outline-success btn-sm roleController" onclick="changeUserRole(${user.id})" disabled>
-                      <i class="bi bi-check-circle"></i>
-                    </button>
+                    <a href="${pageContext.request.contextPath}/user/authorize?id=${user.id}" id="roleController-${user.id}" class="btn btn-outline-success btn-sm disabled" aria-disabled="true">
+   					<i class="bi bi-check-circle"></i>
+					</a>
                   </div>
                 </td>
                 <td>
-                  <button class="btn btn-outline-primary btn-sm roleController" onclick="changeUser(${user.id})"><i class="bi bi-pencil">수정</i></button>
-                  <button class="btn btn-outline-danger btn-sm"><i class="bi bi-pencil">삭제</i></button>
+                  <a class="btn btn-outline-primary btn-sm" onclick="changeUser(${user.id})"><i class="bi bi-pencil">수정</i></a>
+                  <a href="${pageContext.request.contextPath}/user/deletefromadmin?userId=${user.userId}" class="btn btn-outline-danger btn-sm"><i class="bi bi-pencil">삭제</i></a>
                 </td>
               </tr>
             </c:forEach>

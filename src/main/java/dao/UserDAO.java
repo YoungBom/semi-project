@@ -425,7 +425,20 @@ public class UserDAO {
 		return userList;
 	}
 
-	
+	public int setAuthorizeAdmin(int id) {
+		String sql = "UPDATE user SET role = 'ADMIN' WHERE id = ?";
+		int result = 0;
+		
+		try(Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setInt(1, id);
+			result = pstmt.executeUpdate();	
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		
+		return result;
+	}
 	
 }
 

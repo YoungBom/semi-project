@@ -50,6 +50,7 @@ function openUpdateModal(event, reviewId, content, rating, burgerId, imageList) 
   modal.show();
 }
 
+// 기존이미지 등록할건지 체크
 function checkImg() {
   const oldImageBtn = document.getElementById('oldImageButtonContainer');
   const imageCheck = document.getElementById('imageCheck');
@@ -87,6 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// 이미지 클릭시 모달창으로 크게 보여주기
+function showImageModal(imageUrl) {
+  const modalImg = document.getElementById('modalImage');
+  modalImg.src = imageUrl;
+
+  const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+  modal.show();
+}
 
 // 리뷰 등록 버튼은 유저ID값이 있을때만 작동되게끔 
 document.addEventListener('DOMContentLoaded', () => {
