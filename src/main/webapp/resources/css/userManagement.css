@@ -1,27 +1,37 @@
 @charset "UTF-8";
 
 .user-page {
-  background-color: #f9fafb;
+  background-color: #FFFAF0;
   font-family: 'Poppins', sans-serif;
   color: #444;
   min-height: 100vh;
+  padding-top: 30px;
 }
 
 .user-page .page-header {
-  background: linear-gradient(135deg, #ff922b, #ffa94d);
-  color: #fff;
-  padding: 2.5rem 0;
+  background-color: #FFF8E6;
+  border-bottom: 2px solid #D8C9AA;
+  padding: 2rem 0;
   text-align: center;
-  margin-top: 30px;
-  border-radius: 0 0 20px 20px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  margin: 0 auto 30px auto;
+  border-radius: 0 0 14px 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
+.user-page .page-header h2 {
+	font-weight: 700;
+	color: #B35A00;
+}
+	
 .user-container {
   background: #fff;
   border-radius: 16px;
   padding: 2rem;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.table-responsive {
+	margin-top : 60px;
 }
 
 .table thead {
