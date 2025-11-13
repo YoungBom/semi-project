@@ -29,9 +29,10 @@
     <div class="container mb-5">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-semibold text-secondary">전체 버거 목록</h4>
-        <a href="${pageContext.request.contextPath}/burger/add" class="btn btn-primary shadow-sm px-3">
-          <i class="bi bi-plus-lg"></i> 새 버거 등록
-        </a>
+		<a href="${pageContext.request.contextPath}/burger/add"
+		   class="add-burger-btn shadow-sm px-3">
+		  <i class="bi bi-plus-lg"></i> 새 버거 등록
+		</a>
       </div>
 
       <div class="table-container">
@@ -40,9 +41,9 @@
             <tr>
               <th style="width:10%;">번호</th>
               <th style="width:30%;">버거 이름</th>
-              <th style="width:20%;">가격</th>
+              <th style="width:10%;">가격</th>
               <th style="width:20%;">브랜드</th>
-              <th style="width:20%;">관리</th>
+              <th style="width:30%;">관리</th>
             </tr>
           </thead>
           <tbody>
@@ -50,7 +51,7 @@
               <tr>
                 <td class="text-muted">${burger.id}</td>
                 <td class="fw-semibold">${burger.name}</td>
-                <td class="text-warning fw-bold">${burger.price}원</td>
+                <td class="text-muted fw-semibold small">${burger.price}원</td>
                 <td><span class="brand-badge">${burger.brand}</span></td>
                 <td>
                   <a href="${pageContext.request.contextPath}/burger/edit?id=${burger.id}" 
@@ -62,13 +63,13 @@
                      onclick="return confirm('정말 삭제하시겠습니까?')">
                      <i class="bi bi-trash"></i> 삭제
                   </a>
-                  <form action="${pageContext.request.contextPath}/burger/list" 
-                        onsubmit="return toggleNew(event, ${burger.id}, this)">
-                    <button type="submit" 
-                            class="btn btn-sm ${burger.newBurger ? 'btn-primary' : 'btn-outline-primary'}">
-                      ${burger.newBurger ? 'NEW 해제' : 'NEW 표시'}
-                    </button>
-                  </form>
+			  	  <form action="${pageContext.request.contextPath}/burger/list" 
+		  		        onsubmit="return toggleNew(event, ${burger.id}, this)">
+				      <button type="submit" 
+				              class="btn btn-sm ${burger.newBurger ? 'new-btn' : 'new-btn-outline'}">
+				        ${burger.newBurger ? 'NEW 해제' : 'NEW 표시'}
+				      </button>
+				  </form>
                 </td>
               </tr>
             </c:forEach>
@@ -89,20 +90,33 @@
 
   <script>
   function toggleNew(e, id, form) {
-    e.preventDefault();
-    fetch(form.action, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: "id=" + id
-    }).then(r => {
-      if (r.ok) {
-        const b = form.querySelector("button");
-        b.classList.toggle("btn-primary");
-        b.classList.toggle("btn-outline-primary");
-      }
-    });
-    return false;
-  }
+	  e.preventDefault();
+
+	  fetch(form.action, {
+	    method: "POST",
+	    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+	    body: "id=" + id
+	  }).then(r => {
+	    if (r.ok) {
+	      const btn = form.querySelector("button");
+
+	      // 스타일 토글
+	      const isNew = btn.classList.contains("new-btn");
+
+	      if (isNew) {
+	        btn.classList.remove("new-btn");
+	        btn.classList.add("new-btn-outline");
+	        btn.textContent = "NEW 표시";     // 🔥 글자도 변경
+	      } else {
+	        btn.classList.remove("new-btn-outline");
+	        btn.classList.add("new-btn");
+	        btn.textContent = "NEW 해제";     // 🔥 글자도 변경
+	      }
+	    }
+	  });
+
+	  return false;
+	}
   </script>
 
   <%@ include file="/include/footer.jsp" %>
