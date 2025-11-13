@@ -1,182 +1,261 @@
 @charset "UTF-8";
-/* ✅ burger.css - BurgerHub 버거 관리 통합 스타일 */
-/* 모든 스타일은 .burger-page 범위 안에서만 적용됨 */
+
+/* 🍔 BurgerHub – 버거 관리 페이지 공통 스타일 */
 .burger-page {
-  background-color: #f9fafb;
-  font-family: 'Poppins', sans-serif;
-  color: #444;
-  min-height: 100vh;
+	background-color: #FFFAF0; /* 공지/게시판과 동일 톤 */
+	font-family: 'Poppins', sans-serif;
+	color: #444;
+	min-height: 100vh;
+	padding-top: 30px;
 }
 
-/* === 공통 버튼 스타일 === */
-.burger-page .btn-primary {
-  background-color: #ff922b;
-  border: none;
-  transition: all 0.25s ease-in-out;
+/* ========================================= */
+/* 🌟 공통 버튼 (공지/게시판 톤 적용) */
+/* ========================================= */
+.burger-page .new-btn {
+	background-color: #FFD88A; /* 더 밝고 선명한 오렌지베이지 */
+	border: 1px solid #E2A85C;
+	color: #8A5100;
+	font-weight: 600;
+	transition: 0.2s ease;
+	border-radius: 6px;
 }
-.burger-page .btn-primary:hover {
-  background-color: #f08c00;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(255,146,43,0.3);
+
+.burger-page .new-btn:hover {
+	background-color: #FFC96A; /* hover 더 진하게 */
+	border-color: #D9984C;
+	color: #6D3F00;
 }
+
+/* NEW 해제 버튼 */
+.burger-page .new-btn-outline {
+	background-color: #fff;
+	border: 1px solid #D6C28E;
+	color: #8A5A23;
+	font-weight: 500;
+	transition: 0.2s ease;
+	border-radius: 6px;
+}
+
+.burger-page .new-btn-outline:hover {
+	background-color: #FFF4D8;
+	border-color: #C5B083;
+	color: #704A1B;
+}
+
 .burger-page .btn-warning {
-  background-color: #ffd43b;
-  color: #5c4d00;
-  border: none;
-  transition: all 0.25s;
+	background-color: #FFF2C6;
+	border: 1px solid #D6C28E;
+	color: #5c4d00;
+	transition: all 0.25s;
 }
+
 .burger-page .btn-warning:hover {
-  background-color: #fcbf00;
-  transform: scale(1.03);
+	background-color: #EBD9B4;
 }
+
 .burger-page .btn-danger {
-  background-color: #fa5252;
-  border: none;
-  transition: all 0.25s;
+	background-color: #E06A5F;
+	border: none;
+	color: #fff;
+	transition: all 0.25s;
 }
+
 .burger-page .btn-danger:hover {
-  background-color: #e03131;
-  transform: scale(1.03);
+	background-color: #C55448;
 }
 
-/* === 공통 페이지 헤더 === */
+/* ========================================= */
+/* 🌟 공통 페이지 헤더 */
+/* ========================================= */
 .burger-page .page-header {
-  background: linear-gradient(135deg, #ff922b, #ffa94d);
-  color: #fff;
-  padding: 2.5rem 0;
-  text-align: center;
-  margin-top: 30px;
-  border-radius: 0 0 20px 20px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-  position: relative;
-  overflow: hidden;
+	background-color: #FFF8E6;
+	border-bottom: 2px solid #D8C9AA;
+	padding: 2rem 0;
+	text-align: center;
+	margin: 0 auto 30px auto;
+	border-radius: 0 0 14px 14px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
-.burger-page .page-header::after {
-  content: "";
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(255,255,255,0.1);
-  mix-blend-mode: overlay;
-}
+
 .burger-page .page-header h2 {
-  font-weight: 700;
-  letter-spacing: -0.5px;
+	font-weight: 700;
+	color: #B35A00;
 }
+
 .burger-page .page-header p {
-  font-size: 1rem;
-  opacity: 0.9;
+	color: #7A5A39;
+	font-size: 0.95rem;
 }
 
-/* === burger-add.jsp 전용 === */
-.burger-page.burger-add-page .form-container {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-  padding: 2.5rem 3rem;
-  max-width: 700px;
-  margin: 3rem auto 6rem auto;
-}
-.burger-page.burger-add-page label.form-label {
-  font-weight: 600;
-  color: #444;
-}
-.burger-page.burger-add-page .form-control,
-.burger-page.burger-add-page .form-select {
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  padding: 10px 12px;
-  transition: all 0.2s ease;
-}
-.burger-page.burger-add-page .form-control:focus,
-.burger-page.burger-add-page .form-select:focus {
-  border-color: #ff9500;
-  box-shadow: 0 0 0 0.2rem rgba(255,149,0,0.25);
-}
-.burger-page.burger-add-page h5 {
-  color: #ff9500;
-  font-weight: 700;
-  margin-top: 2rem;
-}
-.burger-page.burger-add-page .btn-submit {
-  background-color: #ff6600;
-  border: none;
-  width: 100%;
-  font-weight: 700;
-  color: #fff;
-  padding: 12px;
-  border-radius: 10px;
-  transition: background-color 0.2s ease, transform 0.1s;
-}
-.burger-page.burger-add-page .btn-submit:hover {
-  background-color: #e65500;
-  transform: translateY(-1px);
-}
-.burger-page.burger-add-page hr {
-  margin: 1.5rem 0;
-  border-top: 1px solid #eee;
+/* ========================================= */
+/* 🌟 burger-add.jsp 양식 */
+/* ========================================= */
+.burger-page.addedit-page .form-container {
+	background: #fffaf0;
+	border-radius: 12px;
+	border: 1px solid #E6C89C;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	padding: 2.2rem 2.6rem;
+	max-width: 680px;
+	margin: 2rem auto 4rem;
 }
 
-/* === burger-list.jsp 전용 === */
+.burger-page.addedit-page label.form-label {
+	font-weight: 600;
+	color: #6b4e2d;
+}
+
+.burger-page.addedit-page .form-control, .burger-page.addedit-page .form-select
+	{
+	border-radius: 6px;
+	border: 1px solid #D8C9AA;
+	padding: 10px 12px;
+	background-color: #fff;
+	transition: all 0.2s ease;
+}
+
+.burger-page.addedit-page .form-control:focus, .burger-page.addedit-page .form-select:focus
+	{
+	border-color: #B35A00;
+	box-shadow: 0 0 0 0.2rem rgba(179, 90, 0, 0.15);
+}
+
+.burger-page.addedit-page h5 {
+	color: #B35A00;
+	font-weight: 600;
+	margin-top: 1.8rem;
+}
+
+.burger-page.addedit-page .btn-submit {
+	background-color: #B35A00;
+	border: none;
+	width: 100%;
+	font-weight: 600;
+	color: #fff;
+	padding: 12px;
+	border-radius: 8px;
+	transition: background-color 0.2s ease, transform 0.1s;
+}
+
+.burger-page.addedit-page .btn-submit:hover {
+	background-color: #944C00;
+	transform: translateY(-2px);
+}
+
+.burger-page.addedit-page hr {
+	margin: 1.4rem 0;
+	border-top: 1px solid #E9E2C9;
+}
+
+/* ========================================= */
+/* 🌟 burger-list.jsp 목록 */
+/* ========================================= */
 .burger-page.burger-list-page .table-container {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-  padding: 2rem;
-  transition: all 0.3s;
+	background: #ffefc9;
+	border-radius: 12px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	padding: 1rem;
+	transition: all 0.3s;
 }
+
 .burger-page.burger-list-page table {
-  border-collapse: separate;
-  border-spacing: 0 10px;
+	width: 100%;
+	border-collapse: collapse;
+	background-color: #fff;
+	table-layout: fixed;
 }
+
+/* 헤더 라인 — 게시판과 동일한 톤 */
 .burger-page.burger-list-page th {
-  background-color: #fff7e6 !important;
-  color: #5f3e00;
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  border: none;
+	background-color: #FFF8E6;
+	color: #7A5A39;
+	font-weight: 500;
+	border-bottom: 2px solid #D8C9AA;
+	padding: 10px 6px;
+	white-space: nowrap;
 }
+
+/* 본문 라인 */
 .burger-page.burger-list-page td {
-  vertical-align: middle;
-  background: #fff;
-  border-top: 1px solid #f1f3f5;
-  border-bottom: 1px solid #f1f3f5;
-  border-radius: 6px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-  font-size: 0.95rem;
-  white-space: nowrap;
+	background-color: #FFFCF5;
+	border-bottom: 1px solid #E9E2C9;
+	padding: 10px 6px;
+	text-overflow: ellipsis;
 }
-.burger-page.burger-list-page tr:hover td {
-  background-color: #fff8ef;
-  transition: 0.2s;
+
+/* hover */
+.burger-page.burger-list-page tbody tr:hover td {
+	background-color: #FFF4DF;
+	transition: background-color 0.2s ease-in-out;
 }
+
+/* 브랜드/버거 종류 표시 */
 .burger-page.burger-list-page .brand-badge {
-  background: #ffe8cc;
-  color: #b86b00;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 0.3rem 0.7rem;
-  font-size: 0.85rem;
+	background: #FFF2C6;
+	border: 1px solid #D6C28E;
+	color: #7A4D1E;
+	font-weight: 600;
+	border-radius: 6px;
+	padding: 0.25rem 0.55rem;
+	font-size: 0.82rem;
+	white-space: nowrap;
 }
+
+/* 수정/삭제 링크 */
 .burger-page.burger-list-page .text-muted a {
-  color: #ff922b;
-  text-decoration: none;
-  font-weight: 600;
+	color: #B35A00;
+	text-decoration: none;
+	font-weight: 500;
 }
+
 .burger-page.burger-list-page .text-muted a:hover {
-  text-decoration: underline;
+	color: #7A4D1E;
+	text-decoration: underline;
 }
+
+/* 비어있을 때 */
 .burger-page.burger-list-page .empty-message {
-  color: #777;
-  padding: 4rem 0;
+	color: #777;
+	padding: 3.5rem 0;
 }
+
 .burger-page.burger-list-page .empty-message i {
-  color: #ff922b;
+	color: #B35A00;
 }
+
+/* 삭제 버튼 form */
 .burger-page.burger-list-page .table-container td form {
-  display: inline-block;
-  margin: 0;
-  padding: 0;
-  vertical-align: middle;
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	vertical-align: middle;
+}
+
+.burger-page .add-burger-btn {
+	background-color: #FFF4DB; /* 따뜻한 베이지 */
+	border: 1px solid #E6C89C; /* 은은한 라인 */
+	color: #8A5A23; /* 고급 브라운 */
+	font-weight: 600;
+	padding: 7px 7px;
+	border-radius: 8px;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	transition: all 0.18s ease-in-out;
+	text-decoration: none !important;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04); /* 절제된 그림자 */
+}
+
+.burger-page .add-burger-btn:hover {
+	background-color: #F9E8C7; /* 살짝 진한 베이지 */
+	border-color: #DAB98D;
+	color: #744A1A;
+	transform: translateY(-1px);
+	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06); /* 은근한 깊이감 */
+	text-decoration: none !important;
+}
+
+.burger-page .add-burger-btn i {
+	font-size: 1rem;
 }

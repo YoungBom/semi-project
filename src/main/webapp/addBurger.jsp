@@ -19,7 +19,7 @@
 <body>
   <%@ include file="/include/header.jsp" %>
 
-  <div class="burger-page burger-add-page">
+  <div class="burger-page addedit-page">
 
     <div class="page-header mb-5">
       <h2>버거 등록</h2>
