@@ -12,7 +12,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
   <!-- ✅ 공통 스타일 -->
-  <link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/resources/css/burgerList.css" rel="stylesheet">
 	
 </head>
