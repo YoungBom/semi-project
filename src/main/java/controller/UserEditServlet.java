@@ -100,7 +100,16 @@ public class UserEditServlet extends HttpServlet {
         if (!gender.equals("남") && !gender.equals("여") && !gender.equals("선택안함")) {
             gender = "선택안함";
         }
-
+        
+        // 5. 닉네임 검사 (필수 + 8자 이하)
+        if (nickname == null || nickname.isBlank() || nickname.length() > 8) {
+            req.setAttribute("error", "닉네임은 필수이며 8자 이하만 가능합니다.");
+            redisplay(req, resp, uid);
+            return;
+        }
+        
+        
+        
         // ===== DB 업데이트 시도 =====
         try {
             boolean ok = userDao.updateProfile(uid, email, phone, birth, gender, name, nickname, address);

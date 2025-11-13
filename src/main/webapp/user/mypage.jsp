@@ -104,7 +104,7 @@
       </div>
       <div class="modal-body">
         <p>아이디를 입력하세요.</p>
-        <input type="password" id="deletePw" class="form-control" placeholder="아이디 입력">
+        <input type="text" id="deleteInputId" class="form-control" placeholder="아이디 입력">
         <div id="deleteMsg" class="text-danger small mt-2"></div>
       </div>
       <div class="modal-footer">
@@ -115,6 +115,8 @@
   </div>
 </div>
 
+<%@ include file="/include/footer.jsp" %>
+
 <!-- JS -->
 <script>
   const contextPath = "${pageContext.request.contextPath}";
@@ -122,6 +124,5 @@
 <script src="${pageContext.request.contextPath}/resources/js/mypage.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/profile.js"></script>
 
-<%@ include file="/include/footer.jsp" %>
 </body>
 </html>
