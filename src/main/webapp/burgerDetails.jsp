@@ -36,7 +36,43 @@
 <!-- JS 연결 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<style>
+.star-rating-simple {
+  display: flex;
+  gap: 4px;
+  font-size: 20px;
+  cursor: pointer;
+  user-select: none;
+}
 
+/* 기본 별 */
+.star-rating-simple span {
+  color: #fff;  /* 기본 약간 쨍한 금색 */
+  text-shadow:
+    -1px -1px 0 #b88a2b,
+     1px -1px 0 #b88a2b,
+    -1px  1px 0 #b88a2b,
+     1px  1px 0 #b88a2b;
+  transition: color 0.15s ease;
+}
+
+/* Hover - 더 밝은 금색 */
+.star-rating-simple span.hover {
+  color: #ffe082; /* 더 밝고 환한 금색 */
+}
+
+/* 선택됨 - 깊은 금색 + 강한 외곽선 */
+.star-rating-simple span.selected {
+  color: #ffca28; /* 진하고 선명한 금색 */
+  text-shadow:
+    -1px -1px 0 #a06b16,
+     1px -1px 0 #a06b16,
+    -1px  1px 0 #a06b16,
+     1px  1px 0 #a06b16;
+}
+
+
+</style>
 </head>
 <body 
   class="${burger.brand eq '맥도날드' ? 'mcdonalds' : (burger.brand eq '버거킹' ? 'burgerking' : (burger.brand eq '롯데리아' ? 'lotteria' : ''))}"
@@ -170,11 +206,21 @@
 					    기존 이미지 등록
 					  </button>
 					  </div>
-			
-			          <div class="mb-3">
-			            <label for="rating" class="form-label">별점</label>
-			            <input type="text" class="form-control" id="rating" name="rating" placeholder="별점을 입력하세요(0~5)" required>
-			          </div>
+							<div class="mb-3">
+							  <label class="form-label">별점</label>
+							
+							  <input type="hidden" id="rating" name="rating" value="0" required>
+							
+								<div class="star-rating-simple">
+								  <span data-value="1">★</span>
+								  <span data-value="2">★</span>
+								  <span data-value="3">★</span>
+								  <span data-value="4">★</span>
+								  <span data-value="5">★</span>
+								
+								  <input type="hidden" id="rating" name="rating" value="0">
+								</div>
+							</div>
 			
 			          <div class="text-end">
 			            <button type="submit" class="btn btn-warning rounded-3" onclick="return checkForm(event)">등록</button>
@@ -293,6 +339,48 @@
 
 <script src="${pageContext.request.contextPath}/resources/js/review.js"></script>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+	  const stars = document.querySelectorAll(".star-rating-simple span");
+	  const ratingInput = document.getElementById("rating");
+
+	  let current = Number(ratingInput.value);
+
+	  stars.forEach(star => {
+	    star.addEventListener("mouseover", () => {
+	      const val = Number(star.dataset.value);
+	      update(val, "hover");
+	    });
+
+	    star.addEventListener("click", () => {
+	      current = Number(star.dataset.value);
+	      ratingInput.value = current;
+	      update(current, "select");
+	    });
+	  });
+
+	  document.querySelector(".star-rating-simple")
+	    .addEventListener("mouseleave", () => update(current, "select"));
+
+	  function update(val, mode) {
+	    stars.forEach(star => {
+	      const n = Number(star.dataset.value);
+	      star.classList.remove("hover", "selected");
+
+	      if (mode === "hover" && n <= val) {
+	        star.classList.add("hover");
+	      }
+	      if (mode === "select" && n <= val) {
+	        star.classList.add("selected");
+	      }
+	    });
+	  }
+
+	  update(current, "select");
+	});
+
+
+</script>
 
 </body>
 </html>

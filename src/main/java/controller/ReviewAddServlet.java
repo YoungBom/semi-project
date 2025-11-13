@@ -104,25 +104,8 @@ public class ReviewAddServlet extends HttpServlet {
 		                part.getSubmittedFileName() != null &&
 		                part.getSize() > 0) {
 		            	
-		                String originalName = part.getSubmittedFileName().toLowerCase();
 
-		                // 🔥 허용 확장자 체크
-		                boolean allowed =
-		                       originalName.endsWith(".jpg")  ||
-		                       originalName.endsWith(".jpeg") ||
-		                       originalName.endsWith(".png")  ||
-		                       originalName.endsWith(".gif");
-
-		                if (!allowed) {
-		                    // ⛔ 여기서 alert() 띄우고 리턴
-		                    resp.setContentType("text/html; charset=UTF-8");
-		                    resp.getWriter().write(
-		                        "<script>alert('허용되지 않은 파일 형식입니다. (jpg, jpeg, png, gif만 업로드 가능합니다)'); history.back();</script>"
-		                    );
-		                    return;
-		                }
 		                
-//		                이미지가 조건에 다 맞았을 때 처리 로직
 		                hasValidImage = true; // 실제 이미지 있음
 		                ReviewImageDTO ri = new ReviewImageDTO();
 
