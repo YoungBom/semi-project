@@ -10,6 +10,8 @@
 <title>아이디 찾기 결과</title>
 <link href="${ctx}/resources/css/user.css" rel="stylesheet">
 <link href="${ctx}/resources/css/recover.css" rel="stylesheet">
+<link href="${ctx}/resources/css/header.css" rel="stylesheet">
+
 </head>
 <body>
 	<%@ include file="/include/header.jsp"%>

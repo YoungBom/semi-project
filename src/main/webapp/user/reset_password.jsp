@@ -9,6 +9,7 @@
   <title>비밀번호 재설정</title>
   <link href="${ctx}/resources/css/user.css" rel="stylesheet" />
   <link href="${ctx}/resources/css/recover.css" rel="stylesheet" />
+  <link href="${ctx}/resources/css/header.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>

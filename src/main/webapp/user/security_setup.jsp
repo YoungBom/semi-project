@@ -7,6 +7,8 @@
 <title>보안질문 설정</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/user.css">
+	<link href="${ctx}/resources/css/header.css" rel="stylesheet">
+	<link href="${ctx}/resources/css/recover.css" rel="stylesheet">
 </head>
 <body>
 	<!-- 런타임 include: 변수 충돌 방지 -->
@@ -56,7 +58,7 @@
 
 				<fieldset>
 					<legend>답변</legend>
-					<input type="password" name="answer" placeholder="답변 (저장 시 해시 처리)"
+					<input type="text" name="answer" placeholder="답변 (저장 시 해시 처리)"
 						required minlength="1" maxlength="255">
 				</fieldset>
 
