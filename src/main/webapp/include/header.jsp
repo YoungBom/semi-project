@@ -312,6 +312,7 @@
   <% if (!loggedIn) { %>
     <!-- 🟢 비로그인 상태 -->
     <a href="<%=ctx%>/user/login.jsp" class="btn login-btn">로그인</a>
+    <a href="<%=ctx%>/user/register.jsp" class="btn login-btn">회원가입</a>
 
   <% } else if (isAdmin) { %>
     <!-- 🟣 관리자 -->
