@@ -7,6 +7,265 @@
   boolean isAdmin = "ADMIN".equalsIgnoreCase(userRole);
   boolean loggedIn = (uidObj != null);
 %>
+<style>
+#site-header .header-user-area {
+  gap: 8px;
+  position: relative;
+}
+
+/* 공통 버튼 */
+#site-header .header-user-area .btn {
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background-color: transparent;
+  color: #333;
+  transition: all 0.18s ease-in-out;
+}
+#site-header .header-user-area .btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* 로그인 버튼만 */
+#site-header .login-btn {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #222;
+  backdrop-filter: blur(4px);
+}
+#site-header .login-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* 닉네임 */
+#site-header .user-greeting {
+  font-weight: 500;
+  color: #3a2f28;
+  letter-spacing: -0.2px;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 드롭다운 버튼 (아이콘 버튼) */
+#site-header .dropdown-btn {
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  color: #444;
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: color 0.15s ease-in-out;
+}
+
+/* hover 시 색만 살짝 진해짐 (배경 제거) */
+#site-header .dropdown-btn:hover {
+  color: #000;
+  background: transparent !important;
+}
+
+/* 아이콘 옆의 chevron */
+#site-header .dropdown-btn .chevron {
+  transition: transform 0.25s ease;
+}
+
+/* 열릴 때 chevron 회전 */
+#site-header .dropdown-btn.active .chevron {
+  transform: rotate(180deg);
+}
+#site-header .dropdown-btn .menu-label {
+  white-space: nowrap !important;
+  font-weight: 500;
+  margin-left:1px;
+  color: inherit;           /* 부모 버튼 컬러 따라감 */
+  font-size: 0.8rem;
+}
+/* ===================================================== */
+/* 🎨 드롭다운: 헤더와 일체감 있게 조화된 감각형 */
+/* ===================================================== */
+#site-header .dropdown-menu-list {
+  position: absolute;
+  top: calc(100% - 2px);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-3px);
+  transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* ✨ 핵심 디자인 */
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-top: none;
+  border-radius: 0 0 3px 3px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+  min-width: 170px;
+  padding: 6px 0;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 999;
+}
+
+/* 활성화 */
+#site-header .dropdown-menu-list.show {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  animation: dropdownFadeIn 0.25s ease-out;
+}
+
+/* 메뉴 항목 */
+#site-header .dropdown-menu-list a,
+#site-header .dropdown-menu-list button {
+  padding: 11px 18px;
+  font-size: 0.9rem;
+  color: #2f2f2f;
+  background: transparent;
+  border: none;
+  text-align: left;
+  width: 100%;
+  letter-spacing: -0.2px;
+  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+#site-header .dropdown-menu-list a:hover,
+#site-header .dropdown-menu-list button:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #111;
+}
+
+/* 항목 간 경계선 */
+#site-header .dropdown-menu-list a:not(:last-child),
+#site-header .dropdown-menu-list button:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.035);
+}
+
+/* 애니메이션 */
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 닫힐 때 부드럽게 사라지기 */
+#site-header .dropdown-menu-list {
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+#site-header .dropdown-menu-list.hide {
+  opacity: 0;
+  transform: translateY(-5px);
+}
+
+/* 아이콘 버튼과 메뉴 간 살짝 여백 */
+#site-header .user-dropdown,
+#site-header .admin-dropdown {
+  position: relative;
+  margin-right: 2px;
+}
+#site-header .dropdown-menu-list a {
+  text-decoration: none !important;
+}
+#site-header .dropdown-menu-list a:hover {
+  text-decoration: none !important;
+}
+#site-header .search-form-modern {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  padding: 4px 10px 4px 12px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.2s ease-in-out;
+  height: 38px;
+  min-width: 220px;
+}
+
+#site-header .search-form-modern:hover,
+#site-header .search-form-modern:focus-within {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+/* 인풋 */
+#site-header .search-input-modern {
+  border: none;
+  background: transparent;
+  outline: none;
+  flex: 1;
+  color: #2f2f2f;
+  font-size: 0.9rem;
+  letter-spacing: -0.1px;
+}
+
+#site-header .search-input-modern::placeholder {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+/* 버튼 */
+#site-header .search-btn-modern {
+  border: none;
+  background: transparent;
+  color: #444;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+
+#site-header .search-btn-modern:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #000;
+}
+
+#site-header .search-btn-modern i {
+  pointer-events: none;
+}
+@media (max-width: 990px) {
+  #site-header .search-form-modern {
+    width: 100%;
+    margin-top: 8px;
+  }
+  #site-header .header-user-area {
+	gap: 8px;
+	position: relative;
+	margin-top: 8px
+  }
+}
+/* 반응형 */
+@media (max-width: 600px) {
+  #site-header .search-form-modern {
+    width: 100%;
+    margin-top: 8px;
+  }
+}
+/* 반응형 */
+@media (max-width: 600px) {
+  #site-header .header-user-area {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+</style>
 
 <link href="${pageContext.request.contextPath}/resources/css/header.css" rel="stylesheet">
 
@@ -34,50 +293,119 @@
       </ul>
 
       <!-- 검색 폼 -->
-      <form action="<%=ctx%>/burger/menu" method="get" class="d-flex me-3">
-        <input class="form-control me-2 rounded-3" style="border:1px solid #f4c430;" type="text" name="keyword" placeholder="버거 검색...">
-        <button class="btn" type="submit" style="background:#ffc300; border:none;">
-          <i class="bi bi-search" aria-hidden="true"></i><span class="visually-hidden">검색</span>
-        </button>
-      </form>
+	<form action="<%=ctx%>/burger/menu" method="get" class="search-form-modern d-flex align-items-center me-3">
+	  <input 
+	    class="search-input-modern"
+	    type="text" 
+	    name="keyword" 
+	    placeholder="버거 검색..." 
+	    aria-label="버거 검색">
+	  <button class="search-btn-modern" type="submit">
+	    <i class="bi bi-search"></i>
+	  </button>
+	</form>
 
-      
-      <div class="d-flex align-items-center gap-2">
-      	<% if (!loggedIn) { %>
-      		<a href="<%=ctx%>/user/login.jsp" class="btn me-1 rounded-3" style="background:#4caf50; color:white;">로그인</a>
-    		<a href="<%=ctx%>/user/register.jsp" class="btn me-1 rounded-3 btn-primary">회원가입</a>
-    	<% } else if (isAdmin) { %>
-    		<span class="me-2 user-greeting text-nowrap">
-	      		<%= (userNickName == null ? "관리자" : "관리자" + userNickName) %>님
-		    </span>
-		
-			<div class="d-flex flex-column align-items-start gap-2">
-			  <!-- 1줄: 버거/회원 관리 -->
-			  <div class="d-flex align-items-center gap-1">
-			    <a href="<%=ctx%>/burger/list" class="btn btn-sm rounded-3" style="background:#2196f3; color:white;">버거 관리</a>
-			    <a href="<%=ctx%>/user/management" class="btn btn-sm rounded-3" style="background:#9c27b0; color:white;">회원 관리</a>
-			  </div>
-			
-			  <!-- 2줄: 마이페이지/로그아웃 -->
-			  <div class="d-flex align-items-center gap-1">
-			    <a href="<%=ctx%>/user/mypage" class="btn btn-sm rounded-3" style="background:#ff8d00; color:white;">마이페이지</a>
-			    <form method="post" action="<%=ctx%>/logout" class="d-inline m-0 p-0">
-			      <button type="submit" class="btn btn-sm rounded-3" style="background:#4caf50; color:white;">로그아웃</button>
-			    </form>
-			  </div>
-			</div>
-			
-		<% } else { %>
-			<span class="me-2 user-greeting text-nowrap">
-      			<%= (userNickName == null ? "회원" : userNickName) %>님
-    		</span>
-    		<a href="<%=ctx%>/user/mypage" class="btn me-1 rounded-3" style="background:#ff8d00; color:white;">마이페이지</a>
-		    <form method="post" action="<%=ctx%>/logout" class="d-inline m-0 p-0">
-		      <button type="submit" class="btn me-1 rounded-3" style="background:#4caf50; color:white;">로그아웃</button>
-		    </form>
-		<% } %>
+     
+     
+     
+<div class="d-flex align-items-center gap-2 header-user-area">
+  <% if (!loggedIn) { %>
+    <!-- 🟢 비로그인 상태 -->
+    <a href="<%=ctx%>/user/login.jsp" class="btn login-btn">로그인</a>
+
+  <% } else if (isAdmin) { %>
+    <!-- 🟣 관리자 -->
+    <span class="me-2 user-greeting text-nowrap">
+      <%= (userNickName == null ? "관리자" : "관리자" + userNickName) %>님
+    </span>
+
+    <!-- 마이페이지 / 로그아웃 드롭다운 -->
+    <div class="user-dropdown position-relative">
+      <button type="button" class="btn dropdown-btn" id="userMenuBtn">
+        <i class="bi bi-person-circle"></i>
+        <span class="menu-label">계정</span>
+        <span class="chevron">▾</span>
+      </button>
+      <div class="dropdown-menu-list" id="userMenu">
+        <a href="<%=ctx%>/user/mypage">마이페이지</a>
+        <form method="post" action="<%=ctx%>/logout">
+          <button type="submit">로그아웃</button>
+        </form>
       </div>
+    </div>
+
+    <!-- 관리자 전용 관리 드롭다운 -->
+    <div class="admin-dropdown position-relative">
+      <button type="button" class="btn dropdown-btn" id="adminMenuBtn">
+        <i class="bi bi-gear"></i>
+        <span class="menu-label"> 관리</span>
+        <span class="chevron">▾</span>
+      </button>
+      <div class="dropdown-menu-list" id="adminMenu">
+        <a href="<%=ctx%>/burger/list">버거 관리</a>
+        <a href="<%=ctx%>/user/management">회원 관리</a>
+      </div>
+    </div>
+
+  <% } else { %>
+    <!-- 🔵 일반 사용자 -->
+    <span class="me-2 user-greeting text-nowrap">
+      <%= (userNickName == null ? "회원" : userNickName) %>님
+    </span>
+
+    <!-- 마이페이지 / 로그아웃 드롭다운 -->
+    <div class="user-dropdown position-relative">
+      <button type="button" class="btn dropdown-btn" id="userMenuBtn">
+        <i class="bi bi-person-circle"></i>
+      </button>
+      <div class="dropdown-menu-list" id="userMenu">
+        <a href="<%=ctx%>/user/mypage">마이페이지</a>
+        <form method="post" action="<%=ctx%>/logout">
+          <button type="submit">로그아웃</button>
+        </form>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+
+
+
+
     </div>
   </div>
 </nav>
 </div>	
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const userBtn = document.getElementById("userMenuBtn");
+  const adminBtn = document.getElementById("adminMenuBtn");
+  const userMenu = document.getElementById("userMenu");
+  const adminMenu = document.getElementById("adminMenu");
+
+  // 공통 토글 함수
+  const toggleMenu = (btn, menu) => {
+    if (!btn || !menu) return;
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      menu.classList.toggle("show");
+      btn.classList.toggle("active");
+    });
+  };
+
+  toggleMenu(userBtn, userMenu);
+  toggleMenu(adminBtn, adminMenu);
+
+  // 메뉴 외부 클릭 시 닫기
+  document.addEventListener("click", () => {
+    if (userMenu) {
+      userMenu.classList.remove("show");
+      userBtn?.classList.remove("active");
+    }
+    if (adminMenu) {
+      adminMenu.classList.remove("show");
+      adminBtn?.classList.remove("active");
+    }
+  });
+});
+</script>
