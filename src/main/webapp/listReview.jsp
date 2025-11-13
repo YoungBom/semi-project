@@ -1,5 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -14,7 +17,8 @@
 	<link href="${pageContext.request.contextPath}/resources/css/reviewList.css" rel="stylesheet">
 
 </head>
-<body>
+<body data-is-logged-in="${not empty sessionScope.LOGIN_UID}" 
+  	  data-ctx="${pageContext.request.contextPath}">
 <%@ include file="/include/header.jsp" %>
 
 <main class="container py-5">
@@ -62,12 +66,78 @@
 									<small class="text-muted">${review.createdAt}</small>
 								</c:otherwise>
 							</c:choose>
-							<div>
-								<a href="/semi-project/burger/details?id=${review.burgerId}" class="btn btn-outline-secondary btn-sm me-2">
-									<i class="bi bi-eye"></i> 보기
-								</a>
+							<div class="d-flex flex-row-reverse">
+								<div>
+									<a href="/semi-project/review/delete?burgerId=${review.burgerId}&reviewId=${review.id}&redirect=${pageContext.request.requestURI}" class="btn btn-outline-danger btn-sm my-1 ">
+										<i class="bi bi-trash"></i> 삭제
+									</a>
+								</div>							
+								<div>
+									<a href="#" class="btn btn-outline-success btn-sm my-1 me-1" onclick="openUpdateModal(event, ${record.id}, ${record.burgerId}, '${fn:escapeXml(record.content)}', ${record.rating}, '${record.imageList}')">
+										<i class="bi bi-pencil"></i> 수정
+									</a>
+								</div>
+								<div>
+									<a href="/semi-project/burger/details?id=${review.burgerId}" class="btn btn-outline-secondary btn-sm my-1 me-1">
+										<i class="bi bi-eye"></i> 보기
+									</a>
+								</div>
 							</div>
 						</div>
+						
+						<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+						  <div class="modal-dialog modal-lg modal-dialog-centered">
+						    <div class="modal-content">
+				              <div class="modal-header">
+				                <h5 class="modal-title" id="reviewModalLabel">리뷰 수정</h5>
+				                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+				              </div>
+				
+						      <div class="modal-body">
+				                <form action="${pageContext.request.contextPath}/review/update?burgerId=${review.burgerId}&reviewId=${review.id}"
+						              method="post"
+						              enctype="multipart/form-data"
+						              class="comment-form">
+							          <div class="mb-3">
+							            <label class="form-label">닉네임</label>
+							            <input type="text" class="form-control" value="${LOGIN_NICKNAME}" readonly>
+							          </div>
+							
+							          <div class="mb-3">
+							            <label for="content" class="form-label">댓글</label>
+							            <textarea class="form-control" id="content" name="content" rows="5" placeholder="댓글을 입력하세요"></textarea>
+							          </div>
+							
+							          <div class="mb-3">
+							            <label for="image" class="form-label">이미지 업로드</label>
+							            <input type="file" class="form-control" id="image" name="images" multiple>
+							          </div>
+							          
+									  <div class="mb-3 text-end mt-1">
+									  <input type="hidden" name="imageCheck" id="imageCheck" value="false">
+									  <input type="text" id="oldImageName" class="form-control mt-2" readonly style="display:none;">
+									  <button type="button"
+									    class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-1"
+									    id="oldImageButtonContainer"
+									    style="display:none;"
+									    onclick="checkImg()">
+									    기존 이미지 등록
+									  </button>
+									  </div>
+							
+							          <div class="mb-3">
+							            <label for="rating" class="form-label">별점</label>
+							            <input type="text" class="form-control" id="rating" name="rating" placeholder="별점을 입력하세요(0~5)" required>
+							          </div>
+							
+							          <div class="text-end">
+							            <button type="submit" class="btn btn-warning rounded-3" onclick="return checkForm(event)">수정 완료</button>
+							          </div>
+						        </form>
+				              </div>
+				            </div>
+				          </div>
+				        </div>
 			    	</div>
 			    </div>
 			</c:forEach>
