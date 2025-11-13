@@ -15,6 +15,11 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 	<link href="${pageContext.request.contextPath}/resources/css/user.css" rel="stylesheet">
 	<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
+  
+  
+  
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  
 </head>
 <body data-check-id-url="${checkIdUrl}">
 <%@ include file="/include/header.jsp" %>
@@ -155,13 +160,27 @@
                 <input class="input" id="nickname" type="text" name="nickname"
 					   maxlength="30" required>
 			</div>
-
-			<!-- 주소(선택) -->
-			<div class="field">
-				<label class="label" for="address">주소(선택)</label> 
+  
+            <div class="field">
+              <label class="label" for="address">주소(선택)</label>
+            
+              <div class="address-wrap">
                 <input class="input" id="address" type="text" name="address"
-					   maxlength="255" placeholder="">
-			</div>
+                       maxlength="255" placeholder="주소 검색 버튼을 눌러주세요" readonly>
+            
+                <button type="button" class="address-btn" onclick="execDaumPostcode()">
+                  주소 검색
+                </button>
+              </div>
+            
+              <div class="field mt-2">
+                <input class="input" id="detailAddress" type="text" name="detailAddress"
+                       maxlength="255" placeholder="상세주소 (동/호수 등)">
+              </div>
+            </div>
+
+
+
 
 			<!-- 제출 -->
 			<div class="actions">
@@ -175,20 +194,16 @@
                 <a class="link" href="${pageContext.request.contextPath}/login">로그인</a>
 			</div>
 			
-			
-			
-			
-			
 			<!-- 역할 값: 기본 USER -->
 			<input type="hidden" name="role" id="role" value="USER"/>
 			</form>
 			</main>
 
 	<!-- 아이디 중복확인 URL -->
-    <script src="${pageContext.request.contextPath}/resources/js/register.js"></script>
     <%@ include file="/include/footer.jsp" %>
 
 
+    <script src="${pageContext.request.contextPath}/resources/js/register.js"></script>
 
 
 
@@ -210,7 +225,7 @@
       form.submit();          // 폼 제출
     });
   })();
-</script>
+</script>s
 
 	
 

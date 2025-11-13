@@ -36,7 +36,10 @@ public class RegisterServlet extends HttpServlet {
         String name     = req.getParameter("name");
         String nickname = req.getParameter("nickname");
         String address  = req.getParameter("address");
-
+        String detailAddress = req.getParameter("detailAddress");
+        
+        String fullAddress = address + " " + detailAddress ;
+        
         // 1) 필수값 체크
         if (userId == null || userId.isBlank()
                 || pw == null || pw.length() < 8
@@ -99,7 +102,7 @@ public class RegisterServlet extends HttpServlet {
         u.setGender(gender);
         u.setName(name);
         u.setNickname(nickname);
-        u.setAddress(address);
+        u.setAddress(fullAddress);
         u.setRole(role);
 
         try {

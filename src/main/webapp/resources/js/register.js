@@ -181,3 +181,34 @@
     pwIcon.classList.toggle('bi-eye');
     pwIcon.classList.toggle('bi-eye-slash');
   });
+  
+  function execDaumPostcode() {
+      new daum.Postcode({
+          oncomplete: function(data) {
+              // 기본 주소 문자열
+              var addr = '';
+
+              // 도로명 / 지번 구분
+              if (data.userSelectedType === 'R') { 
+                  addr = data.roadAddress; // 도로명 주소
+              } else { 
+                  addr = data.jibunAddress; // 지번 주소
+              }
+
+              // 우편번호 + 기본주소를 하나의 칸에 넣어도 되고
+              // 우편번호를 따로 두고 싶으면 hidden/input 하나 더 만들어도 됨
+              var fullAddress = '(' + data.zonecode + ') ' + addr;
+
+              // 기존 address input에 채우기
+              document.getElementById('address').value = fullAddress;
+
+              // 상세주소 포커스 주기
+              var detail = document.getElementById('detailAddress');
+              if (detail) {
+                  detail.focus();
+              }
+          }
+      }).open();
+  }
+
+  

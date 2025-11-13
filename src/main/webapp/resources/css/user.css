@@ -598,3 +598,43 @@ select.input {
 }
 
 .plain-text { font-weight: 600; }
+
+
+
+/* 주소 입력 라인 전체 래퍼 */
+.address-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 주소 검색 버튼 스타일 */
+.address-btn {
+    background: linear-gradient(135deg, #ff7a18, #ff9a44); /* 오렌지 그라데이션 */
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0 18px;
+    height: 2.5rem; /* Bulma input과 동일한 높이 */
+		font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+    box-shadow: 0 2px 6px rgba(255, 122, 24, 0.3);
+}
+
+/* hover 효과 */
+.address-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(255, 122, 24, 0.4);
+}
+
+/* active 효과 */
+.address-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(255, 122, 24, 0.3);
+}
+
+
+
