@@ -11,7 +11,6 @@
 <!-- user.css 뒤에 recover.css (우선순위 중요) -->
 <link href="${ctx}/resources/css/user.css" rel="stylesheet" />
 <link href="${ctx}/resources/css/recover.css" rel="stylesheet" />
-<link href="${ctx}/resources/css/header.css" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>

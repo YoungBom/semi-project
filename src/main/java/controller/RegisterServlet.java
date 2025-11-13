@@ -29,13 +29,17 @@ public class RegisterServlet extends HttpServlet {
         String userId   = req.getParameter("user_id");
         String pw       = req.getParameter("user_pw");
         String email    = req.getParameter("email");
+        String emailLocal = req.getParameter("emailLocal");
         String phone    = req.getParameter("phone");
         String birthStr = req.getParameter("birth"); // yyyy-MM-dd
         String gender   = req.getParameter("gender");
         String name     = req.getParameter("name");
         String nickname = req.getParameter("nickname");
         String address  = req.getParameter("address");
-
+        String detailAddress = req.getParameter("detailAddress");
+        
+        String fullAddress = address + " " + detailAddress ;
+        
         // 1) 필수값 체크
         if (userId == null || userId.isBlank()
                 || pw == null || pw.length() < 8
@@ -52,6 +56,12 @@ public class RegisterServlet extends HttpServlet {
             req.setAttribute("error", "닉네임은 8자 이하만 가능합니다.");
             req.getRequestDispatcher("/user/register.jsp").forward(req, resp);
             return;
+        }
+        
+        if (emailLocal.length() > 20 ) {
+        	req.setAttribute("error", "이메일은 20자 이하만 가능합니다.");
+        	req.getRequestDispatcher("/user/register.jsp").forward(req, resp);
+        	return;
         }
         
         
@@ -92,7 +102,7 @@ public class RegisterServlet extends HttpServlet {
         u.setGender(gender);
         u.setName(name);
         u.setNickname(nickname);
-        u.setAddress(address);
+        u.setAddress(fullAddress);
         u.setRole(role);
 
         try {

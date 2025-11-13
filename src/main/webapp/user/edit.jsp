@@ -44,7 +44,7 @@
 <div class="form-row two">
   <div>
     <label class="form-label" for="emailLocal">이메일</label>
-    <input id="emailLocal" class="input" type="text" placeholder="example"
+    <input name="emailLocal" id="emailLocal" class="input" type="text" placeholder="example"
            value="${fn:split(user.email,'@')[0]}" autocomplete="off">
   </div>
 
