@@ -1,6 +1,7 @@
 package dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class BoardDTO {
 	private int boardId;
@@ -99,6 +100,16 @@ public class BoardDTO {
 
 	public void setWriterNickname(String writerNickname) {
 		this.writerNickname = writerNickname;
+	}
+	
+	public String getFormattedDate() {
+	    if (createdAt == null) return "";
+	    return createdAt.format(DateTimeFormatter.ofPattern("yyyy. MM. dd"));
+	}
+
+	public String getFormattedDateTime() {
+	    if (createdAt == null) return "";
+	    return createdAt.format(DateTimeFormatter.ofPattern("yyyy. MM. dd HH:mm"));
 	}
 
 }

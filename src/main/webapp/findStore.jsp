@@ -15,7 +15,6 @@
 
 <!-- ✅ main.css -->
 <link href="${pageContext.request.contextPath}/resources/css/findStore.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
 
 <!-- ✅ 카카오 지도 SDK -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2890edbb91db82862429679da4bd158c&libraries=services"></script>

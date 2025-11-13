@@ -1,0 +1,168 @@
+@charset "UTF-8";
+
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fffaf0;
+    color: #333;
+    padding-top: 70px;
+    box-sizing: border-box;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+}
+
+.navbar .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;            /* 줄바꿈 절대 금지 */
+  gap: 20px;
+  padding: 0 30px;
+}
+
+/* 헤더 닉네임 텍스트 오버플로우 방지 */
+.user-greeting {
+  max-width: 120px;             /* 닉네임 영역 고정폭 */
+  white-space: nowrap;          /* 줄바꿈 금지 */
+  overflow: hidden;             /* 넘치는 부분 숨김 */
+  text-overflow: ellipsis;      /* ... 표시 */
+  display: inline-block;
+  vertical-align: middle;
+  cursor: help; /* 커서 모양 변경 → '도움말' 느낌 */
+}
+
+/* 검색창과 버튼 간격 보정 */
+.navbar .form-control {
+  min-width: 150px;
+  max-width: 200px;
+}
+
+/* ======================================= */
+/* ✅ 네비게이션 메뉴 hover 색상 변경 */
+/* ======================================= */
+.navbar-nav .nav-link {
+  color: #333; /* 기본 글씨색 유지 */
+  transition: color 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #ff0000 !important; /* 호버 시 빨간색으로 변경 */
+}
+
+
+
+
+
+/* 메뉴 링크 */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+  font-weight: 600;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-links a {
+  font-size: 20px;
+  text-decoration: none;
+  color: #333;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #ff6600;
+}
+
+/* 검색창 */
+.search-form {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  height: 38px;
+  flex-shrink: 0;
+}
+
+.search-form:focus-within {
+  border-color: #ff6600;
+  box-shadow: 0 0 5px rgba(255, 102, 0, 0.4);
+}
+
+.search-input {
+  padding: 8px 14px;
+  border: none;
+  outline: none;
+  font-size: 0.9rem;
+  background-color: transparent;
+  width: 160px;
+}
+
+.search-btn {
+  border: none;
+  background: transparent;
+  color: #ff6600;
+  font-size: 1.1rem;
+  padding: 0 10px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.search-btn:hover {
+  color: #e65500;
+}
+
+
+/* ======================================= */
+/* ✅ 헤더 반응형 확장 - 기존 디자인 유지 버전 */
+/* ======================================= */
+
+/* 1170px 이하 - 간격 조정 */
+@media (max-width: 1170px) {
+  .navbar .container {
+    flex-wrap: wrap;
+    justify-content: center;
+    height: auto;
+    padding: 12px 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar .container {
+    flex-direction: column;
+    align-items: center;
+  }
+ 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

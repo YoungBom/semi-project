@@ -1,0 +1,24 @@
+@charset "UTF-8";
+/* 메뉴에 필터 버튼 */
+.filter-btn {
+  background-color: transparent;
+  border: 2px solid #ff9500;
+  color: #ff9500;
+  font-weight: 600;
+  border-radius: 25px;
+  padding: 6px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.filter-btn:hover {
+  background-color: #ff9500;
+  color: white;
+}
+
+.filter-btn.active {
+  background-color: #ff9500;
+  color: white;
+  box-shadow: 0 2px 8px rgba(255, 149, 0, 0.4);
+}

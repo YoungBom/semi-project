@@ -179,11 +179,6 @@
 			
 			<!-- 역할 값: 기본 USER -->
 			<input type="hidden" name="role" id="role" value="USER"/>
-
-			<div class="actions center">
-  			
-  			<button type="button" id="btnMakeAdmin" class="btn-outline">관리자 계정 만들기</button>
-			</div>
 			</form>
 			</main>
 
