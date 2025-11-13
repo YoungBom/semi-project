@@ -15,7 +15,7 @@
 </head>
 <body>
 	<%@ include file="/include/header.jsp" %>
-  <main class="auth-wrap">
+  <main class="auth-wrap pt-5">
     <h1 class="auth-title">🍔 로그인</h1>
 
     <c:if test="${not empty error}">
