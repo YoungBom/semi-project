@@ -316,9 +316,9 @@
 
   <% } else if (isAdmin) { %>
     <!-- 🟣 관리자 -->
-    <span class="me-2 user-greeting text-nowrap">
-      <%= (userNickName == null ? "관리자" : "관리자" + userNickName) %>님
-    </span>
+		<span class="me-2 user-greeting text-nowrap">
+		  <span class="text-primary">관리자</span><%= (userNickName == null ? "" : userNickName) %>님
+		</span>
 
     <!-- 마이페이지 / 로그아웃 드롭다운 -->
     <div class="user-dropdown position-relative">
