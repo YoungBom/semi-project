@@ -61,14 +61,14 @@
                       <option value="user" >user</option>
                       <option value="admin" >admin</option>
                     </select>
-                    <a href="#" id="roleController-${user.id}" class="btn btn-outline-success btn-sm disabled" aria-disabled="true">
+                    <a href="${pageContext.request.contextPath}/user/authorize?id=${user.id}" id="roleController-${user.id}" class="btn btn-outline-success btn-sm disabled" aria-disabled="true">
    					<i class="bi bi-check-circle"></i>
 					</a>
                   </div>
                 </td>
                 <td>
                   <a class="btn btn-outline-primary btn-sm" onclick="changeUser(${user.id})"><i class="bi bi-pencil">수정</i></a>
-                  <a href="#" class="btn btn-outline-danger btn-sm"><i class="bi bi-pencil">삭제</i></a>
+                  <a href="${pageContext.request.contextPath}/user/deletefromadmin?userId=${user.userId}" class="btn btn-outline-danger btn-sm"><i class="bi bi-pencil">삭제</i></a>
                 </td>
               </tr>
             </c:forEach>
