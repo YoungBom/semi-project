@@ -29,6 +29,7 @@ public class RegisterServlet extends HttpServlet {
         String userId   = req.getParameter("user_id");
         String pw       = req.getParameter("user_pw");
         String email    = req.getParameter("email");
+        String emailLocal = req.getParameter("emailLocal");
         String phone    = req.getParameter("phone");
         String birthStr = req.getParameter("birth"); // yyyy-MM-dd
         String gender   = req.getParameter("gender");
@@ -52,6 +53,12 @@ public class RegisterServlet extends HttpServlet {
             req.setAttribute("error", "닉네임은 8자 이하만 가능합니다.");
             req.getRequestDispatcher("/user/register.jsp").forward(req, resp);
             return;
+        }
+        
+        if (emailLocal.length() > 20 ) {
+        	req.setAttribute("error", "이메일은 20자 이하만 가능합니다.");
+        	req.getRequestDispatcher("/user/register.jsp").forward(req, resp);
+        	return;
         }
         
         

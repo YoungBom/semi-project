@@ -84,6 +84,7 @@
 				<label class="label" for="emailLocal">이메일(*)</label>
 				<div style="display: flex; gap: 10px; align-items: center; width: 100%;">
 					<input class="input"
+                           name="emailLocal"
                            id="emailLocal"
                            type="text"
 						   placeholder="example" required style="flex: 1 1 0;"
@@ -103,6 +104,7 @@
 				<input type="hidden" id="email" name="email"> <small
 					id="emailStatus" class="hint"></small>
 			</div>
+
 
 			<!-- 이름 -->
 			<div class="field">
