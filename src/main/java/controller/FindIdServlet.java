@@ -65,7 +65,7 @@ public class FindIdServlet extends HttpServlet {
 			}
 			String phoneDigits = phone.replaceAll("[^0-9]", "");
 
-			Optional<UserDTO> uOpt = userDao.findByPhone(phoneDigits);
+			Optional<UserDTO> uOpt = userDao.findByPhoneOnly(phoneDigits);
 			if (uOpt.isEmpty()) {
 				req.setAttribute("error", "일치하는 회원 정보를 찾을 수 없습니다.");
 				forward(req, resp, "/user/find_id.jsp");
