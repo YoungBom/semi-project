@@ -25,21 +25,21 @@
 	  <div class="page-header mb-5">
 	      <h2>회원 관리</h2>
 	  </div>
-	  
-	  <div class="container user-container mb-5">
-    
-      <form action="${pageContext.request.contextPath}/user/management" method="get" class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="fw-bold">회원 목록</h5>
-        <div class="input-group w-25">
-          <input type="text" name="keyword" class="form-control form-control-sm" placeholder="회원 검색...">
-          <button type="submit" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-search"></i>
-          </button>
-        </div>
-      </form>
+	  <div>
+      <h4 class="fw-semibold container mb-5">회원 목록</h4>	  
+	  </div>
+	  <div class="container user-container mb-5 position-relative">
+        <form action="${pageContext.request.contextPath}/user/management" method="get" class="d-flex justify-content-between align-items-center position-relative mb-3">
+            <div class="input-group w-25 position-absolute top-0 end-0">
+              <input type="text" name="keyword" class="form-control form-control-sm" placeholder="회원 검색...">
+              <button type="submit" class="btn btn-outline-secondary btn-sm">
+              <i class="bi bi-search"></i>
+              </button>
+            </div>
+        </form>
 	  
 	  <div class="table-responsive">
-        <table class="table table-hover align-middle text-center shadow-sm">
+        <table class="table table-hover align-middle text-center shadow-sm ">
           <thead class="table-warning">
             <tr>
               <th scope="col">회원번호</th>
