@@ -10,12 +10,11 @@ import java.io.IOException;
 
 @WebServlet("/user/delete")
 public class UserDeleteServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
     private final UserDAO dao = new UserDAO();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws IOException {
 
         resp.setContentType("text/plain; charset=UTF-8");
         HttpSession session = req.getSession(false);
@@ -25,14 +24,17 @@ public class UserDeleteServlet extends HttpServlet {
             return;
         }
 
-        // ✅ 세션에서 로그인 아이디 가져오기
-        String userId = (String) session.getAttribute(SessionKeys.LOGIN_USERID);
-        if (userId == null || userId.isEmpty()) {
-            resp.getWriter().write("NO_USER");
+        String sessionUserId = (String) session.getAttribute(SessionKeys.LOGIN_USERID);
+        String inputId = req.getParameter("inputId");
+        
+        
+        // 🔥 입력값이 세션의 userId와 일치하는지 확인
+        if (inputId == null || !inputId.equals(sessionUserId)) {
+            resp.getWriter().write("WRONG_ID");
             return;
         }
 
-        boolean deleted = dao.deleteUserById(userId);
+        boolean deleted = dao.deleteUserById(sessionUserId);
 
         if (deleted) {
             session.invalidate();

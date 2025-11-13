@@ -40,12 +40,23 @@ public class RegisterServlet extends HttpServlet {
         if (userId == null || userId.isBlank()
                 || pw == null || pw.length() < 8
                 || email == null || email.isBlank()
-                || name == null || name.isBlank()) {
+                || name == null || name.isBlank()
+                || nickname == null || nickname.isBlank()) {
             req.setAttribute("error", "필수값을 확인하세요. (비밀번호 8자 이상)");
             req.getRequestDispatcher("/user/register.jsp").forward(req, resp);
             return;
         }
-
+        
+        // 2) 닉네임 유효성 길이 검사
+        if (nickname.length() > 8) {
+            req.setAttribute("error", "닉네임은 8자 이하만 가능합니다.");
+            req.getRequestDispatcher("/user/register.jsp").forward(req, resp);
+            return;
+        }
+        
+        
+        
+        
         // 2) 중복 체크
         if (dao.existsByLoginId(userId) || dao.existsByEmail(email)) {
             req.setAttribute("error", "이미 사용 중인 아이디/이메일입니다.");
