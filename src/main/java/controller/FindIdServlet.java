@@ -122,12 +122,12 @@ public class FindIdServlet extends HttpServlet {
 	}
 
 	private String maskLoginId(String id) {
-		if (id == null || id.length() < 3)
-			return "***";
-		int keep = Math.min(3, id.length());
-		StringBuilder sb = new StringBuilder(id.substring(0, keep));
-		for (int i = keep; i < id.length(); i++)
-			sb.append('*');
-		return sb.toString();
+	    // 아이디가 없거나 비어 있으면 표시용 텍스트 리턴
+	    if (id == null || id.isBlank()) {
+	        return "***";
+	    }
+
+	    // 이제는 마스킹 없이 전체 아이디를 그대로 보여줌
+	    return id;
 	}
 }
