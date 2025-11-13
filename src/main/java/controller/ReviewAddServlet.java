@@ -53,22 +53,8 @@ public class ReviewAddServlet extends HttpServlet {
 		            break;
 		    }
 		}
-		/* 아래코드 안먹힘
-		 * try { idParam = req.getParameter("burgerId");
-		 * 
-		 * // 그래도 null이라면 수동으로 파트 탐색 if (idParam == null || idParam.isEmpty()) { Part
-		 * idPart = req.getPart("burgerId"); if (idPart != null) { idParam = new
-		 * String(idPart.getInputStream().readAllBytes(), "UTF-8");
-		 * System.out.println(idParam); } }
-		 * 
-		 * if (idParam == null || idParam.isEmpty()) {
-		 * System.out.println("❌ burgerId 누락 — main으로 리다이렉트됨");
-		 * resp.sendRedirect("main.jsp"); return; }
-		 * 
-		 * } catch (Exception e) { e.printStackTrace(); resp.sendRedirect("main.jsp");
-		 * return; }
-         * int burgerId = Integer.parseInt(idParam);
-		 */
+		
+		
 		
 		// 로그인 후  userId 값 가져오기
 		HttpSession us = req.getSession();
@@ -117,7 +103,9 @@ public class ReviewAddServlet extends HttpServlet {
 		            if ("images".equals(part.getName()) &&
 		                part.getSubmittedFileName() != null &&
 		                part.getSize() > 0) {
+		            	
 
+		                
 		                hasValidImage = true; // 실제 이미지 있음
 		                ReviewImageDTO ri = new ReviewImageDTO();
 

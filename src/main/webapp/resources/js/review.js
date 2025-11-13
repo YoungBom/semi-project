@@ -171,3 +171,35 @@ document.addEventListener("DOMContentLoaded", () => {
 	  form.submit();
 	  return true;
 	}
+	
+	
+	function checkForm(e) {
+	  const fileInput = document.getElementById("image");
+	  const files = fileInput.files;
+	  const allowed = ["jpg", "jpeg", "png", "gif"];
+
+	  // ❗이미지 0개인 경우 → 그냥 통과 (리뷰만 올라가도 됨)
+	  if (files.length === 0) {
+	    return true;
+	  }
+
+	  // 🔍 이미지가 하나라도 있을 때는 확장자 검증
+	  for (let file of files) {
+	    const ext = file.name.split(".").pop().toLowerCase();
+
+	    if (!allowed.includes(ext)) {
+	      alert("허용되지 않은 파일 형식입니다.\n(jpg, jpeg, png, gif만 업로드 가능합니다)");
+	      fileInput.value = "";    // 잘못 올린 파일 초기화
+	      e.preventDefault();      // 리뷰 등록 막기
+	      return false;
+	    }
+	  }
+
+	  // ✅ 여기까지 왔다는 건
+	  // - 이미지가 없거나
+	  // - 이미지가 전부 허용 확장자
+	  // → 리뷰 등록 허용
+	  return true;
+	}
+
+

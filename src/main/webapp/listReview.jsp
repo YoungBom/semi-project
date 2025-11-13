@@ -52,7 +52,9 @@
 						<!-- 이미지 영역 (고정 높이) -->
 				        <div class="d-flex flex-wrap mb-3 gap-2">
 							<c:forEach var="img" items="${review.imageList}">
-								<img src="${pageContext.request.contextPath}/image/${img}" class="review-img" alt="리뷰 이미지">
+								<img src="${pageContext.request.contextPath}/image/${img}" class="review-img" alt="리뷰 이미지"
+								style="cursor:pointer;"
+         				 		onclick="showImageModal('${pageContext.request.contextPath}/image/${img}')">
 							</c:forEach>
 						</div>
 				
@@ -73,7 +75,7 @@
 									</a>
 								</div>							
 								<div>
-									<a href="#" class="btn btn-outline-success btn-sm my-1 me-1" onclick="openUpdateModal(event, ${record.id}, ${record.burgerId}, '${fn:escapeXml(record.content)}', ${record.rating}, '${record.imageList}')">
+									<a href="javascript:void(0)" class="btn btn-outline-success btn-sm my-1 me-1" onclick="openUpdateModal(event, ${review.id}, ${review.burgerId}, '${fn:escapeXml(review.content)}', ${review.rating}, '${review.imageList}')">
 										<i class="bi bi-pencil"></i> 수정
 									</a>
 								</div>
@@ -85,69 +87,81 @@
 							</div>
 						</div>
 						
-						<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
-						  <div class="modal-dialog modal-lg modal-dialog-centered">
-						    <div class="modal-content">
-				              <div class="modal-header">
-				                <h5 class="modal-title" id="reviewModalLabel">리뷰 수정</h5>
-				                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
-				              </div>
-				
-						      <div class="modal-body">
-				                <form action="${pageContext.request.contextPath}/review/update?burgerId=${review.burgerId}&reviewId=${review.id}"
-						              method="post"
-						              enctype="multipart/form-data"
-						              class="comment-form">
-							          <div class="mb-3">
-							            <label class="form-label">닉네임</label>
-							            <input type="text" class="form-control" value="${LOGIN_NICKNAME}" readonly>
-							          </div>
-							
-							          <div class="mb-3">
-							            <label for="content" class="form-label">댓글</label>
-							            <textarea class="form-control" id="content" name="content" rows="5" placeholder="댓글을 입력하세요"></textarea>
-							          </div>
-							
-							          <div class="mb-3">
-							            <label for="image" class="form-label">이미지 업로드</label>
-							            <input type="file" class="form-control" id="image" name="images" multiple>
-							          </div>
-							          
-									  <div class="mb-3 text-end mt-1">
-									  <input type="hidden" name="imageCheck" id="imageCheck" value="false">
-									  <input type="text" id="oldImageName" class="form-control mt-2" readonly style="display:none;">
-									  <button type="button"
-									    class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-1"
-									    id="oldImageButtonContainer"
-									    style="display:none;"
-									    onclick="checkImg()">
-									    기존 이미지 등록
-									  </button>
-									  </div>
-							
-							          <div class="mb-3">
-							            <label for="rating" class="form-label">별점</label>
-							            <input type="text" class="form-control" id="rating" name="rating" placeholder="별점을 입력하세요(0~5)" required>
-							          </div>
-							
-							          <div class="text-end">
-							            <button type="submit" class="btn btn-warning rounded-3" onclick="return checkForm(event)">수정 완료</button>
-							          </div>
-						        </form>
-				              </div>
-				            </div>
-				          </div>
-				        </div>
 			    	</div>
 			    </div>
 			</c:forEach>
 		  </div>
 	</c:otherwise>
   </c:choose>
+  <!-- 수정 모달 창 -->
+  <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="reviewModalLabel">리뷰 수정</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+              </div>
 
+        <div class="modal-body">
+          <form action="${pageContext.request.contextPath}/review/update?burgerId=${review.burgerId}&reviewId=${review.id}&redirect=${pageContext.request.requestURI}"
+            method="post"
+            enctype="multipart/form-data"
+            class="comment-form">
+           <div class="mb-3">
+             <label class="form-label">닉네임</label>
+             <input type="text" class="form-control" value="${LOGIN_NICKNAME}" readonly>
+           </div>
+
+	       <div class="mb-3">
+	         <label for="content" class="form-label">댓글</label>
+	         <textarea class="form-control" id="content" name="content" rows="5" placeholder="댓글을 입력하세요"></textarea>
+	       </div>
+
+	       <div class="mb-3">
+	         <label for="image" class="form-label">이미지 업로드</label>
+	         <input type="file" class="form-control" id="image" name="images" multiple>
+	       </div>
+       
+		   <div class="mb-3 text-end mt-1">
+		     <input type="hidden" name="imageCheck" id="imageCheck" value="false">
+		     <input type="text" id="oldImageName" class="form-control mt-2" readonly style="display:none;">
+		     <button type="button"
+		       class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-1"
+		       id="oldImageButtonContainer"
+		       style="display:none;"
+		       onclick="checkImg()">
+		       기존 이미지 등록
+		    </button>
+		   </div>
+
+	       <div class="mb-3">
+	         <label for="rating" class="form-label">별점</label>
+	         <input type="text" class="form-control" id="rating" name="rating" placeholder="별점을 입력하세요(0~5)" required>
+	       </div>
+
+	       <div class="text-end">
+	         <button type="submit" class="btn btn-warning rounded-3" onclick="return checkForm(event)">수정 완료</button>
+	       </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 이미지 클릭시 모달창으로 띄우기 -->
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0 shadow-none">
+        <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+                data-bs-dismiss="modal" aria-label="Close"></button>
+        <img id="modalImage" src="" alt="리뷰 이미지" class="img-fluid rounded shadow">
+      </div>
+    </div>
+  </div>
 </main>
 
 <%@ include file="/include/footer.jsp" %>
+
+<script src="${pageContext.request.contextPath}/resources/js/reviewList.js"></script>
 
 </body>
 </html>

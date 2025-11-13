@@ -31,8 +31,7 @@ public class ReviewDeleteServlet extends HttpServlet {
 		int result = reviewDao.deleteReview(burgerId, reviewId);
 		
 		if (result > 0) {
-			List<ReviewDTO> reviewAllList = reviewDao.listUpReview(userId);
-			req.setAttribute("reviewAllList", reviewAllList);
+			
 		}
 		
 		if (redirect != null && !redirect.isEmpty()) { // redirect 지정값(마이페이지에서 삭제한 경우)이 있는 경우 mypage로
