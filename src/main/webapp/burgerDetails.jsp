@@ -260,7 +260,10 @@
                 <c:forEach var="img" items="${record.imageList}">
                   <c:if test="${not empty fn:trim(img)}">
                     <img src="${pageContext.request.contextPath}/image/${img}" 
-                         alt="리뷰 이미지" class="review-img">
+                         alt="리뷰 이미지" 
+                         class="review-img"
+                         style="cursor:pointer;"
+         				 onclick="showImageModal('${pageContext.request.contextPath}/image/${img}')">
                   </c:if>
                 </c:forEach>
               </div>
@@ -271,7 +274,19 @@
       </div>
     </div>
   </div>
+  
+  <!-- 이미지 클릭시 모달창으로 띄우기 -->
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0 shadow-none">
+        <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+                data-bs-dismiss="modal" aria-label="Close"></button>
+        <img id="modalImage" src="" alt="리뷰 이미지" class="img-fluid rounded shadow">
+      </div>
+    </div>
+  </div>
 </main>
+
 
 <!-- ✅ 푸터 -->
 <%@ include file="/include/footer.jsp" %>
