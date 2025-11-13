@@ -189,11 +189,61 @@ ALTER TABLE `user`
   ADD COLUMN `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP AFTER `role`,
   ADD COLUMN `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE    CURRENT_TIMESTAMP AFTER `created_at`;
 
-CREATE TABLE IF NOT EXISTS remember_me (
-  id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT NOT NULL,
-  token VARCHAR(64) NOT NULL UNIQUE,
-  expires_at DATETIME NOT NULL,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES `user`(id) ON DELETE CASCADE
-);
+CREATE TABLE `board` (
+    `board_id` int NOT NULL AUTO_INCREMENT,
+    `title` varchar(200) NOT NULL,
+    `content` mediumtext,
+    `writer_id` varchar(50) NOT NULL,
+    `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `view_count` int DEFAULT '0',
+    `category` varchar(30) DEFAULT '자유',
+    `writer_nickname` varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`board_id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 14 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+
+CREATE DATABASE IF NOT EXISTS semi_project DEFAULT CHARACTER SET utf8mb4;
+USE semi_project;
+CREATE TABLE IF NOT EXISTS security_question (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  question_text VARCHAR(255) NOT NULL,
+  active TINYINT(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT IGNORE INTO security_question (id, question_text, active) VALUES
+  (1, '가장 기억에 남는 초등학교 선생님 성함은?', 1),
+  (2, '처음 키운 반려동물의 이름은?', 1),
+  (3, '내가 가장 좋아하는 도시 이름은?', 1),
+  (4, '어머니의 출생지는?', 1),
+  (5, '내가 처음으로 다닌 회사 이름은?', 1);
+  
+  CREATE TABLE IF NOT EXISTS user_security_qa (
+  user_id INT NOT NULL PRIMARY KEY,
+  question_id INT NOT NULL,
+  answer_hash VARCHAR(255) NOT NULL,
+  updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+SHOW TABLES;
+SELECT * FROM security_question ORDER BY id;
+DESC user_security_qa;
+DESC security_qa;
+ALTER TABLE `security_qa` RENAME TO `user_security_qa`;
+
+-- 확인 사항 --
+USE semi_project;
+DESC user_security_qa;           -- 컬럼: user_id, question_id, answer_hash, updated_at
+SELECT id, question_text FROM security_question ORDER BY id;  -- 시드 확인
+SHOW CREATE TABLE user_security_qa;
+
+CREATE TABLE IF NOT EXISTS security_qa (
+  user_id     INT          NOT NULL PRIMARY KEY,
+  question_id TINYINT      NOT NULL,
+  question_tx VARCHAR(200) NULL,
+  answer_hash VARCHAR(255) NOT NULL,
+  created_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_security_qa_user     FOREIGN KEY (user_id)     REFERENCES `user`(id) ON DELETE CASCADE,
+  CONSTRAINT fk_security_qa_question FOREIGN KEY (question_id) REFERENCES security_question(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
