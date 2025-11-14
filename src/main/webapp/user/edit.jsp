@@ -91,7 +91,6 @@
           <select id="gender" class="input" name="gender">
             <option value="남" <c:if test="${user.gender eq '남'}">selected</c:if>>남성</option>
             <option value="여" <c:if test="${user.gender eq '여'}">selected</c:if>>여성</option>
-            <option value="선택안함" <c:if test="${user.gender eq '선택안함'}">selected</c:if>>선택안함</option>
           </select>
         </div>
       </div>

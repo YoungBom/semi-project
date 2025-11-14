@@ -124,7 +124,6 @@
 					<option value="" selected disabled>선택</option>
 					<option value="남">남성</option>
 					<option value="여">여성</option>
-					<option value="기타">기타/응답하지 않음</option>
 				</select>
 			</div>
 

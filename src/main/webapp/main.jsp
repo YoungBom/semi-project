@@ -81,7 +81,9 @@
 	    </c:forEach>
 	  </div>
 	</div>
-
+  
 	<%@ include file="/include/footer.jsp" %>
+  
+
 </body>
 </html>

@@ -217,7 +217,7 @@
   </div>
   <div class="board-page">
     <div class="board-container">
-      <h2>이 자리에 뭘 적을까요</h2>
+      <h2>공지사항/업데이트</h2>
       <div class="text-end mb-3">
         <c:choose>
           <c:when test="${not empty sessionScope.LOGIN_UID}">
