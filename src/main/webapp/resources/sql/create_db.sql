@@ -209,8 +209,7 @@ CREATE TABLE IF NOT EXISTS security_question (
   id INT AUTO_INCREMENT PRIMARY KEY,
   question_text VARCHAR(255) NOT NULL,
   active TINYINT(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
+);
 INSERT IGNORE INTO security_question (id, question_text, active) VALUES
   (1, '가장 기억에 남는 초등학교 선생님 성함은?', 1),
   (2, '처음 키운 반려동물의 이름은?', 1),
@@ -218,32 +217,29 @@ INSERT IGNORE INTO security_question (id, question_text, active) VALUES
   (4, '어머니의 출생지는?', 1),
   (5, '내가 처음으로 다닌 회사 이름은?', 1);
   
-  CREATE TABLE IF NOT EXISTS user_security_qa (
-  user_id INT NOT NULL PRIMARY KEY,
-  question_id INT NOT NULL,
-  answer_hash VARCHAR(255) NOT NULL,
-  updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-SHOW TABLES;
-SELECT * FROM security_question ORDER BY id;
-DESC user_security_qa;
-DESC security_qa;
-ALTER TABLE `security_qa` RENAME TO `user_security_qa`;
-
--- 확인 사항 --
-USE semi_project;
-DESC user_security_qa;           -- 컬럼: user_id, question_id, answer_hash, updated_at
-SELECT id, question_text FROM security_question ORDER BY id;  -- 시드 확인
-SHOW CREATE TABLE user_security_qa;
-
-CREATE TABLE IF NOT EXISTS security_qa (
+CREATE TABLE IF NOT EXISTS security_answer (
   user_id     INT          NOT NULL PRIMARY KEY,
-  question_id TINYINT      NOT NULL,
+  question_id INT      NOT NULL,
   question_tx VARCHAR(200) NULL,
   answer_hash VARCHAR(255) NOT NULL,
   created_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   CONSTRAINT fk_security_qa_user     FOREIGN KEY (user_id)     REFERENCES `user`(id) ON DELETE CASCADE,
   CONSTRAINT fk_security_qa_question FOREIGN KEY (question_id) REFERENCES security_question(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
+
+
+CREATE TABLE `burger` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `user_id` int DEFAULT NULL,
+    `name` varchar(255) NOT NULL,
+    `price` int NOT NULL DEFAULT '0',
+    `image_path` longtext,
+    `brand` varchar(255) DEFAULT NULL,
+    `patty_type` enum('치킨', '비프', '기타') DEFAULT NULL,
+    `is_new` tinyint(1) DEFAULT '0',
+    PRIMARY KEY (`id`),
+    KEY `burger_ibfk_1` (`user_id`),
+    CONSTRAINT `burger_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL
+);
+
