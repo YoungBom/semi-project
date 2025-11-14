@@ -233,4 +233,71 @@ public class ReviewDAO {
 	    }
 	    return reviewList;
 	}
+	
+	public List<ReviewDTO> getReviewByBrand(int userId, String brandType) {
+		Connection conn = DBUtil.getConnection();
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    List<ReviewDTO> reviewList = new ArrayList<ReviewDTO>();
+	    
+	    try {
+	    	String sql = "SELECT r.id as id, "
+	    			+ "burger_id, "
+	    			+ "b.name as burger_name, "
+	    			+ "b.brand as brand_name, "
+	    			+ "u.id as user_id, "
+	    			+ "u.name as user_name, "
+	    			+ "r.rating, r.content, u.nickname, r.created_at, r.updated_at, "
+	    			+ "GROUP_CONCAT(ri.image_path) AS image_list "
+	    			+ "FROM review r "
+	    			+ "JOIN burger b ON r.burger_id = b.id "
+	    			+ "JOIN user u ON r.user_id = u.id "
+	    			+ "LEFT JOIN review_image ri ON r.id = ri.review_id "
+	    			+ "WHERE r.user_id = ? ";
+	    			
+	    			if (brandType != null && !brandType.trim().isEmpty()) {
+	    		        sql += "AND b.brand LIKE ? ";
+	    		    }
+	    			sql += "GROUP BY r.id "
+	    			+ "ORDER BY r.updated_at";
+			pstmt = conn.prepareStatement(sql);			
+			pstmt.setInt(1, userId);
+			if (brandType != null && !brandType.trim().isEmpty()) {
+	            pstmt.setString(2, "%" + brandType.trim() + "%");
+	        }
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ReviewDAO reviewDao = new ReviewDAO();
+				ReviewDTO review = new ReviewDTO();
+				
+				review.setId(rs.getInt("id"));
+				review.setBurgerId(rs.getInt("burger_id"));
+				review.setburgerName(rs.getString("burger_name"));
+				review.setBrand(rs.getString("brand_name"));
+				review.setUserId(rs.getInt("user_id"));
+				review.setUserName(rs.getString("user_name"));
+				review.setRating(rs.getDouble("rating"));
+				review.setContent(rs.getString("content"));
+				review.setNickname(rs.getString("nickname"));
+				review.setCreatedAt(rs.getTimestamp("created_at"));
+				review.setUpdatedAt(rs.getTimestamp("updated_at"));
+				
+				// 이미지 문자열을 리스트로 변환
+				// 여러장으로 묶인 이미지 문자열을 배열에 나눠서 저장하기
+	            String imagePathsStr = rs.getString("image_list");
+	            if (imagePathsStr != null && !imagePathsStr.isEmpty()) {
+	                review.setImageList(Arrays.asList(imagePathsStr.split(",")));
+	            } else {
+	                review.setImageList(new ArrayList<>());
+	            }
+				
+				reviewList.add(review);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return reviewList;
+	}
+	
 }

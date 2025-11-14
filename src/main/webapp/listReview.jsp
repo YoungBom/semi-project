@@ -15,7 +15,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 	<link href="${pageContext.request.contextPath}/resources/css/reviewList.css" rel="stylesheet">
-
+	<link href="${pageContext.request.contextPath}/resources/css/menu.css" rel="stylesheet">
 </head>
 <body data-is-logged-in="${not empty sessionScope.LOGIN_UID}" 
   	  data-ctx="${pageContext.request.contextPath}">
@@ -23,17 +23,25 @@
 
 <main class="container py-5">
   <h2 class="fw-bold mb-4 text-center">🍔 내 리뷰 목록</h2>
+  
+  <!-- 필터 버튼 -->
+  <div class="d-flex justify-content-center gap-2 mb-5">
+  <a href="${pageContext.request.contextPath}/review/filter?type=All" class="btn btn-warning rounded-pill px-4 fw-semibold filter-btn btn-sm ${empty param.type || param.type == 'All' ? 'active' : ''}">전체</a>
+  <a href="${pageContext.request.contextPath}/review/filter?type=버거킹" class="btn btn-outline-warning rounded-pill px-4 fw-semibold filter-btn btn-sm ${param.type == '버거킹' ? 'active' : ''}">버거킹</a>
+  <a href="${pageContext.request.contextPath}/review/filter?type=맥도날드" class="btn btn-outline-warning rounded-pill px-4 fw-semibold filter-btn btn-sm ${param.type == '맥도날드' ? 'active' : ''}">맥도날드</a>
+  <a href="${pageContext.request.contextPath}/review/filter?type=롯데리아" class="btn btn-outline-warning rounded-pill px-4 fw-semibold filter-btn btn-sm ${param.type == '롯데리아' ? 'active' : ''}">롯데리아</a>    
+  </div>
 
   <!-- 리뷰가 없을 때 -->
   <c:choose>
-  	<c:when test="${empty reviewAllList}">
+  	<c:when test="${empty reviewList}">
 		<div class="alert alert-secondary text-center">
 			아직 작성한 리뷰가 없습니다 😢
 		</div>
 	</c:when>
 	<c:otherwise>
 		  <div class="row row-cols-1 row-cols-md-2 g-4">
-			<c:forEach var="review" items="${reviewAllList}">
+			<c:forEach var="review" items="${reviewList}">
 			    <!-- 리뷰 카드  -->
 			    <div class="col">
 			    	<!-- 카드 전체가 같은 높이를 유지하도록 -->
@@ -42,7 +50,7 @@
 				        <div class="d-flex align-items-center mb-3">
 				          <div class="flex-grow-1">
 				            <h5 class="mb-1 fw-bold">${review.burgerName}</h5>
-				            <small class="text-muted">${review.brand}</small>
+				            <small class="text-muted brand-name">${review.brand}</small>
 				          </div>
 				          <div class="rating fw-bold text-warning">${review.rating}</div>
 				        </div>
@@ -70,7 +78,9 @@
 							</c:choose>
 							<div class="d-flex flex-row-reverse">
 								<div>
-									<a href="/semi-project/review/delete?burgerId=${review.burgerId}&reviewId=${review.id}&redirect=${pageContext.request.requestURI}" class="btn btn-outline-danger btn-sm my-1 ">
+									<a href="/semi-project/review/delete?burgerId=${review.burgerId}&reviewId=${review.id}&redirect=${pageContext.request.requestURI}" 
+									class="btn btn-outline-danger btn-sm my-1"
+									onclick="return confirm('이 리뷰를 삭제하시겠습니까?');">
 										<i class="bi bi-trash"></i> 삭제
 									</a>
 								</div>							

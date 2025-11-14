@@ -25,9 +25,9 @@ public class ReviewListServlet extends HttpServlet {
 		
 		ReviewDAO reviewDao = new ReviewDAO();
 		// 객체 리스트로 받아오기
-		List<ReviewDTO> reviewAllList = reviewDao.listUpReview(userId);
+		List<ReviewDTO> reviewList = reviewDao.listUpReview(userId);
 
-		request.setAttribute("reviewAllList", reviewAllList);
+		request.setAttribute("reviewList", reviewList);
 		request.getRequestDispatcher("/listReview.jsp").forward(request, response);			
 	}
 
