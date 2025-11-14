@@ -56,17 +56,6 @@ function changeUser(userId) {
     btn.removeAttribute('aria-disabled');
 }
 
-function changeUser(userId) {
-    const select = document.querySelector(`#roleSelect-${userId}`);
-    const btn = document.querySelector(`#roleController-${userId}`);
-
-    if (!select || !btn) return;
-
-    select.disabled = false;
-    btn.classList.remove('disabled');
-    btn.removeAttribute('aria-disabled');
-}
-
 function checkPosition(userId) {
     const select = document.querySelector(`#roleSelect-${userId}`);
     const oldRole = select.getAttribute("data-old"); // USER only
@@ -115,12 +104,6 @@ function changeUser(userId) {
     btn.classList.remove("disabled");
     btn.removeAttribute("aria-disabled");
 }
-
-
-
-
-
-
 
 /*유저 삭제 시 관리자 확인필*/
 function checkDelete(e){

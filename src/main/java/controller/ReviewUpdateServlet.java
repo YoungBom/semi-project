@@ -132,20 +132,25 @@ public class ReviewUpdateServlet extends HttpServlet {
 		
 		 resp.setContentType("text/html; charset=UTF-8");
 		 PrintWriter out = resp.getWriter();
-		 
-		 out.println("<script>");
-		 out.println("alert('수정되었습니다!');");
-		 out.println("history.back();"); // 또는 location.href='어디로';
-		 out.println("</script>");
-		 out.close();
 		
 		// 마이페이지에서 리뷰 수정 시 redirect -> mypage로 이동
 		String redirect = req.getParameter("redirect");
 		if (redirect != null && !redirect.isEmpty()) { // redirect 지정값(마이페이지에서 수정한 경우)이 있는 경우 mypage로
-			resp.sendRedirect("/semi-project/review/list");
+			 out.println("<script>");
+			 out.println("alert('수정되었습니다!');");
+			 out.println("location.href='" + req.getContextPath() + "/review/list';");
+			 out.println("</script>");
+			 out.close();
+			 return; // ★★★ 중요! 뒤 코드 실행 못하게 종료
 		} else {
-			resp.sendRedirect("/semi-project/burger/details?id="+burgerId);			
+			out.println("<script>");
+			out.println("alert('수정되었습니다!');");
+			out.println("location.href='" + req.getContextPath() + "/burger/details?id=" + burgerId +"';");
+			out.println("</script>");
+			out.close();
 		}
+		out.println("<script>alert('삭제 실패');history.back();</script>");
+	    out.close();
 	}
 
 }
