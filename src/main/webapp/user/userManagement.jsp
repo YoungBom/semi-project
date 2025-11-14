@@ -42,7 +42,7 @@
         <table class="table table-hover align-middle text-center shadow-sm ">
           <thead class="table-warning">
             <tr>
-              <th scope="col">회원번호</th>
+              <th scope="col">아이디</th>
               <th scope="col">이름</th>
               <th scope="col">닉네임</th>
               <th scope="col">이메일</th>

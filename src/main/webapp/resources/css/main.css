@@ -102,7 +102,7 @@
 
 /* 브랜드 로고 이미지 */
 .brand-flag img {
-  height: 48px;   /* ✅ 크기 키움 */
+  height: 38px;   /* ✅ 크기 키움 */
   width: auto;
   display: block;
 }

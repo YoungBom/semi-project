@@ -21,6 +21,7 @@ body {
 }
 
 .navbar .container {
+	font-size: 17px;
   max-width: 1200px;
   margin: 0 auto;
   height: 70px;
