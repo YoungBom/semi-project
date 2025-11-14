@@ -1,4 +1,3 @@
-
 // 리뷰 수정하기 버튼 클릭시 모달창 띄우기
 function openUpdateModal(event, reviewId, content, rating, burgerId, imageList) {
   event.preventDefault();

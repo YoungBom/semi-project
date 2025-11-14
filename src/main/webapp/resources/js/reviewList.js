@@ -1,4 +1,3 @@
-
 // 리뷰 수정하기 버튼 클릭시 모달창 띄우기
 function openUpdateModal(event, reviewId, burgerId, content, rating, imageList) {
   event.preventDefault();
@@ -90,85 +89,86 @@ function showImageModal(imageUrl) {
 }
 
 window.addEventListener("pageshow", function (event) {
-	  const modalEl = document.getElementById("reviewModal");
-	  const modal = bootstrap.Modal.getInstance(modalEl);
-	  
-	  if (modal) {
-	    modal.hide(); // 모달 강제 닫기
-	  }
-	});
+  const modalEl = document.getElementById("reviewModal");
+  const modal = bootstrap.Modal.getInstance(modalEl);
+  
+  if (modal) {
+    modal.hide(); // 모달 강제 닫기
+  }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
-	  // 뒤로가기 복원 방지용
-	  const modalEl = document.getElementById("reviewModal");
-	  const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+  // 뒤로가기 복원 방지용
+  const modalEl = document.getElementById("reviewModal");
+  const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
 
-	  // ✅ sessionStorage에 표시값이 있으면 모달 닫고 제거
-	  if (sessionStorage.getItem("preventModal") === "true") {
-	    modal.hide();
-	    sessionStorage.removeItem("preventModal");
-	  }
-	});	
+  // ✅ sessionStorage에 표시값이 있으면 모달 닫고 제거
+  if (sessionStorage.getItem("preventModal") === "true") {
+    modal.hide();
+    sessionStorage.removeItem("preventModal");
+  }
+});	
 
-	function checkForm(e) {
-	  e.preventDefault();
+function checkForm(e) {
+  e.preventDefault();
 
-	  const form = document.querySelector(".comment-form");
-	  const ratingInput = form.querySelector("#rating");
-	  const contentInput = form.querySelector("#content");
+  const form = document.querySelector(".comment-form");
+  const ratingInput = form.querySelector("#rating");
+  const contentInput = form.querySelector("#content");
 
-	  const ratingValue = Number(ratingInput.value.trim());
-	  const content = contentInput.value.trim();
+  const ratingValue = Number(ratingInput.value.trim());
+  const content = contentInput.value.trim();
 
-	  // 별점 검사
-	  if (!isFinite(ratingValue) || ratingValue < 0 || ratingValue > 5) {
-	    alert("🚫 별점은 0.0 ~ 5.0 사이로 입력해주세요.");
-	    ratingInput.focus();
-	    return false;
-	  }
+  // 별점 검사
+  if (!isFinite(ratingValue) || ratingValue < 0 || ratingValue > 5) {
+    alert("🚫 별점은 0.0 ~ 5.0 사이로 입력해주세요.");
+    ratingInput.focus();
+    return false;
+  }
 
-	  // 내용 검사
-	  if (content.length === 0) {
-	    alert("✏️ 리뷰 내용을 입력해주세요.");
-	    contentInput.focus();
-	    return false;
-	  }
+  // 내용 검사
+  if (content.length === 0) {
+    alert("✏️ 리뷰 내용을 입력해주세요.");
+    contentInput.focus();
+    return false;
+  }
 
-	  if (content.length > 100) {
-	    alert("⚠️ 내용이 너무 깁니다. (최대 100자)");
-	    contentInput.focus();
-	    return false;
-	  }
+  if (content.length > 100) {
+    alert("⚠️ 내용이 너무 깁니다. (최대 100자)");
+    contentInput.focus();
+    return false;
+  }
 
-	  form.submit();
-	  return true;
-	}
+  form.submit();
+  return true;
+}
 	
-	function checkForm(e) {
-		  const fileInput = document.getElementById("image");
-		  const files = fileInput.files;
-		  const allowed = ["jpg", "jpeg", "png", "gif"];
+function checkForm(e) {
+	  const fileInput = document.getElementById("image");
+	  const files = fileInput.files;
+	  const allowed = ["jpg", "jpeg", "png", "gif"];
 
-		  // ❗이미지 0개인 경우 → 그냥 통과 (리뷰만 올라가도 됨)
-		  if (files.length === 0) {
-		    return true;
-		  }
+	  // ❗이미지 0개인 경우 → 그냥 통과 (리뷰만 올라가도 됨)
+	  if (files.length === 0) {
+	    return true;
+	  }
 
-		  // 🔍 이미지가 하나라도 있을 때는 확장자 검증
-		  for (let file of files) {
-		    const ext = file.name.split(".").pop().toLowerCase();
+	  // 🔍 이미지가 하나라도 있을 때는 확장자 검증
+	  for (let file of files) {
+	    const ext = file.name.split(".").pop().toLowerCase();
 
-		    if (!allowed.includes(ext)) {
-		      alert("허용되지 않은 파일 형식입니다.\n(jpg, jpeg, png, gif만 업로드 가능합니다)");
-		      fileInput.value = "";    // 잘못 올린 파일 초기화
-		      e.preventDefault();      // 리뷰 등록 막기
-		      return false;
-		    }
-		  }
+	    if (!allowed.includes(ext)) {
+	      alert("허용되지 않은 파일 형식입니다.\n(jpg, jpeg, png, gif만 업로드 가능합니다)");
+	      fileInput.value = "";    // 잘못 올린 파일 초기화
+	      e.preventDefault();      // 리뷰 등록 막기
+	      return false;
+	    }
+	  }
 
-		  // ✅ 여기까지 왔다는 건
-		  // - 이미지가 없거나
-		  // - 이미지가 전부 허용 확장자
-		  // → 리뷰 등록 허용
-		  return true;
-		}
+	  // ✅ 여기까지 왔다는 건
+	  // - 이미지가 없거나
+	  // - 이미지가 전부 허용 확장자
+	  // → 리뷰 등록 허용
+	  return true;
+}
+

@@ -27,12 +27,3 @@ body {
   color: #ffc107;
   font-size: 15px;
 }
-
-.btn-outline-warning {
-  color: #f39c12;
-  border-color: #f39c12;
-}
-.btn-outline-warning:hover {
-  background-color: #f39c12;
-  color: white;
-}
