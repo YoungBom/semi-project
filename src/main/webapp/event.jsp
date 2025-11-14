@@ -23,7 +23,7 @@
   <main class="container text-center mt-4">
     <!-- 게임 제목 및 설명 -->
     <h2 class="fw-bold">🍔 버거 피하기</h2>
-    <p class="text-muted">방향키(또는 WASD)로 이동하세요! 사방에서 날아오는 버거를 피해 살아남으세요.(선착순 1인 - 2분 달성시 싸이버거 세트)</p>
+    <p class="text-muted">방향키(또는 WASD)로 이동하세요! 사방에서 날아오는 버거를 피해 살아남으세요. (히트박스 보고싶으면 DEBUG_HITBOX = false ㅡ> true로 전환)</p>
 
     <!-- 🎮 게임 캔버스 (게임 실행 영역) -->
     <canvas id="gameCanvas" width="800" height="720"></canvas>
@@ -84,7 +84,7 @@
     const playerImg = new Image();
     const burgerImg = new Image();
     playerImg.src = ctxPath + "/img/player.jpg";
-    burgerImg.src = ctxPath + "/img/king_wafWholeShrimp.png";
+    burgerImg.src = ctxPath + "/img/lot_teri.jpg";
 
     // 두 이미지 모두 로드 완료되면 reset() 실행
     [playerImg, burgerImg].forEach(img => {
@@ -144,9 +144,12 @@
     }
 
     // 💥 충돌 판정 (살짝 축소된 박스로 계산)
-    const DEBUG_HITBOX = false;
+    let DEBUG_HITBOX = false; // true면 보이고, false면 안보임
     function isColliding(a, b) {
+    
+      // 보이는 히트박스보다 여유로운 판정을 위해 1(원본)에서 줄임
       const shrinkA = 0.8, shrinkB = 0.9;
+      
       const aw = a.w * shrinkA, ah = a.h * shrinkA, bw = b.w * shrinkB, bh = b.h * shrinkB;
       const ax = a.x + (a.w - aw)/2, ay = a.y + (a.h - ah)/2;
       const bx = b.x + (b.w - bw)/2, by = b.y + (b.h - bh)/2;
@@ -185,6 +188,22 @@
       }
 
       drawPlayer();
+	   // ===============================
+	   // 🔍 히트박스 그리기 (DEBUG 모드)
+	   // ===============================
+		   
+      if (DEBUG_HITBOX) {
+    	    // 플레이어 히트박스
+    	    ctx.strokeStyle = "red";
+    	    ctx.strokeRect(player.x, player.y, player.w, player.h);
+
+    	    // 버거 히트박스
+    	    burgers.forEach(b => {
+    	        ctx.strokeStyle = "blue";
+    	        ctx.strokeRect(b.x, b.y, b.w, b.h);
+    	    });
+    	}
+	   
       requestAnimationFrame(draw); // 다음 프레임 호출
     }
 
@@ -276,18 +295,19 @@
     highScoreEl.innerHTML = `🏆 <strong>내 최고기록:</strong> \${highScore}`;
   }
 
-  // 🧹 기록 초기화 버튼
   document.addEventListener("DOMContentLoaded", () => {
-    const resetBtn = document.getElementById("btnReset");
-    resetBtn.addEventListener("click", () => {
-      if (confirm("정말 최고기록을 초기화할까요?")) {
-        localStorage.removeItem("burger_high_score");
-        showHighScore();
-      }
-    });
-    // 페이지 로드 시 최고기록 표시
-    showHighScore();
-  });
+	  // 기록 초기화 버튼
+	  const resetBtn = document.getElementById("btnReset");
+	  resetBtn.addEventListener("click", () => {
+	    if (confirm("정말 최고기록을 초기화할까요?")) {
+	      localStorage.removeItem("burger_high_score");
+	      showHighScore();
+	    }
+	  });
+
+	  // 페이지 로드 시 최고기록 표시
+	  showHighScore();
+	});
   </script>
 </body>
 </html>
