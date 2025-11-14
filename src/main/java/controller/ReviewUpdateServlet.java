@@ -2,6 +2,7 @@ package controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
@@ -128,6 +129,15 @@ public class ReviewUpdateServlet extends HttpServlet {
 		    	}
 		    }
 		 } catch (Exception e) { e.printStackTrace(); }
+		
+		 resp.setContentType("text/html; charset=UTF-8");
+		 PrintWriter out = resp.getWriter();
+		 
+		 out.println("<script>");
+		 out.println("alert('수정되었습니다!');");
+		 out.println("history.back();"); // 또는 location.href='어디로';
+		 out.println("</script>");
+		 out.close();
 		
 		// 마이페이지에서 리뷰 수정 시 redirect -> mypage로 이동
 		String redirect = req.getParameter("redirect");

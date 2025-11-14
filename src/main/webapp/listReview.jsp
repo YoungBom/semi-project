@@ -26,10 +26,10 @@
   
   <!-- 필터 버튼 -->
   <div class="d-flex justify-content-center gap-2 mb-5">
-  <a href="${pageContext.request.contextPath}/review/filter?type=All" class="btn btn-warning active rounded-pill px-4 fw-semibold filter-btn btn-sm">전체</a>
-  <a href="${pageContext.request.contextPath}/review/filter?type=버거킹" class="btn btn-outline-warning rounded-pill px-4 fw-semibold filter-btn btn-sm">버거킹</a>
-  <a href="${pageContext.request.contextPath}/review/filter?type=맥도날드" class="btn btn-outline-warning rounded-pill px-4 fw-semibold filter-btn btn-sm">맥도날드</a>
-  <a href="${pageContext.request.contextPath}/review/filter?type=롯데리아" class="btn btn-outline-warning rounded-pill px-4 fw-semibold filter-btn btn-sm">롯데리아</a>    
+  <a href="${pageContext.request.contextPath}/review/filter?type=All" class="btn btn-warning rounded-pill px-4 fw-semibold filter-btn btn-sm ${empty param.type || param.type == 'All' ? 'active' : ''}">전체</a>
+  <a href="${pageContext.request.contextPath}/review/filter?type=버거킹" class="btn btn-outline-warning rounded-pill px-4 fw-semibold filter-btn btn-sm ${param.type == '버거킹' ? 'active' : ''}">버거킹</a>
+  <a href="${pageContext.request.contextPath}/review/filter?type=맥도날드" class="btn btn-outline-warning rounded-pill px-4 fw-semibold filter-btn btn-sm ${param.type == '맥도날드' ? 'active' : ''}">맥도날드</a>
+  <a href="${pageContext.request.contextPath}/review/filter?type=롯데리아" class="btn btn-outline-warning rounded-pill px-4 fw-semibold filter-btn btn-sm ${param.type == '롯데리아' ? 'active' : ''}">롯데리아</a>    
   </div>
 
   <!-- 리뷰가 없을 때 -->
@@ -78,7 +78,9 @@
 							</c:choose>
 							<div class="d-flex flex-row-reverse">
 								<div>
-									<a href="/semi-project/review/delete?burgerId=${review.burgerId}&reviewId=${review.id}&redirect=${pageContext.request.requestURI}" class="btn btn-outline-danger btn-sm my-1 ">
+									<a href="/semi-project/review/delete?burgerId=${review.burgerId}&reviewId=${review.id}&redirect=${pageContext.request.requestURI}" 
+									class="btn btn-outline-danger btn-sm my-1"
+									onclick="return confirm('이 리뷰를 삭제하시겠습니까?');">
 										<i class="bi bi-trash"></i> 삭제
 									</a>
 								</div>							

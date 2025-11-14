@@ -25,9 +25,6 @@ public class ReviewFilterServlet extends HttpServlet {
 		int userId = (int) s.getAttribute("LOGIN_UID");
 		String brandType = request.getParameter("type");
 		
-		System.out.println(userId);
-		System.out.println(brandType);
-		
 		ReviewDAO reviewDao = new ReviewDAO();
 		List<ReviewDTO> reviewList = new ArrayList<ReviewDTO>();
 		

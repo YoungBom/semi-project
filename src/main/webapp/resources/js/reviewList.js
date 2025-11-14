@@ -172,3 +172,17 @@ function checkForm(e) {
 	  return true;
 }
 
+// 모든 필터 버튼 선택
+const filterButtons = document.querySelectorAll(".filter-btn");
+
+filterButtons.forEach(btn => {
+  btn.addEventListener("click", function () {
+
+    // 모든 버튼 active 제거
+    filterButtons.forEach(b => b.classList.remove("active"));
+
+    // 현재 클릭한 버튼 active 추가
+    this.classList.add("active");
+  });
+});
+
