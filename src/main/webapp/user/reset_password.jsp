@@ -18,7 +18,7 @@
 <body>
   <%@ include file="/include/header.jsp" %>
 
-  <main class="auth-wrap">
+  <main class="auth-wrap find-pw">
     <section class="auth-card">
       <h1>비밀번호 재설정</h1>
 

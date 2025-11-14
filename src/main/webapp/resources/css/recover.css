@@ -1,271 +1,209 @@
-/* ==== Account Recovery (ID/PW/QA) scoped styles ==== */
-:root {
-	--brand: #FF7A22;
-	--ink: #222;
-	--muted: #6b7280;
-	--line: #eee;
-	--bg: #FEFAF0; /* 사이트 배경톤 */
-	--surface: #fff;
-	--radius: 14px;
-	--shadow: 0 10px 32px rgba(0, 0, 0, .06);
+/* =========================
+   아이디 찾기 / 비밀번호 찾기 공통
+   (main.auth-wrap.find-id / find-pw)
+   ========================= */
+
+/* 카드 – 크기/위치는 user.css의 .auth-card를 사용하고
+   색감/그림자/뱃지만 덮어씀 */
+.auth-wrap.find-id .auth-card, .auth-wrap.find-pw .auth-card {
+	background: #FFF9F0; /* 약간 크리미한 톤 */
+	border-radius: 28px;
+	box-shadow: 0 18px 45px rgba(0, 0, 0, 0.06);
+	position: relative;
 }
 
-/* 헤더 아래 간격 고정 (header.jsp에 .navbar가 있다고 가정) */
-.navbar+.auth-wrap {
-	margin-top: 16px;
+/* 상단 작은 배지 – 페이지별로 텍스트만 다르게 */
+.auth-wrap.find-id .auth-card::before {
+	content: "🔒 ID Recovery";
+	position: absolute;
+	top: 18px;
+	right: 32px;
+	padding: 4px 10px;
+	border-radius: 999px;
+	font-size: 11px;
+	letter-spacing: 0.02em;
+	background: rgba(255, 122, 34, 0.08);
+	color: var(--brand-orange);
+	font-weight: 600;
 }
 
-.auth-wrap {
-	/* 배경 “하얀띠” 제거: 그라디언트 → 단색 */
-	background: var(--bg);
-	min-height: calc(100vh - 80px); /* 화면 꽉 채우기 */
-	display: flex;
-	align-items: flex-start;
-	justify-content: center;
-	padding: 24px 16px 48px;
+.auth-wrap.find-pw .auth-card::before {
+	content: "🔐 PW Recovery";
+	position: absolute;
+	top: 18px;
+	right: 32px;
+	padding: 4px 10px;
+	border-radius: 999px;
+	font-size: 11px;
+	letter-spacing: 0.02em;
+	background: rgba(255, 122, 34, 0.08);
+	color: var(--brand-orange);
+	font-weight: 600;
 }
 
-/* 로그인 카드와 동일한 폭 느낌 */
-.auth-card {
-	width: 100%;
-	max-width: 640px; /* ★ 로그인 카드 크기 수준으로 축소 */
-	background: var(--surface);
-	border: 1px solid var(--line);
-	border-radius: var(--radius);
-	box-shadow: var(--shadow);
-	padding: 24px;
-}
-
-/* 필요 시 더 좁게 쓰고 싶다면 .auth-narrow 추가(선택) */
-.auth-card.auth-narrow {
-	max-width: 560px;
-}
-
-.auth-card h1 {
-	margin: 0 0 14px;
+/* 제목 */
+.auth-wrap.find-id h1, .auth-wrap.find-pw h1 {
+	margin: 0 0 20px;
 	font-size: 24px;
-	font-weight: 800;
-	letter-spacing: -.2px;
-	color: var(--ink);
-}
-
-.auth-card p {
-	color: var(--ink);
-	margin: 6px 0 0;
-}
-
-/* 기본은 1열 폼 (ID찾기/재설정 등) */
-.auth-form {
-	display: grid;
-	grid-template-columns: 1fr; /* ★ 1열로 고정 */
-	gap: 12px 16px;
-	margin-top: 12px;
-}
-
-/* 두 입력을 가로로 배치해야 하는 페이지는 .two-col 을 추가 */
-.auth-form.two-col {
-	grid-template-columns: 1fr 1fr;
-}
-
-.auth-form label {
-	display: grid;
-	gap: 6px;
-	font-size: 14px;
-	color: var(--muted);
-}
-
-.auth-form input[type="text"], .auth-form input[type="email"],
-	.auth-form input[type="password"], .auth-form input[type="tel"],
-	.auth-form select {
-	height: 42px;
-	padding: 0 12px;
-	border: 1px solid #ddd;
-	border-radius: 10px;
-	font-size: 15px;
-	background: #fff;
-}
-
-.auth-actions {
-	display: flex;
-	gap: 10px;
-	margin-top: 6px;
-	align-items: center;
-}
-
-.auth-btn {
-	appearance: none;
-	border: 0;
-	background: var(--brand);
-	color: #fff;
-	padding: 10px 16px;
-	border-radius: 12px;
 	font-weight: 700;
-	cursor: pointer;
+	color: var(--ink-strong);
 }
 
-.auth-link {
-	color: var(--brand);
-	text-decoration: underline;
+/* =========================
+   폼 (아이디/휴대폰/보안질문/답변)
+   ========================= */
+.auth-wrap.find-id .field, .auth-wrap.find-pw .field {
+	display: block;
+	margin-bottom: 18px;
 }
 
-.auth-error {
-	margin-top: 6px;
-	padding: 10px 12px;
-	background: #fff4f4;
-	border: 1px solid #ffd4d4;
-	color: #b71c1c;
-	border-radius: 10px;
-	font-size: 14px;
-}
-
-.auth-question {
-	margin-top: 10px;
-	padding: 12px 14px;
-	background: #f8f9fb;
-	border: 1px solid var(--line);
-	border-radius: 10px;
+.auth-wrap.find-id .field .label, .auth-wrap.find-pw .field .label {
+	display: block;
+	margin-bottom: 6px;
+	font-size: 13px;
+	font-weight: 600;
 	color: var(--ink);
 }
 
-.auth-result strong {
-	background: #fff5ec;
-	border: 1px dashed #ffc9a4;
-	padding: 3px 8px;
-	border-radius: 8px;
+/* 인풋 공통 */
+.auth-wrap.find-id .field input[type="text"], .auth-wrap.find-id .field input[type="tel"],
+	.auth-wrap.find-pw .field input[type="text"], .auth-wrap.find-pw .field input[type="tel"]
+	{
+	width: 100%;
+	height: 52px;
+	padding: 0 16px;
+	border-radius: 12px;
+	border: 1px solid #E5E5E5;
+	background: #FFFFFF;
+	font-size: 14px;
+	transition: border-color 0.18s ease, box-shadow 0.18s ease,
+		background-color 0.18s ease;
 }
 
-/* 모바일 */
-@media ( max-width :640px) {
-	.auth-card {
-		max-width: 100%;
-		padding: 20px;
-	}
-	.auth-form.two-col {
-		grid-template-columns: 1fr;
-	}
-	/* anchor도 버튼처럼 보이게 */
-	.auth-btn, .auth-btn:link, .auth-btn:visited {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		text-decoration: none;
-		height: 42px; /* 입력 높이와 맞춤 */
-	}
-
-	/* hover/focus 상태 */
-	.auth-btn:hover {
-		filter: brightness(0.98);
-	}
-	.auth-btn:active {
-		transform: translateY(1px);
-	}
+.auth-wrap.find-id .field input::placeholder, .auth-wrap.find-pw .field input::placeholder
+	{
+	color: #B2B2B2;
 }
 
-/* 버튼 통일 옵션들 */
-.auth-btn, .auth-btn:link, .auth-btn:visited {
+/* 포커스 시 버거 컬러 하이라이트 */
+.auth-wrap.find-id .field input:focus, .auth-wrap.find-pw .field input:focus
+	{
+	outline: none;
+	border-color: var(--brand-orange);
+	box-shadow: 0 0 0 3px rgba(255, 122, 34, 0.18);
+	background: #FFFDF8;
+}
+
+/* 질문 단계 등에서 필드 사이 간격 조금 추가 */
+.auth-wrap.find-id .field+.field, .auth-wrap.find-pw .field+.field {
+	margin-top: 10px;
+}
+
+/* =========================
+   버튼 영역
+   ========================= */
+.auth-wrap.find-id .auth-actions, .auth-wrap.find-pw .auth-actions {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	margin-top: 22px;
+}
+
+/* 기본 버튼 – 주황색 둥근 버튼 */
+.auth-wrap.find-id .auth-btn, .auth-wrap.find-pw .auth-btn {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	height: 42px;
-	padding: 0 16px;
-	border-radius: 12px;
-	text-decoration: none;
-	font-weight: 700;
-	background: var(--brand);
+	min-width: 140px;
+	height: 44px;
+	padding: 0 20px;
+	border-radius: 999px;
+	border: none;
+	font-size: 14px;
+	font-weight: 600;
+	background: var(--brand-orange);
 	color: #fff;
+	text-decoration: none;
+	box-shadow: 0 10px 25px rgba(255, 122, 34, 0.45);
+	cursor: pointer;
+	transition: transform 0.12s ease, box-shadow 0.12s ease,
+		background-color 0.12s ease;
 }
 
-.auth-btn:hover {
-	filter: brightness(.98);
+.auth-wrap.find-id .auth-btn:hover, .auth-wrap.find-pw .auth-btn:hover {
+	transform: translateY(-1px);
+	background: var(--brand-orange-dk);
+	box-shadow: 0 14px 30px rgba(255, 122, 34, 0.5);
 }
 
-.auth-btn:active {
-	transform: translateY(1px);
+/* 서브 버튼 – 회색 버튼 */
+.auth-wrap.find-id .auth-btn.secondary, .auth-wrap.find-pw .auth-btn.secondary
+	{
+	min-width: 120px;
+	background: #F1F2F4;
+	color: var(--ink-weak);
+	box-shadow: none;
 }
 
-.auth-btn.secondary {
-	background: #e9ecef;
-	color: #333;
+.auth-wrap.find-id .auth-btn.secondary:hover, .auth-wrap.find-pw .auth-btn.secondary:hover
+	{
+	background: #E3E4E7;
+	color: var(--ink);
 }
 
-.auth-btn.secondary:hover {
-	background: #e3e7ea;
+/* 공통 에러 메시지 */
+.auth-wrap.find-id .auth-error, .auth-wrap.find-pw .auth-error {
+	margin-top: 14px;
+	font-size: 13px;
+	color: #E5533D;
 }
-
-.auth-btn.ghost {
-	background: transparent;
-	color: var(--brand);
-	border: 1px solid #ffd4b6;
-}
-
-.auth-btn.ghost:hover {
-	background: #fff7f0;
-}
-
-.auth-actions .auth-btn {
-	min-width: 104px;
-} /* 보기 좋은 최소폭 */
-
 
 /* =========================
-   아이디 찾기 페이지 전용 스타일
-   user.css 뒤에서 로드 (우선순위 ↑)
+   아이디 찾기 "결과" 카드만 추가 스타일
    ========================= */
-
-/* 전체 래퍼 – 로그인 카드랑 높이/여백 맞추기 */
-.recover-wrap {
-    max-width: 1024px;
-    margin: 60px auto 80px;
-    padding: 0 16px;
+.auth-wrap.find-id .auth-card.auth-result {
+	text-align: center;
 }
 
-/* 카드 기본 – 로그인 카드와 통일 + 살짝 버거샵 느낌 */
-.recover-card {
-    max-width: 520px;
-    margin: 0 auto;
-    background: #FFF9F0; /* 살짝 더 크리미한 톤 */
-    border-radius: 28px;
-    padding: 32px 40px 40px;
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.06);
-    position: relative;
+.auth-wrap.find-id .auth-card.auth-result h1 {
+	margin-bottom: 20px;
 }
 
-/* 상단에 작은 버거 뱃지 */
-.recover-card::before {
-    content: "🍔 ID Recovery";
-    position: absolute;
-    top: 18px;
-    right: 32px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 11px;
-    letter-spacing: 0.02em;
-    background: rgba(255, 122, 34, 0.08);
-    color: var(--brand-orange);
-    font-weight: 600;
+.auth-wrap.find-id .auth-card.auth-result p {
+	font-size: 14px;
+	color: var(--ink);
+	margin-bottom: 18px;
 }
 
-/* 제목 – 로그인 카드 h1과 톤 통일, 약간 더 강조 */
-.recover-card h1,
-.recover-card .recover-title {
-    margin: 0 0 20px;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--ink-strong);
+/* 찾은 아이디 강조 */
+.auth-wrap.find-id .auth-card.auth-result p strong {
+	display: inline-block;
+	padding: 4px 10px;
+	margin: 0 4px;
+	border-radius: 999px;
+	background: rgba(255, 122, 34, 0.14);
+	color: var(--brand-orange-dk);
+	font-weight: 700;
 }
 
-/* 라벨 텍스트 */
-.recover-card label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink);
+/* 결과 에러 스타일 (회원 정보 없음 등) */
+.auth-wrap.find-id .auth-card.auth-result .auth-error {
+	display: inline-block;
+	margin-top: 6px;
+	padding: 8px 14px;
+	border-radius: 12px;
+	background: #FFE9E6;
+	color: #D8483F;
+	font-size: 13px;
 }
 
-/* 인풋 박스 – 로그인 인풋이랑 거의 동일하게 */
-.recover-card input[type="text"],
-.recover-card input[type="tel"] {
+/* 인풋 공통 */
+.auth-wrap.find-id .field input[type="text"],
+.auth-wrap.find-id .field input[type="tel"],
+.auth-wrap.find-id .field input[type="password"],
+.auth-wrap.find-pw .field input[type="text"],
+.auth-wrap.find-pw .field input[type="tel"],
+.auth-wrap.find-pw .field input[type="password"] {
     width: 100%;
     height: 52px;
     padding: 0 16px;
@@ -273,81 +211,7 @@
     border: 1px solid #E5E5E5;
     background: #FFFFFF;
     font-size: 14px;
-    transition: border-color 0.18s ease, box-shadow 0.18s ease,
+    transition: border-color 0.18s ease,
+                box-shadow 0.18s ease,
                 background-color 0.18s ease;
-}
-
-.recover-card input::placeholder {
-    color: #B2B2B2;
-}
-
-.recover-card input:focus {
-    outline: none;
-    border-color: var(--brand-orange);
-    box-shadow: 0 0 0 3px rgba(255, 122, 34, 0.18);
-    background: #FFFDF8;
-}
-
-/* 버튼 영역 – 가운데 정렬 & 간격 */
-.recover-actions {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 24px;
-}
-
-/* 기본 버튼 스타일 – 로그인 버튼 느낌 */
-.recover-actions .btn-primary,
-.recover-card button[type="submit"] {
-    min-width: 140px;
-    height: 44px;
-    padding: 0 20px;
-    border-radius: 999px;
-    border: none;
-    font-size: 14px;
-    font-weight: 600;
-    background: var(--brand-orange);
-    color: #fff;
-    box-shadow: 0 10px 25px rgba(255, 122, 34, 0.45);
-    cursor: pointer;
-    transition: transform 0.12s ease, box-shadow 0.12s ease,
-                background-color 0.12s ease;
-}
-
-.recover-actions .btn-primary:hover,
-.recover-card button[type="submit"]:hover {
-    transform: translateY(-1px);
-    background: var(--brand-orange-dk);
-    box-shadow: 0 14px 30px rgba(255, 122, 34, 0.5);
-}
-
-/* 로그인으로 버튼 – 서브 버튼 */
-.recover-actions .btn-secondary {
-    min-width: 120px;
-    height: 44px;
-    padding: 0 18px;
-    border-radius: 999px;
-    border: none;
-    background: #F1F2F4;
-    color: var(--ink-weak);
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.12s ease, color 0.12s ease;
-}
-
-.recover-actions .btn-secondary:hover {
-    background: #E3E4E7;
-    color: var(--ink);
-}
-
-/* 도움 텍스트 – 선택사항 (HTML에 넣어줄 수 있으면) */
-.recover-helper {
-    margin-top: 14px;
-    font-size: 12px;
-    color: var(--ink-weak);
-}
-
-.recover-helper strong {
-    color: var(--brand-orange);
 }
