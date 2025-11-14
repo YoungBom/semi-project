@@ -11,23 +11,31 @@ import dao.UserDAO;
 
 @WebServlet("/user/authorize")
 public class UserAuthorizeSurvlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
-		
-		UserDAO userDao = new UserDAO();
-		int result = userDao.setAuthorizeAdmin(id);
-		
-		if(result > 0) {
-			response.sendRedirect(request.getContextPath() + "/user/management");
-		} else {
-			request.setAttribute("error", "삭제 실패");
-			request.getRequestDispatcher("/user/userManagement.jsp").forward(request, response);			
-		}
-		
-	}
+    private static final long serialVersionUID = 1L;
+    private final UserDAO userDao = new UserDAO();
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
+        req.setCharacterEncoding("UTF-8");
 
+        int id = Integer.parseInt(req.getParameter("id"));
+        String role = req.getParameter("role"); // USER or ADMIN
+
+        int result = userDao.updateUserRole(id, role);
+
+        if (result > 0) {
+            resp.sendRedirect(req.getContextPath() + "/user/management");
+        } else {
+            req.setAttribute("error", "권한 변경 실패");
+            req.getRequestDispatcher("/user/userManagement.jsp").forward(req, resp);
+        }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+    }
 }

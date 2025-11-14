@@ -734,19 +734,28 @@ public class UserDAO {
 	}
 
 	
-	public int setAuthorizeAdmin(int id) {
-		String sql = "UPDATE user SET role = 'ADMIN' WHERE id = ?";
-		int result = 0;
-		
-		try(Connection conn = DBUtil.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setInt(1, id);
-			result = pstmt.executeUpdate();	
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		
-		return result;
+	
+	
+	public int updateUserRole(int id, String role) {
+	    String sql = "UPDATE user SET role = ? WHERE id = ?";
+	    int result = 0;
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+	        pstmt.setString(1, role.toUpperCase()); // USER / ADMIN
+	        pstmt.setInt(2, id);
+
+	        result = pstmt.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return result;
 	}
+
+	
+	
 	
 }

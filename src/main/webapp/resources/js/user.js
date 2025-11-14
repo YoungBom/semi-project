@@ -38,16 +38,89 @@ function changeUser(userId){
 	});
 }
 
-/*유저 관리자 권한 부여 시 관리자 확인필*/
-function checkPosition(e) {
-	const result = confirm("관리자로 전환 하시겠습니까?");
-	
-	if(result){
-			return true;
-		}else {
-			return false;
-		}
+function handleRoleChange(userId) {
+    const select = document.querySelector(`#roleSelect-${userId}`);
+    const oldRole = select.getAttribute("data-old");
+    const newRole = select.value;
 }
+
+// 수정 버튼 클릭 시 select/버튼 활성화
+function changeUser(userId) {
+    const select = document.querySelector(`#roleSelect-${userId}`);
+    const btn = document.querySelector(`#roleController-${userId}`);
+
+    if (!select || !btn) return;
+
+    select.disabled = false;
+    btn.classList.remove('disabled');
+    btn.removeAttribute('aria-disabled');
+}
+
+function changeUser(userId) {
+    const select = document.querySelector(`#roleSelect-${userId}`);
+    const btn = document.querySelector(`#roleController-${userId}`);
+
+    if (!select || !btn) return;
+
+    select.disabled = false;
+    btn.classList.remove('disabled');
+    btn.removeAttribute('aria-disabled');
+}
+
+function checkPosition(userId) {
+    const select = document.querySelector(`#roleSelect-${userId}`);
+    const oldRole = select.getAttribute("data-old"); // USER only
+    const newRole = select.value;                    // USER or ADMIN
+
+    // 변경 없으면 submit 안 함
+    if (oldRole === newRole) return false;
+
+    // user → admin만 처리하면 됨
+    const ok = confirm("관리자로 전환하시겠습니까?");
+    if (!ok) {
+        select.value = oldRole; // 복구
+        return false;
+    }
+
+    select.setAttribute("data-old", newRole);
+    return true;
+}
+
+
+
+// 모든 행을 비활성화하는 함수
+function disableAllRows() {
+    const selects = document.querySelectorAll(".userRole");
+    const controllers = document.querySelectorAll(".roleController");
+
+    selects.forEach(s => s.disabled = true);
+    controllers.forEach(b => {
+        b.classList.add("disabled");
+        b.setAttribute("aria-disabled", "true");
+    });
+}
+
+// 특정 userId만 활성화하는 함수
+function changeUser(userId) {
+    // 1) 먼저 전체 비활성화
+    disableAllRows();
+
+    // 2) 선택한 row 활성화
+    const select = document.querySelector(`#roleSelect-${userId}`);
+    const btn = document.querySelector(`#roleController-${userId}`);
+
+    if (!select || !btn) return;
+
+    select.disabled = false;
+    btn.classList.remove("disabled");
+    btn.removeAttribute("aria-disabled");
+}
+
+
+
+
+
+
 
 /*유저 삭제 시 관리자 확인필*/
 function checkDelete(e){
