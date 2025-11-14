@@ -8,7 +8,7 @@
       <!-- 🍔 로고 & 소개 -->
       <div class="col-md-4 footer-logo">
         <h2>🍔 BurgerHub</h2>
-        <p>Fresh, juicy and made with love.<br>Enjoy your burger moments anytime!</p>
+        <p>BurgerHub — A community for burger lovers.<br>Share reviews, discover new flavors, and connect.</p>
       </div>
 
       <!-- 📞 연락처 -->

@@ -84,7 +84,7 @@
     const playerImg = new Image();
     const burgerImg = new Image();
     playerImg.src = ctxPath + "/img/player.jpg";
-    burgerImg.src = ctxPath + "/img/lot_teri.jpg";
+    burgerImg.src = ctxPath + "/img/king_docMAX2.png";
 
     // 두 이미지 모두 로드 완료되면 reset() 실행
     [playerImg, burgerImg].forEach(img => {
