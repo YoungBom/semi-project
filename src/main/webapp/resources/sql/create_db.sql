@@ -22,7 +22,6 @@ CREATE TABLE user (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-
 INSERT INTO user (user_id, pw_hash, user_pw, email, phone, birth, gender, name, nickname, address)
 VALUES
 ('user01', 'hashpw01', 'pw01', 'user01@email.com', '010-1111-0001', '1995-01-01', '남', '홍길동', '길동이', '서울시 강남구'),
@@ -68,10 +67,13 @@ UPDATE `user`
 -- 안전모드 ON
 SET SQL_SAFE_UPDATES = 1;
 
--- 모드변환 코드    USER <---> ADMIN
+
+-- USER <---> ADMIN  모드변환 코드. 
+-- 사용 시,  예)에 있는 코드를 이용할것.
+
 -- UPDATE user SET role = "ADMIN" WHERE id = '로그인한 계정의 id';
 -- 예) UPDATE user SET role = "ADMIN" WHERE id = '4';
--- UPDATE user SET role = "ADMIN" WHERE user_id = '로그인한 계정의 user_id';
+-- 또는 UPDATE user SET role = "ADMIN" WHERE user_id = '로그인한 계정의 user_id';
 -- 예) UPDATE user SET role = "USER" WHERE user_id = 'user02';
 
 -- 2️⃣ 버거(burger)
@@ -87,38 +89,49 @@ CREATE TABLE burger (
 	FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE SET NULL -- 참조하고 있는 user(id) 행이 삭제되면 → 현재 테이블의 user_id 값을 NULL로 바꿔라
 );
 
-INSERT INTO burger (user_id, name, price, image_path, brand, patty_type)
-VALUES
-(1, '빅맥', 5500, '/img/bigmac.jpg', '맥도날드', '비프'),
-(2, '상하이 스파이시 버거', 5800, '/img/shanghai.jpg', '맥도날드', '치킨'),
-(3, '와퍼', 6500, '/img/whopper.jpg', '버거킹', '비프'),
-(4, '통새우버거', 6000, '/img/shrimp.jpg', '롯데리아', '기타'),
-(5, '한우불고기버거', 7000, '/img/bulgogi.jpg', '맥도날드', '비프'),
-(6, '치즈버거', 4800, '/img/cheese.jpg', '버거킹', '비프'),
-(7, '불고기버거', 5200, '/img/bulgogi_burger.jpg', '롯데리아', '비프'),
-(8, '치킨버거', 5300, '/img/chicken.jpg', '버거킹', '치킨'),
-(9, '슈퍼새우버거', 6700, '/img/super_shrimp.jpg', '맥도날드', '기타'),
-(10, '베이컨치즈버거', 6900, '/img/bacon_cheese.jpg', '버거킹', '비프'),
-(11, '치즈불고기버거', 6400, '/img/cheese_bulgogi.jpg', '롯데리아', '비프'),
-(12, '스파이시치킨버거', 5900, '/img/spicy_chicken.jpg', '버거킹', '치킨'),
-(13, '더블와퍼', 8000, '/img/double_whopper.jpg', '버거킹', '비프'),
-(14, '치즈스테이크버거', 7800, '/img/cheese_steak.jpg', '맥도날드', '비프'),
-(15, '새우버거', 5500, '/img/shrimp_burger.jpg', '롯데리아', '기타'),
-(16, '화이트갈릭버거', 7500, '/img/white_garlic.jpg', '버거킹', '비프'),
-(17, '치킨텐더버거', 5700, '/img/chicken_tender.jpg', '맥도날드', '치킨'),
-(18, '치즈더블버거', 7400, '/img/cheese_double.jpg', '버거킹', '비프'),
-(19, '슈비버거', 7100, '/img/shrimp_beef.jpg', '맥도날드', '기타'),
-(20, '콰트로치즈버거', 7700, '/img/4cheese.jpg', '버거킹', '비프'),
-(21, '와규버거', 9000, '/img/wagyu.jpg', '롯데리아', '비프'),
-(22, '더블치킨버거', 6800, '/img/double_chicken.jpg', '버거킹', '치킨'),
-(23, '치즈킹버거', 7600, '/img/cheese_king.jpg', '버거킹', '비프'),
-(24, '비프불고기버거', 6200, '/img/beef_bulgogi.jpg', '맥도날드', '비프'),
-(25, '베이컨에그버거', 5900, '/img/bacon_egg.jpg', '롯데리아', '비프'),
-(26, '클래식치킨버거', 6100, '/img/classic_chicken.jpg', '버거킹', '치킨'),
-(27, '더블새우버거', 7200, '/img/double_shrimp.jpg', '맥도날드', '기타'),
-(28, '크리스피치킨버거', 6300, '/img/crispy_chicken.jpg', '롯데리아', '치킨'),
-(29, '치즈와퍼', 7000, '/img/cheese_whopper.jpg', '버거킹', '비프'),
-(30, '트리플버거', 8900, '/img/triple_burger.jpg', '맥도날드', '비프');
+INSERT INTO burger (user_id, name, price, image_path, brand, patty_type, is_new) VALUES
+(NULL, '리아 불고기', 5600, '/img/lot_rea_bulgogi.png', '롯데리아', '비프', 1),
+(NULL, '리아 새우', 5400, '/img/lot_rea_shrimp.jpg', '롯데리아', '기타', 0),
+(NULL, '핫크리스피치킨버거', 6200, '/img/lot_crispy_chicken.png', '롯데리아', '치킨', 0),
+(NULL, '모짜렐라 인 더 버거 베이컨', 6900, '/img/lot_mozz_bacon.png', '롯데리아', '기타', 0),
+(NULL, '한우 불고기 버거', 7200, '/img/lot_hanwoo_bulgogi.png', '롯데리아', '비프', 0),
+(NULL, '더블 클래식 치즈버거', 6500, '/img/lot_double_cheese.png', '롯데리아', '기타', 1),
+(NULL, '전주 비빔라이스 버거', 5700, '/img/lot_jeonju_bibim.png', '롯데리아', '기타', 0),
+(NULL, '더블 치킨버거', 6400, '/img/lot_double_chicken.png', '롯데리아', '치킨', 1),
+(NULL, '데리 버거', 4900, '/img/lot_teri.jpg', '롯데리아', '비프', 0),
+(NULL, '모짜렐라버거 토마토바질', 6800, '/img/lot_mozz_tomato.png', '롯데리아', '기타', 0),
+
+(NULL, '빅맥', 6800, '/img/mac_big_mac.png', '맥도날드', '비프', 0),
+(NULL, '쿼터파운더', 7500, '/img/mac_quarter.jpg', '맥도날드', '비프', 0),
+(NULL, '1955버거', 7800, '/img/mac_1955.png', '맥도날드', '비프', 0),
+(NULL, '맥치킨 모짜렐라', 6500, '/img/mac_mcchicken_mozz.png', '맥도날드', '치킨', 0),
+(NULL, '슈비버거', 6900, '/img/mac_shrimp_beef.jpg', '맥도날드', '기타', 0),
+(NULL, '슈슈버거', 6700, '/img/mac_shrimp_shrimp.png', '맥도날드', '기타', 0),
+(NULL, '맥크리스피 버거', 6200, '/img/mac_crispy.png', '맥도날드', '치킨', 0),
+(NULL, '더블 치즈 버거', 6400, '/img/mac_double_cheese.png', '맥도날드', '비프', 0),
+(NULL, '맥스파이시 상하이 버거', 6900, '/img/mac_spicy_shanghai.jpg', '맥도날드', '치킨', 0),
+(NULL, '토마토 치즈 비프 버거', 7200, '/img/mac_tomato_cheese_beef.jpg', '맥도날드', '비프', 0),
+
+(NULL, '골든 에그 트러플 머쉬룸', 8800, '/img/king_goldEggTruf.png', '버거킹', '비프', 0),
+(NULL, '오리지널스 메이플 갈릭', 8600, '/img/king_originalsMG.png', '버거킹', '비프', 0),
+(NULL, '오리지널스 뉴욕 스테이크', 8900, '/img/king_originalsNS.png', '버거킹', '비프', 0),
+(NULL, '트러플 머쉬룸 와퍼', 8700, '/img/king_truf.png', '버거킹', '비프', 0),
+(NULL, '딥 트러플 머쉬룸 더블', 9600, '/img/king_trufDeepDouble.png', '버거킹', '비프', 0),
+(NULL, '핫 트러플 머쉬룸 와퍼', 9000, '/img/king_trufHot.png', '버거킹', '비프', 0),
+(NULL, '베이컨치즈와퍼', 8200, '/img/king_wafBaconCheese.png', '버거킹', '비프', 0),
+(NULL, '불고기와퍼', 6500, '/img/king_wafBul.png', '버거킹', '비프', 0),
+(NULL, '치즈와퍼', 7500, '/img/king_wafCheese.png', '버거킹', '비프', 0),
+(NULL, '와퍼', 6900, '/img/king_waffer.png', '버거킹', '비프', 0),
+(NULL, '갈릭불고기와퍼', 7200, '/img/king_wafGarlicBul.png', '버거킹', '비프', 0),
+(NULL, '몬스터와퍼', 9300, '/img/king_wafMonster.png', '버거킹', '비프', 0),
+(NULL, '콰트로치즈와퍼', 8500, '/img/king_wafQuatChesse.png', '버거킹', '비프', 0),
+(NULL, '통새우와퍼', 8000, '/img/king_wafWholeShrimp.png', '버거킹', '기타', 0),
+(NULL, '크리스피 불닭 치킨', 7500, '/img/king_crispBulDak.png', '버거킹', '치킨', 0),
+(NULL, '크리스피 양념 치킨', 7200, '/img/king_crispYang.png', '버거킹', '치킨', 0),
+(NULL, '더 오X 맥시멈2', 8400, '/img/king_docMAX2.png', '버거킹', '비프', 0),
+(NULL, '더 오X 맥시멈3', 9200, '/img/king_docMAX3.png', '버거킹', '비프', 0),
+(NULL, '더 오X 맥시멈 오리지널', 8100, '/img/king_docMAXOF.png', '버거킹', '비프', 0);
+
 
 
 -- 3️⃣ 버거 상세(product_details)
