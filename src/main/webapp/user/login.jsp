@@ -15,7 +15,7 @@
 </head>
 <body>
 	<%@ include file="/include/header.jsp" %>
-  <main class="auth-wrap pt-5">
+  <main class="auth-wrap auth-login pt-5">
     <h1 class="auth-title">🍔 로그인</h1>
 
     <c:if test="${not empty error}">
@@ -25,7 +25,9 @@
       <div class="alert success">${msg}</div>
     </c:if>
 
-    <form method="post" action="${pageContext.request.contextPath}/login" class="auth-card" autocomplete="on">
+    <form method="post" 
+    	  action="${pageContext.request.contextPath}/login" 
+    	  class="auth-card auth-form" autocomplete="on">
       <label class="field">
         <span class="label">아이디</span>
         <input type="text" name="user_id" placeholder="아이디를 입력하세요" required maxlength="255" autocomplete="username">

@@ -245,6 +245,6 @@ CREATE TABLE IF NOT EXISTS security_answer (
   answer_hash VARCHAR(255) NOT NULL,
   created_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id)     REFERENCES user(id) ON DELETE CASCADE,
-  FOREIGN KEY (question_id) REFERENCES security_question(id)
+  CONSTRAINT fk_security_qa_user     FOREIGN KEY (user_id)     REFERENCES user(id) ON DELETE CASCADE,
+  CONSTRAINT fk_security_qa_question FOREIGN KEY (question_id) REFERENCES security_question(id)
 );

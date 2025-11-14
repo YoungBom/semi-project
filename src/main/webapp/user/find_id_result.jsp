@@ -8,6 +8,10 @@
 <head>
 <meta charset="UTF-8">
 <title>아이디 찾기 결과</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
 <link href="${ctx}/resources/css/user.css" rel="stylesheet">
 <link href="${ctx}/resources/css/recover.css" rel="stylesheet">
 <link href="${ctx}/resources/css/header.css" rel="stylesheet">
@@ -16,7 +20,7 @@
 <body>
 	<%@ include file="/include/header.jsp"%>
 
-	<main class="auth-wrap">
+	<main class="auth-wrap find-id">
 		<section class="auth-card auth-result">
 			<h1>아이디 찾기 결과</h1>
 
