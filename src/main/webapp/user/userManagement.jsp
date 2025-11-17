@@ -98,7 +98,7 @@
                 
                 <td>
                   <a class="btn btn-outline-primary btn-sm" onclick="changeUser(${user.id})"><i class="bi bi-pencil">수정</i></a>
-                  <a href="${pageContext.request.contextPath}/user/deletefromadmin?userId=${user.userId}" class="btn btn-outline-danger btn-sm"><i class="bi bi-pencil">삭제</i></a>
+                  <a href="${pageContext.request.contextPath}/user/deletefromadmin?userId=${user.userId}" class="btn btn-outline-danger btn-sm" onclick="return confirm('이 리뷰를 삭제하시겠습니까?');"><i class="bi bi-pencil">삭제</i></a>
                 </td>
               </tr>
             </c:forEach>

@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import dao.ReviewDAO;
@@ -30,16 +31,26 @@ public class ReviewDeleteServlet extends HttpServlet {
 		
 		int result = reviewDao.deleteReview(burgerId, reviewId);
 		
-		if (result > 0) {
-			// 삭제되면 완료 알림창 띄우기
+		resp.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = resp.getWriter();
+		 
+		if(result > 0) {
+			out.println("<script>");
+			 out.println("alert('삭제되었습니다!');");
+			 
+			 if (redirect != null && !redirect.isEmpty()) { 
+				 // redirect 지정값(마이페이지에서 삭제한 경우)이 있는 경우 mypage로
+				 out.println("location.href='" + req.getContextPath() + "/review/list';");
+			 } else {
+				 out.println("location.href='" + req.getContextPath() + "/burger/details?id=" + burgerId + "';");			
+			 }
+			 out.println("</script>");
+			 out.close();
+			 return; // ★★★ 중요! 뒤 코드 실행 못하게 종료
 		}
 		
-		if (redirect != null && !redirect.isEmpty()) { // redirect 지정값(마이페이지에서 삭제한 경우)이 있는 경우 mypage로
-			req.getRequestDispatcher("/review/list").forward(req, resp);
-		} else {
-			resp.sendRedirect("/semi-project/burger/details?id="+burgerId);			
-		}
-		
+		out.println("<script>alert('삭제 실패');history.back();</script>");
+	    out.close();
 		
 	}
 	
